@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,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">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prancha Interativa de Cuidado - UCS v1.0 Hospitalar</title>
+<meta http-equiv="refresh" content="3600">
+<style>
+:root{
+  --bg:#FFFFFF;
+  --card:#DAEFDC;
+  --accent:#004a2d;
+  --accent-dark:#004E4C;
+  --muted:#000000;
+  font-family:Arial,sans-serif;
+}
+body{margin:0;background:var(--bg);color:#0f1724}
+header{background:var(--accent);color:#fff;padding:2px 16px 2px 16px;text-align:center}
+header h1{margin:0;font-size:22px}
+.board{padding:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:12px}
+.card{background:var(--card);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:transform .12s,box-shadow .12s;box-shadow:0 4px 10px rgba(0,0,0,0.1);border:1px solid var(--accent)}
+.card:hover{transform:scale(1.05);border-color:var(--accent-dark)}
+.label{font-size:15px;font-weight:600;color:var(--accent-dark)}
+footer{padding:0px;text-align:center;color:var(--accent-dark)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:24px 0 12px 0}
+button{padding:8px 12px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer}
+input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-width:150px}
+.phrase-bar{padding:2px;text-align:center;font-size:22px;min-height:36px;border:1px solid var(--accent);border-radius:15px;margin-bottom:5px}
+
+.header-content{
+  display: flex;
+  align-items: center;
+  gap: 60px; /* espaço entre logo e título */
+  justify-content: center; /* centraliza tudo horizontalmente */
+}
+
+.logo{
+  height: 45px;       /* Ajuste conforme necessário */
+  width: auto;
+  border-radius: 10px; /* opcional */
+  
+}
+#data-hora-container {
+            text-align: center; 
+            font-size: 0.9em; /* Tamanho maior para destaque */
+            font-weight: bold;
+            color: #333; 
+        }
+        #fullscreen-toggle {
+    /* Posicionamento */
+    position: fixed;
+    top: 20px;      /* Um pouco mais de distância */
+    right: 15px;    
+    z-index: 1000;  
+    
+    /* Estilo do Botão */
+    width: 20px;       /* Tamanho maior para tablets */
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px; /* Cantos arredondados */
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    /* Centralizando o Ícone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#icon-indicator {
+    font-size: 24px; /* Tamanho do ícone */
+    line-height: 5;  /* Garante que o ícone esteja bem centralizado */
+}
+</style>
+
+</head>
+<button id="fullscreen-toggle" onclick="toggleFullscreen()">
+    <span id="icon-indicator">
+        <img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">
+    </span>
+</button>
+<body>
+    <script>
+        function formatarDataEHora() {
+            // Cria um novo objeto Date com a data e hora atuais do sistema
+            const agora = new Date();
+
+            // Opções de formatação para a Data (por extenso, em português)
+            const opcoesData = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+
+            // Opções de formatação para o Horário
+            const opcoesHora = { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit', 
+                hour12: false 
+            };
+
+            // Formata a data e hora usando a localização 'pt-BR'
+            const dataFormatada = agora.toLocaleDateString('pt-BR', opcoesData);
+            const horaFormatada = agora.toLocaleTimeString('pt-BR', opcoesHora);
+
+            // Constrói a string final (ex: "terça-feira, 25 de novembro de 2025 às 11:06:19")
+            const dataPorExtensoEHora = `📆 ${dataFormatada} - ${horaFormatada}`;
+
+            // Encontra o elemento HTML e atualiza seu conteúdo
+            const container = document.getElementById('data-hora-container');
+            if (container) {
+                container.textContent = dataPorExtensoEHora;
+            }
+        }
+
+        // Chama a função imediatamente e agenda para cada segundo
+        formatarDataEHora();
+        setInterval(formatarDataEHora, 1000);
+    </script>
+<script>
+    function toggleFullscreen() {
+        const doc = document.documentElement;
+        const iconIndicator = document.getElementById('icon-indicator');
+
+        // Esta linha verifica o estado atual de Fullscreen em vários navegadores
+        const isFullscreen = document.fullscreenElement ||
+                             document.mozFullScreenElement ||
+                             document.webkitFullscreenElement ||
+                             document.msFullscreenElement;
+
+        if (isFullscreen) {
+            // SAI DO MODO TELA CHEIA
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+
+            // CORREÇÃO: Colocar o código <img> entre aspas simples
+            // Ícone para "Entrar Tela Cheia"
+            iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">';
+
+        } else {
+            // ENTRA NO MODO TELA CHEIA
+            if (doc.requestFullscreen) {
+                doc.requestFullscreen();
+            } else if (doc.mozRequestFullScreen) {
+                doc.mozRequestFullScreen();
+            } else if (doc.webkitRequestFullscreen) {
+                doc.webkitRequestFullscreen();
+            } else if (doc.msRequestFullscreen) {
+                doc.msRequestFullscreen();
+            }
+
+            // CORREÇÃO: Colocar o código <img> entre aspas simples
+            // Ícone para "Sair Tela Cheia"
+            iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/1828/1828851.png" style="width:25px;height:25px;">';
+        }
+        // Listener para atualizar o ícone caso o modo seja alterado externamente
+document.addEventListener('fullscreenchange', function() {
+    const iconIndicator = document.getElementById('icon-indicator');
+    if (document.fullscreenElement) {
+        // Entrou em full screen, mostra o ícone de saída
+        iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/1828/1828851.png" style="width:25px;height:25px;">';
+    } else {
+        // Saiu de full screen, mostra o ícone de entrada
+        iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">';
+    }
+});
+    }
+    
+function initializeSpeechRecognition() {
+
+    const listenButton = document.getElementById("listenButton");
+    const phraseBar    = document.getElementById("phraseBar");
+    const statusDiv    = document.getElementById("status");
+
+    // Teste correto para Android
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SR) {
+        if (statusDiv) statusDiv.textContent = "Reconhecimento de fala não suportado neste dispositivo.";
+        listenButton.disabled = true;
+        return;
+    }
+
+    let recognition = null;
+    let isListening = false;
+
+    listenButton.addEventListener("click", () => {
+
+        // Somente cria a instância AGORA — requisito do Chrome Android
+        if (!recognition) {
+            recognition = new SR();
+            recognition.lang = "pt-BR";
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = (event) => {
+                const text = event.results[0][0].transcript;
+                phraseBar.textContent += " " + text;
+                speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+            };
+
+            recognition.onerror = (event) => {
+                isListening = false;
+                listenButton.innerHTML = '<span id="listenIcon">🎤</span> Responder';
+                if (statusDiv) statusDiv.textContent = "Erro: " + event.error;
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                listenButton.innerHTML = '<span id="listenIcon">🎤</span> Responder';
+            };
+        }
+
+        // Alternância
+        if (!isListening) {
+            try {
+                recognition.start();
+                isListening = true;
+                listenButton.innerHTML = '<span id="listenIcon">🛑</span> Parar';
+                if (statusDiv) statusDiv.textContent = "Ouvindo...";
+            } catch (err) {
+                if (statusDiv) statusDiv.textContent = "Erro ao iniciar microfone.";
+            }
+        } else {
+            recognition.stop();
+            isListening = false;
+        }
+
+    });
+}
+
+document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
+</script>
+<body oncontextmenu="return false">  
+<header>
+  <div class="header-content">
+    <img src="https://cepunimedcostadosol.com.br/wp-content/uploads/2023/10/logo-unimed-costa-do-sol-2048x732.png" class="logo">
+    <h1>Prancha Interativa de Cuidado - Hospitalar</h1>
+  </div>
+  
+</header>
+<p id="data-hora-container">
+    🔃 Aguarde, carregando...
+</p>
+<div class="controls">
+<input type="text" id="patientName" placeholder="🙎🏻‍♀️️️ Nome do(a) paciente">
+<button onclick="speakSequence()">🔊 Escutar</button>
+<button onclick="deleteLastToken()">↩ Apagar</button>
+<button onclick="clearPhrase()">✂️ Excluir frase</button>
+<button onclick="clearLogs()">🧹 Limpar conversa</button>
+<button onclick="exportLogs()">💾 Exportar conversa</button>
+<button id="listenButton" style="background-color: #f7a900; color: #000;">
+        <span id="listenIcon">🎤</span> Responder
+    </button>
+</div>
+<div class="phrase-bar" id="phraseBar"></div>
+<section class="board" id="board">
+<!-- Página inicial será renderizada via script -->
+</section>
+<script>
+const data = {
+  home:[
+    {label:'Digitar',emoji:'<img src="https://static.arasaac.org/pictograms/3050/3050_300.png" alt="Digitar" style="width:65px;height:65px;">',children:'alfabeto'},
+    {label:'Sim/Não',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/2665/2665089.png" alt="Sim/Não" style="width:65px;height:65px;">',children:'simounao'},
+    {label:'bem',emoji:'<img src="https://static.arasaac.org/pictograms/21383/21383_300.png" alt="bem" style="width:65px;height:65px;">'},
+    {label:'mal',emoji:'<img src="https://static.arasaac.org/pictograms/29639/29639_300.png" alt="mal" style="width:65px;height:65px;">'},
+    {label:'Dor',emoji:'<img src="https://static.arasaac.org/pictograms/39516/39516_300.png" style="width:65px;height:65px;">',children:'escaladedor'},
+    {label:'Solicitar',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/16951/16951158.png" style="width:65px;height:65px;">',children:'Procedimentos'},
+    {label:'Como estou?',emoji:'<img src="https://static.arasaac.org/pictograms/12293/12293_300.png" style="width:65px;height:65px;">'},
+    {label:'Quanto tempo?',emoji:'<img src="https://static.arasaac.org/pictograms/17052/17052_300.png" style="width:65px;height:65px;">'},    
+    {label:'Eu',emoji:'<img src="https://static.arasaac.org/pictograms/31807/31807_300.png" alt="Eu" style="width:65px;height:65px;">'},
+    {label:'Você',emoji:'<img src="https://static.arasaac.org/pictograms/31801/31801_300.png" alt="Você" style="width:65px;height:65px;">'},
+    {label:'estou',emoji:'<img src="https://static.arasaac.org/pictograms/36480/36480_300.png" alt="Estou" style="width:65px;height:65px;">'},
+    {label:'está',emoji:'<img src="https://static.arasaac.org/pictograms/7095/7095_300.png" alt="está" style="width:65px;height:65px;">'},
+    {label:'para',emoji:'<img src="https://static.arasaac.org/pictograms/7125/7125_300.png" alt="está" style="width:65px;height:65px;">'},    
+    {label:'posso',emoji:'<img src="https://static.arasaac.org/pictograms/11750/11750_300.png" alt="está" style="width:65px;height:65px;">'},
+    {label:'quero',emoji:'<img src="https://static.arasaac.org/pictograms/5441/5441_300.png" alt="quero" style="width:65px;height:65px;">'},
+    {label:'quer',emoji:'<img src="https://static.arasaac.org/pictograms/5441/5441_300.png" alt="quer" style="width:65px;height:65px;">'},
+    {label:'usar',emoji:'<img src="https://static.arasaac.org/pictograms/15485/15485_300.png" alt="ir" style="width:65px;height:65px;">'},
+    {label:'ir',emoji:'<img src="https://static.arasaac.org/pictograms/31758/31758_300.png" alt="ir" style="width:65px;height:65px;">'},
+    {label:'com',emoji:'<img src="https://static.arasaac.org/pictograms/7064/7064_300.png" alt="com" style="width:65px;height:65px;">'}, 
+    {label:'de',emoji:'<img src="https://static.arasaac.org/pictograms/7064/7064_300.png" alt="de" style="width:65px;height:65px;">'}, 
+    {label:'vontade',emoji:'<img src="https://static.arasaac.org/pictograms/37369/37369_300.png" style="width:65px;height:65px;">'}, 
+    {label:'sinto',emoji:'<img src="https://static.arasaac.org/pictograms/30197/30197_300.png" alt="sinto" style="width:65px;height:65px;">'},
+    {label:'sente',emoji:'<img src="https://static.arasaac.org/pictograms/30197/30197_300.png" alt="sente" style="width:65px;height:65px;">'},
+    {label:'obrigado',emoji:'<img src="https://static.arasaac.org/pictograms/36093/36093_300.png" style="width:65px;height:65px;">'},
+    {label:'desculpa',emoji:'<img src="https://static.arasaac.org/pictograms/38361/38361_300.png" style="width:65px;height:65px;">'},
+    {label:'não sei',emoji:'<img src="https://static.arasaac.org/pictograms/27705/27705_300.png" style="width:65px;height:65px;">'},
+    {label:'Vontades',emoji:'<img src="https://static.arasaac.org/pictograms/37160/37160_300.png" style="width:65px;height:65px;">',children:'vontades'},
+    {label:'Sintomas',emoji:'<img src="https://static.arasaac.org/pictograms/28753/28753_300.png" style="width:65px;height:65px;">',children:'sintomas'},
+    {label:'Refeição',emoji:'<img src="https://static.arasaac.org/pictograms/10228/10228_300.png" style="width:65px;height:65px;">',children:'alimentacao'},
+    {label:'Higiene',emoji:'<img src="https://static.arasaac.org/pictograms/30524/30524_300.png" style="width:65px;height:65px;">',children:'higiene'},    
+    {label:'Objetos',emoji:'<img src="https://static.arasaac.org/pictograms/3329/3329_300.png" style="width:65px;height:65px;">',children:'objetos'},
+    {label:'Emoções',emoji:'<img src="https://static.arasaac.org/pictograms/32123/32123_300.png" style="width:65px;height:65px;">',children:'emocoes'},
+    {label:'ajuda',emoji:'<img src="https://static.arasaac.org/pictograms/12252/12252_300.png" style="width:65px;height:65px;">'},
+    {label:'mais comandos',emoji:'<img src="https://static.arasaac.org/pictograms/38218/38218_300.png" style="width:65px;height:65px;">',children:'outros'},
+],
+alimentacao:{
+    'sal':[ {label:'sal',emoji:'<img src="https://static.arasaac.org/pictograms/25576/25576_300.png" style="width:65px;height:65px;">'}],
+    'açúcar':[ {label:'açúcar',emoji:'<img src="https://static.arasaac.org/pictograms/25560/25560_300.png" style="width:65px;height:65px;">'}],
+    'adoçante':[ {label:'adoçante',emoji:'<img src="https://static.arasaac.org/pictograms/36890/36890_300.png" style="width:65px;height:65px;">'}],  
+    'talheres':[ {label:'talheres',emoji:'<img src="https://static.arasaac.org/pictograms/8545/8545_300.png" style="width:65px;height:65px;">'}],
+    'colher':[ {label:'colher',emoji:'<img src="https://static.arasaac.org/pictograms/2362/2362_300.png" style="width:65px;height:65px;">'}],
+    'garfo':[ {label:'garfo',emoji:'<img src="https://static.arasaac.org/pictograms/2588/2588_300.png" style="width:65px;height:65px;">'}],
+    'faca':[ {label:'faca',emoji:'<img src="https://static.arasaac.org/pictograms/4931/4931_300.png" style="width:65px;height:65px;">'}],
+    'canudo':[ {label:'canudo',emoji:'<img src="https://static.arasaac.org/pictograms/6164/6164_300.png" style="width:65px;height:65px;">'}],
+    'água':[{label:'água',emoji:'<img src="https://static.arasaac.org/pictograms/2248/2248_300.png" style="width:65px;height:65px;">'}],
+    'suco':[ {label:'suco',emoji:'<img src="https://static.arasaac.org/pictograms/2624/2624_300.png" style="width:65px;height:65px;">'}],
+    'chá':[ {label:'chá',emoji:'<img src="https://static.arasaac.org/pictograms/2429/2429_300.png" style="width:65px;height:65px;">'}],
+    'café':[ {label:'café',emoji:'<img src="https://static.arasaac.org/pictograms/24487/24487_300.png" style="width:65px;height:65px;">'}],
+    'leite':[ {label:'leite',emoji:'<img src="https://static.arasaac.org/pictograms/2445/2445_300.png" style="width:65px;height:65px;">'}],
+    'cerveja':[ {label:'cerveja',emoji:'<img src="https://static.arasaac.org/pictograms/2330/2330_300.png" style="width:65px;height:65px;">'}],    
+    'chocolate':[ {label:'chocolate',emoji:'<img src="https://static.arasaac.org/pictograms/25940/25940_300.png" style="width:65px;height:65px;">'}], 
+    'sopa':[ {label:'sopa',emoji:'<img src="https://static.arasaac.org/pictograms/2573/2573_300.png" style="width:65px;height:65px;">'}],   
+    'legumes':[ {label:'legumes',emoji:'<img src="https://static.arasaac.org/pictograms/5511/5511_300.png" style="width:65px;height:65px;">'}],  
+    'salada':[ {label:'salada',emoji:'<img src="https://static.arasaac.org/pictograms/2377/2377_300.png" style="width:65px;height:65px;">'}],    
+    'pão':[ {label:'pão',emoji:'<img src="https://static.arasaac.org/pictograms/2494/2494_300.png" style="width:65px;height:65px;">'}],  
+    'biscoito':[ {label:'biscoito',emoji:'<img src="https://static.arasaac.org/pictograms/8312/8312_300.png" style="width:65px;height:65px;">'}],  
+    'torrada':[ {label:'torrada',emoji:'<img src="https://static.arasaac.org/pictograms/2787/2787_300.png" style="width:65px;height:65px;">'}], 
+    'sanduíche':[ {label:'sanduíche',emoji:'<img src="https://static.arasaac.org/pictograms/3383/3383_300.png" style="width:65px;height:65px;">'}],
+    'hot-dog':[{label:'cachorro quente',emoji:'<img src="https://static.arasaac.org/pictograms/7201/7201_300.png" style="width:65px;height:65px;">'}],    
+    'omelete':[ {label:'omelete',emoji:'<img src="https://static.arasaac.org/pictograms/4966/4966_300.png" style="width:65px;height:65px;">'}],    
+    'presunto':[ {label:'presunto',emoji:'<img src="https://static.arasaac.org/pictograms/2963/2963_300.png" style="width:65px;height:65px;">'}], 
+    'queijo':[{label:'queijo',emoji:'<img src="https://static.arasaac.org/pictograms/4881/4881_300.png" style="width:65px;height:65px;">'}],    
+    'bolo':[{label:'bolo',emoji:'<img src="https://static.arasaac.org/pictograms/8042/8042_300.png" style="width:65px;height:65px;">'}],
+    'sobremesa':[{label:'sobremesa',emoji:'<img src="https://static.arasaac.org/pictograms/3317/3317_300.png" style="width:65px;height:65px;">'}],
+    'sorvete':[{label:'sorvete',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/4492/4492713.png" style="width:65px;height:65px;">'}],
+    'picolé':[{label:'picolé',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/10776/10776036.png" style="width:65px;height:65px;">'}],    
+    'fruta':[{label:'fruta',emoji:'<img src="https://static.arasaac.org/pictograms/4653/4653_300.png" style="width:65px;height:65px;">'}],
+    'salada de frutas':[{label:'salada de frutas',emoji:'<img src="https://static.arasaac.org/pictograms/8620/8620_300.png" style="width:65px;height:65px;">'}],    
+    'maçã':[{label:'maçã',emoji:'<img src="https://static.arasaac.org/pictograms/2462/2462_300.png" style="width:65px;height:65px;">'}], 
+    'banana':[{label:'banana',emoji:'<img src="https://static.arasaac.org/pictograms/9054/9054_300.png" style="width:65px;height:65px;">'}], 
+    'mamão':[{label:'mamão',emoji:'<img src="https://static.arasaac.org/pictograms/16829/16829_300.png" style="width:65px;height:65px;">'}],
+    'melão':[{label:'melão',emoji:'<img src="https://static.arasaac.org/pictograms/36153/36153_300.png" style="width:65px;height:65px;">'}],
+    'morango':[{label:'morango',emoji:'<img src="https://static.arasaac.org/pictograms/2400/2400_300.png" style="width:65px;height:65px;">'}],    
+    'laranja':[{label:'laranja',emoji:'<img src="https://static.arasaac.org/pictograms/8730/8730_300.png" style="width:65px;height:65px;">'}], 
+    'melancia':[{label:'melancia',emoji:'<img src="https://static.arasaac.org/pictograms/2557/2557_300.png" style="width:65px;height:65px;">'}],
+    'uva':[{label:'uva',emoji:'<img src="https://static.arasaac.org/pictograms/34120/34120_300.png" style="width:65px;height:65px;">'}],   
+    'abacaxi':[{label:'abacaxi',emoji:'<img src="https://static.arasaac.org/pictograms/2525/2525_300.png" style="width:65px;height:65px;">'}], 
+    'pera':[{label:'pera',emoji:'<img src="https://static.arasaac.org/pictograms/2561/2561_300.png" style="width:65px;height:65px;">'}],    
+    'gelatina':[{label:'gelatina',emoji:'<img src="https://static.arasaac.org/pictograms/21890/21890_300.png" style="width:65px;height:65px;">'}],    
+    'iogurte':[{label:'iogurte',emoji:'<img src="https://static.arasaac.org/pictograms/2618/2618_300.png" style="width:65px;height:65px;">'}],
+    'arroz':[{label:'arroz',emoji:'<img src="https://static.arasaac.org/pictograms/39387/39387_300.png" style="width:65px;height:65px;">'}],
+    'feijão':[{label:'feijão',emoji:'<img src="https://static.arasaac.org/pictograms/3294/3294_300.png" style="width:65px;height:65px;">'}],
+    'purê':[{label:'purê',emoji:'<img src="https://static.arasaac.org/pictograms/2539/2539_300.png" style="width:65px;height:65px;">'}],
+    'carne':[{label:'carne',emoji:'<img src="https://static.arasaac.org/pictograms/24807/24807_300.png" style="width:65px;height:65px;">'}],
+    'frango':[{label:'frango',emoji:'<img src="https://static.arasaac.org/pictograms/25343/25343_300.png" style="width:65px;height:65px;">'}],
+    'peixe':[{label:'peixe',emoji:'<img src="https://static.arasaac.org/pictograms/36428/36428_300.png" style="width:65px;height:65px;">'}],
+    'ovo':[{label:'ovo',emoji:'<img src="https://static.arasaac.org/pictograms/7132/7132_300.png" style="width:65px;height:65px;">'}],  
+    'macarrão':[{label:'macarrão',emoji:'<img src="https://static.arasaac.org/pictograms/25486/25486_300.png" style="width:65px;height:65px;">'}],     
+    'batata frita':[{label:'batata frita',emoji:'<img src="https://static.arasaac.org/pictograms/8653/8653_300.png" style="width:65px;height:65px;">'}],     
+},
+escaladedor: {
+  '1':[{label:'sem dor',emoji:'<img src="https://static.arasaac.org/pictograms/39515/39515_300.png" style="width:65px;height:65px;">'}],
+  '2':[{label:'dor leve',emoji:'<img src="https://static.arasaac.org/pictograms/39514/39514_300.png" style="width:65px;height:65px;">'}],  
+  '3':[{label:'dor moderada',emoji:'<img src="https://static.arasaac.org/pictograms/39513/39513_300.png" style="width:65px;height:65px;">'}],
+  '4':[{label:'dor intensa',emoji:'<img src="https://static.arasaac.org/pictograms/39512/39512_300.png" style="width:65px;height:65px;">'}],  
+},
+outros:{
+  'pergunta':[{label:'?',emoji:'<img src="https://static.arasaac.org/pictograms/3418/3418_300.png" alt="?" style="width:65px;height:65px;">'}],
+  'bom':[{ label: 'bom', emoji:'<img src="https://static.arasaac.org/pictograms/31410/31410_300.png" style="width:65px;height:65px;">'}],
+  'ruim':[{ label: 'ruim',emoji:'<img src="https://static.arasaac.org/pictograms/5504/5504_300.png" style="width:65px;height:65px;">'}],   
+  'ficar':[{label:'ficar',emoji:'<img src="https://static.arasaac.org/pictograms/27206/27206_300.png" alt="ficar" style="width:65px;height:65px;">'}],
+  'outro':[{ label: 'outro', emoji:'<img src="https://static.arasaac.org/pictograms/17054/17054_300.png" style="width:65px;height:65px;">'}],
+  'mais':[{ label: 'mais',emoji:'<img src="https://static.arasaac.org/pictograms/5508/5508_300.png" style="width:65px;height:65px;">'}],  
+  'menos':[{ label: 'menos',emoji:'<img src="https://static.arasaac.org/pictograms/5512/5512_300.png" style="width:65px;height:65px;">'}],
+  'da':[{label:'da',emoji:'<img src="https://static.arasaac.org/pictograms/11712/11712_300.png" alt="?" style="width:65px;height:65px;">'}],
+  'de"':[{label:'de',emoji:'<img src="https://static.arasaac.org/pictograms/7074/7074_300.png" alt="?" style="width:65px;height:65px;">'}],
+  'do"':[{label:'do',emoji:'<img src="https://static.arasaac.org/pictograms/11712/11712_300.png" alt="?" style="width:65px;height:65px;">'}],  
+
+},
+  emocoes:{
+      'amo':[{label:'amo',emoji:'<img src="https://static.arasaac.org/pictograms/37721/37721_300.png" style="width:65px;height:65px;">'}],
+      'gosto':[{label:'gosto',emoji:'<img src="https://static.arasaac.org/pictograms/37826/37826_300.png" style="width:65px;height:65px;">'}],
+      'feliz':[{label:'feliz',emoji:'<img src="https://static.arasaac.org/pictograms/31923/31923_300.png" style="width:65px;height:65px;">'}],
+      'triste':[{label:'triste',emoji:'<img src="https://static.arasaac.org/pictograms/2606/2606_300.png" style="width:65px;height:65px;">'}],
+      'inseguro':[{label:'inseguro',emoji:'<img src="https://static.arasaac.org/pictograms/13024/13024_300.png" style="width:65px;height:65px;">'}],
+      'cansado':[{label:'cansado',emoji:'<img src="https://static.arasaac.org/pictograms/31925/31925_300.png" style="width:65px;height:65px;">'}],
+      'medo':[{label:'medo',emoji:'<img src="https://static.arasaac.org/pictograms/11312/11312_300.png" style="width:65px;height:65px;">'}],
+      'fome':[{label:'fome',emoji:'<img src="https://static.arasaac.org/pictograms/35579/35579_300.png" style="width:65px;height:65px;">'}],
+      'sem fome':[{label:'sem fome',emoji:'<img src="https://static.arasaac.org/pictograms/8674/8674_300.png" style="width:65px;height:65px;">'}],
+      'sede':[{label:'sede',emoji:'<img src="https://static.arasaac.org/pictograms/2276/2276_300.png" style="width:65px;height:65px;">'}],
+      'sem sede':[{label:'sem sede',emoji:'<img src="https://static.arasaac.org/pictograms/8673/8673_300.png" style="width:65px;height:65px;">'}],
+      'entubado':[{label:'entubado',emoji:'<img src="https://static.arasaac.org/pictograms/39255/39255_300.png" style="width:65px;height:65px;">'}],  
+      'ansioso':[{label:'ansioso',emoji:'<img src="https://static.arasaac.org/pictograms/37176/37176_300.png" style="width:65px;height:65px;">'}],
+      'preocupado':[{label:'aflito',emoji:'<img src="https://static.arasaac.org/pictograms/26985/26985_300.png" style="width:65px;height:65px;">'}],
+      'pra baixo':[{label:'pra baixo',emoji:'<img src="https://static.arasaac.org/pictograms/32300/32300_300.png" style="width:65px;height:65px;">'}],
+      'gostando':[{label:'gostando',emoji:'<img src="https://static.arasaac.org/pictograms/31995/31995_300.png" style="width:65px;height:65px;">'}],
+      'surpreso':[{label:'surpreso',emoji:'<img src="https://static.arasaac.org/pictograms/32170/32170_300.png" style="width:65px;height:65px;">'}], 
+      'vergonha':[{label:'vergonha',emoji:'<img src="https://static.arasaac.org/pictograms/31919/31919_300.png" style="width:65px;height:65px;">'}],
+      'aliviado':[{label:'aliviado',emoji:'<img src="https://static.arasaac.org/pictograms/4581/4581_300.png" style="width:65px;height:65px;">'}],
+      'confiante':[{label:'confiante',emoji:'<img src="https://static.arasaac.org/pictograms/38564/38564_300.png" style="width:65px;height:65px;">'}],
+      'irritado':[{label:'irritado',emoji:'<img src="https://static.arasaac.org/pictograms/31884/31884_300.png" style="width:65px;height:65px;">'}],
+      'deprimido':[{label:'deprimido',emoji:'<img src="https://static.arasaac.org/pictograms/31744/31744_300.png" style="width:65px;height:65px;">'}],
+      'entediado':[{label:'entediado',emoji:'<img src="https://static.arasaac.org/pictograms/32300/32300_300.png" style="width:65px;height:65px;">'}],
+      'pensativo':[{label:'pensativo',emoji:'<img src="https://static.arasaac.org/pictograms/31847/31847_300.png" style="width:65px;height:65px;">'}],
+      'saudades':[{label:'saudades',emoji:'<img src="https://static.arasaac.org/pictograms/31847/31847_300.png" style="width:65px;height:65px;">'}],
+      'só':[{label:'só',emoji:'<img src="https://static.arasaac.org/pictograms/39247/39247_300.png" style="width:65px;height:65px;">'}],      
+      'raiva':[{label:'raiva',emoji:'<img src="https://static.arasaac.org/pictograms/21820/21820_300.png" style="width:65px;height:65px;">'}],
+      'viver':[{label:'viver',emoji:'<img src="https://static.arasaac.org/pictograms/7302/7302_300.png" style="width:65px;height:65px;">'}],
+      'morrer':[{label:'morrer',emoji:'<img src="https://static.arasaac.org/pictograms/32250/32250_300.png" style="width:65px;height:65px;">'}],
+  },
+    sintomas:{
+    'dor':[ {label:'dor',emoji:'<img src="https://static.arasaac.org/pictograms/32160/32160_300.png" style="width:65px;height:65px;">'}],
+    'frio':[ {label:'frio',emoji:'<img src="https://static.arasaac.org/pictograms/35557/35557_300.png" style="width:65px;height:65px;">'}],
+    'calor':[ {label:'calor',emoji:'<img src="https://static.arasaac.org/pictograms/35561/35561_300.png" style="width:65px;height:65px;">'}],
+    'sono':[ {label:'sono',emoji:'<img src="https://static.arasaac.org/pictograms/22094/22094_300.png" style="width:65px;height:65px;">'}],
+    'febre':[ {label:'febre',emoji:'<img src="https://static.arasaac.org/pictograms/5470/5470_300.png" style="width:65px;height:65px;">'}],
+    'falta de ar':[ {label:'falta de ar',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/3782/3782002.png" style="width:65px;height:65px;">'}],
+    'no corpo':[ {label:'no corpo',emoji:'<img src="https://static.arasaac.org/pictograms/38423/38423_300.png" style="width:65px;height:65px;">'}],
+    'no peito':[ {label:'no peito',emoji:'<img src="https://static.arasaac.org/pictograms/11241/11241_300.png" style="width:65px;height:65px;">'}],
+    'de cabeça':[ {label:'de cabeça',emoji:'<img src="https://static.arasaac.org/pictograms/32160/32160_300.png" style="width:65px;height:65px;">'}],
+    'no ouvido':[ {label:'no ouvido',emoji:'<img src="https://static.arasaac.org/pictograms/28777/28777_300.png" style="width:65px;height:65px;">'}],
+    'de garganta':[ {label:'de garganta',emoji:'<img src="https://static.arasaac.org/pictograms/28761/28761_300.png" style="width:65px;height:65px;">'}],
+    'de dente':[ {label:'de dente',emoji:'<img src="https://static.arasaac.org/pictograms/28757/28757_300.png" style="width:65px;height:65px;">'}],  
+    'nas pernas':[ {label:'nas pernas',emoji:'<img src="https://static.arasaac.org/pictograms/28769/28769_300.png" style="width:65px;height:65px;">'}],
+    'nas costas':[ {label:'nas costas',emoji:'<img src="https://static.arasaac.org/pictograms/7775/7775_300.png" style="width:65px;height:65px;">'}],
+    'nas mãos':[ {label:'nas mãos',emoji:'<img src="https://static.arasaac.org/pictograms/37532/37532_300.png" style="width:65px;height:65px;">'}],    
+    'nos pés':[ {label:'nos pés',emoji:'<img src="https://static.arasaac.org/pictograms/35809/35809_300.png" style="width:65px;height:65px;">'}],
+    'nas nádegas':[ {label:'nas nádegas',emoji:'<img src="https://static.arasaac.org/pictograms/28789/28789_300.png" style="width:65px;height:65px;">'}],    
+    'cansado':[ {label:'cansado',emoji:'<img src="https://static.arasaac.org/pictograms/31925/31925_300.png" style="width:65px;height:65px;">'}],
+    'fraco':[ {label:'fraco',emoji:'<img src="https://static.arasaac.org/pictograms/4620/4620_300.png" style="width:65px;height:65px;">'}],
+    'mal-estar':[ {label:'mal-estar',emoji:'<img src="https://static.arasaac.org/pictograms/37182/37182_300.png" style="width:65px;height:65px;">'}],
+    'ferida':[ {label:'ferida',emoji:'<img src="https://static.arasaac.org/pictograms/5484/5484_300.png" style="width:65px;height:65px;">'}],
+    'coceira':[ {label:'coceira',emoji:'<img src="https://static.arasaac.org/pictograms/11356/11356_300.png" style="width:65px;height:65px;">'}],
+    'erupção':[ {label:'erupção',emoji:'<img src="https://static.arasaac.org/pictograms/5578/5578_300.png" style="width:65px;height:65px;">'}],   
+    'dormência':[ {label:'dormência',emoji:'<img src="https://static.arasaac.org/pictograms/34276/34276_300.png" style="width:65px;height:65px;">'}],
+    'inchaço':[ {label:'inchaço',emoji:'<img src="https://static.arasaac.org/pictograms/31678/31678_300.png" style="width:65px;height:65px;">'}],
+    'suando muito':[ {label:'suando muito',emoji:'<img src="https://static.arasaac.org/pictograms/32125/32125_300.png" style="width:65px;height:65px;">'}],
+    'tontura':[ {label:'tontura',emoji:'<img src="https://static.arasaac.org/pictograms/31855/31855_300.png" style="width:65px;height:65px;">'}],
+    'vista turva':[ {label:'vista turva',emoji:'<img src="https://static.arasaac.org/pictograms/36259/36259_300.png" style="width:65px;height:65px;">'}],
+    'desmaio':[ {label:'desmaio',emoji:'<img src="https://static.arasaac.org/pictograms/5442/5442_300.png" style="width:65px;height:65px;">'}],
+    'falta de apetite':[ {label:'falta de apetite',emoji:'<img src="https://static.arasaac.org/pictograms/8674/8674_300.png" style="width:65px;height:65px;">'}],
+    'náusea':[ {label:'náusea',emoji:'<img src="https://static.arasaac.org/pictograms/38404/38404_300.png" style="width:65px;height:65px;">'}],
+    'vômito':[ {label:'vômito',emoji:'<img src="https://static.arasaac.org/pictograms/2777/2777_300.png" style="width:65px;height:65px;">'}],
+    'diarreia':[ {label:'diarréia',emoji:'<img src="https://static.arasaac.org/pictograms/7023/7023_300.png" style="width:65px;height:65px;">'}],
+    'no estômago':[ {label:'no estômago',emoji:'<img src="https://static.arasaac.org/pictograms/28765/28765_300.png" style="width:65px;height:65px;">'}],
+    'na barriga':[ {label:'na barriga',emoji:'<img src="https://static.arasaac.org/pictograms/28765/28765_300.png" style="width:65px;height:65px;">'}],
+    'gases':[ {label:'gases',emoji:'<img src="https://static.arasaac.org/pictograms/37389/37389_300.png" style="width:65px;height:65px;">'}],
+    'prisão de ventre':[ {label:'prisão de ventre',emoji:'<img src="https://static.arasaac.org/pictograms/7097/7097_300.png" style="width:65px;height:65px;">'}],
+    'boca amarga':[ {label:'boca amarga',emoji:'<img src="https://static.arasaac.org/pictograms/2663/2663_300.png" style="width:65px;height:65px;">'}],
+    'muita saliva':[ {label:'muita saliva',emoji:'<img src="https://static.arasaac.org/pictograms/14254/14254_300.png" style="width:65px;height:65px;">'}],
+    'afta':[ {label:'afta',emoji:'<img src="https://static.arasaac.org/pictograms/39472/39472_300.png" style="width:65px;height:65px;">'}],
+    'azia':[ {label:'azia',emoji:'<img src="https://static.arasaac.org/pictograms/28765/28765_300.png" style="width:65px;height:65px;">'}],
+    'soluço':[ {label:'soluço',emoji:'<img src="https://static.arasaac.org/pictograms/22127/22127_300.png" style="width:65px;height:65px;">'}],
+    'queimação':[ {label:'queimação',emoji:'<img src="https://static.arasaac.org/pictograms/3309/3309_300.png" style="width:65px;height:65px;">'}],
+    'calafrio':[ {label:'calafrio',emoji:'<img src="https://static.arasaac.org/pictograms/35557/35557_300.png" style="width:65px;height:65px;">'}],
+    'respiração difícil':[ {label:'respiração difícil',emoji:'<img src="https://cdn-icons-png.flaticon.com/512/2927/2927735.png" style="width:65px;height:65px;">'}],
+    'ao respirar':[ {label:'ao respirar',emoji:'<img src="https://static.arasaac.org/pictograms/28781/28781_300.png" style="width:65px;height:65px;">'}],
+    'coração acelerado':[ {label:'coração acelerado',emoji:'<img src="https://static.arasaac.org/pictograms/32059/32059_300.png" style="width:65px;height:65px;">'}],
+    'ansiedade':[ {label:'ansiedade',emoji:'<img src="https://static.arasaac.org/pictograms/37176/37176_300.png" style="width:65px;height:65px;">'}],
+    'membros frios':[ {label:'membros frios',emoji:'<img src="https://static.arasaac.org/pictograms/35583/35583_300.png" style="width:65px;height:65px;">'}],
+    'no braço':[ {label:'no braço',emoji:'<img src="https://static.arasaac.org/pictograms/28773/28773_300.png" style="width:65px;height:65px;">'}],
+    'falta de ar':[ {label:'falta de ar',emoji:'<img src="https://cdn-icons-png.flaticon.com/512/6008/6008450.png" style="width:65px;height:65px;">'}],
+    'chiado no peito':[ {label:'chiado no peito',emoji:'<img src="https://static.arasaac.org/pictograms/2853/2853_300.png" style="width:65px;height:65px;">'}],
+    'nariz entupido':[ {label:'nariz entupido',emoji:'<img src="https://static.arasaac.org/pictograms/7256/7256_300.png" style="width:65px;height:65px;">'}],
+    'tosse':[ {label:'tosse',emoji:'<img src="https://static.arasaac.org/pictograms/3406/3406_300.png" style="width:65px;height:65px;">'}],
+    'catarro':[ {label:'catarro',emoji:'<img src="https://static.arasaac.org/pictograms/26384/26384_300.png" style="width:65px;height:65px;">'}],
+    'cera':[ {label:'cera no ouvido',emoji:'<img src="https://static.arasaac.org/pictograms/39510/39510_300.png" style="width:65px;height:65px;">'}],
+    'zumbido':[ {label:'zumbido',emoji:'<img src="https://static.arasaac.org/pictograms/39508/39508_300.png" style="width:65px;height:65px;">'}],
+    'dificuldade de urinar':[ {label:'dificuldade de urinar',emoji:'<img src="https://static.arasaac.org/pictograms/33004/33004_300.png" style="width:65px;height:65px;">'}],
+    'dificuldade de defecar':[ {label:'dificuldade de defecar',emoji:'<img src="https://static.arasaac.org/pictograms/3428/3428_300.png" style="width:65px;height:65px;">'}],
+    'urina escura':[ {label:'urina escura',emoji:'<img src="https://static.arasaac.org/pictograms/8021/8021_300.png" style="width:65px;height:65px;">'}],
+    'ao urinar':[ {label:'ao urinar',emoji:'<img src="https://static.arasaac.org/pictograms/37687/37687_300.png" style="width:65px;height:65px;">'}],
+  },
+alfabeto:{
+    // Linha Numérica
+    '1':[{label:'1',emoji:'<img src="https://static.arasaac.org/pictograms/2627/2627_300.png" style="width:65px;height:65px;">'}],
+    '2':[{label:'2',emoji:'<img src="https://static.arasaac.org/pictograms/2628/2628_300.png" style="width:65px;height:65px;">'}],
+    '3':[{label:'3',emoji:'<img src="https://static.arasaac.org/pictograms/2629/2629_300.png" style="width:65px;height:65px;">'}],
+    '4':[{label:'4',emoji:'<img src="https://static.arasaac.org/pictograms/2630/2630_300.png" style="width:65px;height:65px;">'}],
+    '5':[{label:'5',emoji:'<img src="https://static.arasaac.org/pictograms/2631/2631_300.png" style="width:65px;height:65px;">'}],
+    '6':[{label:'6',emoji:'<img src="https://static.arasaac.org/pictograms/2632/2632_300.png" style="width:65px;height:65px;">'}],
+    '7':[{label:'7',emoji:'<img src="https://static.arasaac.org/pictograms/2633/2633_300.png" style="width:65px;height:65px;">'}],
+    '8':[{label:'8',emoji:'<img src="https://static.arasaac.org/pictograms/2634/2634_300.png" style="width:65px;height:65px;">'}],
+    '9':[{label:'9',emoji:'<img src="https://static.arasaac.org/pictograms/2635/2635_300.png" style="width:65px;height:65px;">'}],
+    '11':[{label:'0',emoji:'<img src="https://static.arasaac.org/pictograms/2626/2626_300.png" style="width:65px;height:65px;">'}],
+    
+    // Linha 1 (QWERTY)
+    'Q':[ {label:'q',emoji:'<img src="https://static.arasaac.org/pictograms/3039/3039_300.png" style="width:65px;height:65px;">'}],
+    'W':[ {label:'w',emoji:'<img src="https://static.arasaac.org/pictograms/3045/3045_300.png" style="width:65px;height:65px;">'}],
+    'E':[ {label:'e',emoji:'<img src="https://static.arasaac.org/pictograms/3026/3026_300.png" style="width:65px;height:65px;">'}],
+    'É':[ {label:'é',emoji:'<img src="https://static.arasaac.org/pictograms/36783/36783_300.png" style="width:65px;height:65px;">'}], // Acento na linha do E
+    'R':[ {label:'r',emoji:'<img src="https://static.arasaac.org/pictograms/3040/3040_300.png" style="width:65px;height:65px;">'}],
+    'T':[ {label:'t',emoji:'<img src="https://static.arasaac.org/pictograms/3042/3042_300.png" style="width:65px;height:65px;">'}],
+    'Y':[ {label:'y',emoji:'<img src="https://static.arasaac.org/pictograms/3047/3047_300.png" style="width:65px;height:65px;">'}],
+    'U':[ {label:'u',emoji:'<img src="https://static.arasaac.org/pictograms/3043/3043_300.png" style="width:65px;height:65px;">'}],
+    'Ú':[ {label:'ú',emoji:'<img src="https://static.arasaac.org/pictograms/36769/36769_300.png" style="width:65px;height:65px;">'}], // Adicionado U com acento
+    'I':[ {label:'i',emoji:'<img src="https://static.arasaac.org/pictograms/3030/3030_300.png" style="width:65px;height:65px;">'}],
+    'Í':[ {label:'í',emoji:'<img src="https://static.arasaac.org/pictograms/36779/36779_300.png" style="width:65px;height:65px;">'}], // Acento na linha do I
+    'O':[ {label:'o',emoji:'<img src="https://static.arasaac.org/pictograms/3037/3037_300.png" style="width:65px;height:65px;">'}],
+    'Ó':[ {label:'ó',emoji:'<img src="https://static.arasaac.org/pictograms/36776/36776_300.png" style="width:65px;height:65px;">'}], // Acento na linha do O
+    'P':[ {label:'p',emoji:'<img src="https://static.arasaac.org/pictograms/3038/3038_300.png" style="width:65px;height:65px;">'}],
+
+    // Linha 2 (ASDFG)
+    'A':[ {label:'a',emoji:'<img src="https://static.arasaac.org/pictograms/3021/3021_300.png" style="width:65px;height:65px;">'}],
+    'Á':[ {label:'á',emoji:'<img src="https://static.arasaac.org/pictograms/36785/36785_300.png" style="width:65px;height:65px;">'}], // Acento na linha do A
+    'S':[ {label:'s',emoji:'<img src="https://static.arasaac.org/pictograms/3041/3041_300.png" style="width:65px;height:65px;">'}],
+    'D':[ {label:'d',emoji:'<img src="https://static.arasaac.org/pictograms/3025/3025_300.png" style="width:65px;height:65px;">'}],
+    'F':[ {label:'f',emoji:'<img src="https://static.arasaac.org/pictograms/3027/3027_300.png" style="width:65px;height:65px;">'}],
+    'G':[ {label:'g',emoji:'<img src="https://static.arasaac.org/pictograms/3028/3028_300.png" style="width:65px;height:65px;">'}],
+    'H':[ {label:'h',emoji:'<img src="https://static.arasaac.org/pictograms/3029/3029_300.png" style="width:65px;height:65px;">'}],
+    'J':[ {label:'j',emoji:'<img src="https://static.arasaac.org/pictograms/3031/3031_300.png" style="width:65px;height:65px;">'}],
+    'K':[ {label:'k',emoji:'<img src="https://static.arasaac.org/pictograms/3032/3032_300.png" style="width:65px;height:65px;">'}],
+    'L':[ {label:'l',emoji:'<img src="https://static.arasaac.org/pictograms/3033/3033_300.png" style="width:65px;height:65px;">'}],
+    'Ç':[ {label:'ç',emoji:'<img src="https://static.arasaac.org/pictograms/29080/29080_300.png" style="width:65px;height:65px;">'}], // Adicionado Ç
+
+    // Linha 3 (ZXCVB)
+    'Z':[ {label:'z',emoji:'<img src="https://static.arasaac.org/pictograms/3048/3048_300.png" style="width:65px;height:65px;">'}],
+    'X':[ {label:'x',emoji:'<img src="https://static.arasaac.org/pictograms/3046/3046_300.png" style="width:65px;height:65px;">'}], // Notei que você usou 3045 para 'u' e 'x' no original. Mantive o original para 'x' aqui: 3045, se quiser corrigir para 'x' é o 3045, se quiser mudar: 3046 é o 'y'
+    'C':[ {label:'c',emoji:'<img src="https://static.arasaac.org/pictograms/3024/3024_300.png" style="width:65px;height:65px;">'}],
+    'V':[ {label:'v',emoji:'<img src="https://static.arasaac.org/pictograms/3044/3044_300.png" style="width:65px;height:65px;">'}], // Notei que você usou 3044 para 'w' e 'v' no original. Mantive o original para 'v' aqui: 3044, se quiser corrigir para 'v' é o 3044, se quiser mudar: 3043 é o 't'
+    'B':[ {label:'b',emoji:'<img src="https://static.arasaac.org/pictograms/3023/3023_300.png" style="width:65px;height:65px;">'}],
+    'N':[ {label:'n',emoji:'<img src="https://static.arasaac.org/pictograms/3036/3036_300.png" style="width:65px;height:65px;">'}],
+    'M':[ {label:'m',emoji:'<img src="https://static.arasaac.org/pictograms/3035/3035_300.png" style="width:65px;height:65px;">'}],
+    
+    // Controles e Símbolos
+    'Espaço':[ {label:'‍',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/11480/11480323.png" style="width:65px;height:65px;">'}],
+    '.':[ {label:'.',emoji:'<img src="https://static.arasaac.org/pictograms/3218/3218_300.png" style="width:65px;height:65px;">'}],
+    ',':[ {label:',',emoji:'<img src="https://static.arasaac.org/pictograms/3189/3189_300.png" style="width:65px;height:65px;">'}],
+    '?':[ {label:'?',emoji:'<img src="https://static.arasaac.org/pictograms/3418/3418_300.png" alt="?" style="width:65px;height:65px;">'}],
+    '"':[ {label:'!',emoji:'<img src="https://static.arasaac.org/pictograms/3417/3417_300.png" alt="?" style="width:65px;height:65px;">'}],
+    // Você pode adicionar outros caracteres (como os acentuados restantes ou símbolos) aqui, seguindo a ordem desejada.
+  },
+  simounao:{
+    'Sim':[ {label:'Sim',emoji:'<img src="https://static.arasaac.org/pictograms/5584/5584_300.png" style="width:65px;height:65px;">'}],
+    'Não':[ {label:'Não',emoji:'<img src="https://static.arasaac.org/pictograms/5526/5526_300.png" style="width:65px;height:65px;">'}],  
+  },
+  Procedimentos:{
+    'chamar enfermaria':[ {label:'chamar enfermaria',emoji:'<img src="https://static.arasaac.org/pictograms/35307/35307_300.png" style="width:65px;height:65px;">'}],
+    'chamar médico':[ {label:'chamar médico',emoji:'<img src="https://static.arasaac.org/pictograms/2467/2467_300.png" style="width:65px;height:65px;">'}],
+    'chamar familiar':[ {label:'chamar familiar',emoji:'<img src="https://static.arasaac.org/pictograms/24525/24525_300.png" style="width:65px;height:65px;">'}],
+    'tomar remédio':[{label:'tomar remédio',emoji:'<img src="https://static.arasaac.org/pictograms/8163/8163_300.png" style="width:65px;height:65px;">'}],
+    'saber a medicação':[ {label:'saber a medicação',emoji:'<img src="https://static.arasaac.org/pictograms/30790/30790_300.png" style="width:65px;height:65px;">'}],
+    'resultado de exame':[ {label:'resultado de exame',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/7748/7748989.png" style="width:65px;height:65px;">'}],
+    'saber sobre alta':[ {label:'saber sobre alta',emoji:'<img src="https://static.arasaac.org/pictograms/38462/38462_300.png" style="width:65px;height:65px;">'}],    
+    'aferir a pressão':[ {label:'aferir a pressão',emoji:'<img src="https://static.arasaac.org/pictograms/38855/38855_300.png" style="width:65px;height:65px;">'}],
+    'ver a saturação':[ {label:'ver a saturação',emoji:'<img src="https://static.arasaac.org/pictograms/38905/38905_300.png" style="width:65px;height:65px;">'}],
+    'medir a glicose':[ {label:'medir a glicose',emoji:'<img src="https://static.arasaac.org/pictograms/24591/24591_300.png" style="width:65px;height:65px;">'}],  
+    'aferir grau':[ {label:'aferir grau',emoji:'<img src="https://static.arasaac.org/pictograms/2789/2789_300.png" style="width:65px;height:65px;">'}],  
+    'trocar soro':[ {label:'trocar soro',emoji:'<img src="https://static.arasaac.org/pictograms/5927/5927_300.png" style="width:65px;height:65px;">'}],
+    'trocar de posição':[ {label:'trocar de posição',emoji:'<img src="https://static.arasaac.org/pictograms/4553/4553_300.png" style="width:65px;height:65px;">'}],
+    'ser examinado':[ {label:'ser examinado',emoji:'<img src="https://static.arasaac.org/pictograms/6000/6000_300.png" style="width:65px;height:65px;">'}],
+    'oxigênio':[ {label:'oxigênio',emoji:'<img src="https://static.arasaac.org/pictograms/24216/24216_300.png" style="width:65px;height:65px;">'}],
+    'inalação':[ {label:'inalação',emoji:'<img src="https://static.arasaac.org/pictograms/30128/30128_300.png" style="width:65px;height:65px;">'}],
+    'conferir a sonda':[ {label:'conferir a sonda',emoji:'<img src="https://static.arasaac.org/pictograms/30112/30112_300.png" style="width:65px;height:65px;">'}],
+    'conferir a bolsa':[ {label:'conferir a bolsa',emoji:'<img src="https://static.arasaac.org/pictograms/37377/37377_300.png" style="width:65px;height:65px;">'}],    
+    'usar a máscara':[ {label:'usar a máscara',emoji:'<img src="https://static.arasaac.org/pictograms/36787/36787_300.png" style="width:65px;height:65px;">'}],
+    'ver o monitor':[ {label:'ver o monitor',emoji:'<img src="https://static.arasaac.org/pictograms/35527/35527_300.png" style="width:65px;height:65px;">'}],
+    'trocar curativo':[ {label:'trocar curativo',emoji:'<img src="https://static.arasaac.org/pictograms/30150/30150_300.png" style="width:65px;height:65px;">'}],
+    'exame de sangue':[ {label:'exame de sangue',emoji:'<img src="https://static.arasaac.org/pictograms/30084/30084_300.png" style="width:65px;height:65px;">'}], 
+    'exame de urina':[ {label:'exame de urina',emoji:'<img src="https://static.arasaac.org/pictograms/31725/31725_300.png" style="width:65px;height:65px;">'}], 
+    'exame de fezes':[ {label:'exame de fezes',emoji:'<img src="https://static.arasaac.org/pictograms/5901/5901_300.png" style="width:65px;height:65px;">'}],
+    'raio-x':[ {label:'raio-x',emoji:'<img src="https://static.arasaac.org/pictograms/38865/38865_300.png" style="width:65px;height:65px;">'}],
+    'eletrocardiograma':[ {label:'eletro',emoji:'<img src="https://static.arasaac.org/pictograms/30805/30805_300.png" style="width:65px;height:65px;">'}],    
+    'ultrassom':[ {label:'ultrassom',emoji:'<img src="https://static.arasaac.org/pictograms/38862/38862_300.png" style="width:65px;height:65px;">'}],    
+    'tomografia':[ {label:'tomografia',emoji:'<img src="https://static.arasaac.org/pictograms/38354/38354_300.png" style="width:65px;height:65px;">'}], 
+    'colono':[ {label:'colono',emoji:'<img src="https://static.arasaac.org/pictograms/31771/31771_300.png" style="width:65px;height:65px;">'}],  
+    
+  },    
+ higiene:{
+    'trocar roupa':[{label:'trocar roupa',emoji:'<img src="https://static.arasaac.org/pictograms/4697/4697_300.png" style="width:65px;height:65px;">'}],
+    'molhar a boca':[{label:'molhar a boca',emoji:'<img src="https://static.arasaac.org/pictograms/29169/29169_300.png" style="width:65px;height:65px;">'}],
+    'limpar a boca':[{label:'limpar a boca',emoji:'<img src="https://static.arasaac.org/pictograms/17271/17271_300.png" style="width:65px;height:65px;">'}],
+    'limpar ouvidos':[{label:'limpar ouvidos',emoji:'<img src="https://static.arasaac.org/pictograms/29834/29834_300.png" style="width:65px;height:65px;">'}],    
+    'limpar as mãos':[{label:'limpar as mãos',emoji:'<img src="https://static.arasaac.org/pictograms/2443/2443_300.png" style="width:65px;height:65px;">'}],
+    'cortar as unhas':[{label:'cortar as unhas',emoji:'<img src="https://static.arasaac.org/pictograms/10152/10152_300.png" style="width:65px;height:65px;">'}],
+    'fazer a barba':[{label:'fazer a barba',emoji:'<img src="https://static.arasaac.org/pictograms/5361/5361_300.png" style="width:65px;height:65px;">'}],
+    'cortar o cabelo':[{label:'cortar o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/27695/27695_300.png" style="width:65px;height:65px;">'}],
+    'lavar o rosto':[{label:'lavar o rosto',emoji:'<img src="https://static.arasaac.org/pictograms/34775/34775_300.png" style=width:65px;height:65px;">'}],
+    'fazer xixi':[{label:'fazer xixi',emoji:'<img src="https://static.arasaac.org/pictograms/3429/3429_300.png" style="width:65px;height:65px;">'}], 
+    'fazer cocô':[{label:'fazer cocô',emoji:'<img src="https://static.arasaac.org/pictograms/35349/35349_300.png" style="width:65px;height:65px;">'}],
+    'me vestir':[{label:'me vestir',emoji:'<img src="https://static.arasaac.org/pictograms/2781/2781_300.png" style="width:65px;height:65px;">'}],
+    'escovar os dentes':[{label:'escovar os dentes',emoji:'<img src="https://static.arasaac.org/pictograms/31880/31880_300.png" style="width:65px;height:65px;">'}],
+    'tomar banho':[{label:'tomar banho',emoji:'<img src="https://static.arasaac.org/pictograms/2371/2371_300.png" style="width:65px;height:65px;">'}],
+    'lavar o cabelo':[{label:'lavar o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/38555/38555_300.png" style="width:65px;height:65px;">'}],
+    'pentear o cabelo':[{label:'pentear o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/2512/2512_300.png" style="width:65px;height:65px;">'}],
+    'hidratar o corpo':[{label:'hidratar o corpo',emoji:'<img src="https://static.arasaac.org/pictograms/35829/35829_300.png" style="width:65px;height:65px;">'}],
+    'limpar axilas':[{label:'limpar axilas',emoji:'<img src="    https://static.arasaac.org/pictograms/39672/39672_300.png" style="width:65px;height:65px;">'}],    
+    'trocar fralda':[{label:'trocar fralda',emoji:'<img src="https://static.arasaac.org/pictograms/22017/22017_300.png" style="width:65px;height:65px;">'}],
+    'secar':[{label:'secar',emoji:'<img src="https://static.arasaac.org/pictograms/2566/2566_300.png" style="width:65px;height:65px;">'}],
+    'limpar os olhos':[{label:'limpar os olhos',emoji:'<img src="https://static.arasaac.org/pictograms/39202/39202_300.png" style="width:65px;height:65px;">'}], 
+    'trocar roupa':[{label:'trocar roupa',emoji:'<img src="https://static.arasaac.org/pictograms/4697/4697_300.png" style="width:65px;height:65px;">'}], 
+
+  },
+    vontades:{
+    'silêncio':[{label:'silêncio',emoji:'<img src="https://static.arasaac.org/pictograms/5936/5936_300.png" style="width:65px;height:65px;">'}],    
+    'beber':[{label:'beber',emoji:'<img src="https://static.arasaac.org/pictograms/2276/2276_300.png" style="width:65px;height:65px;">'}],     
+    'comer':[{label:'comer',emoji:'<img src="https://static.arasaac.org/pictograms/2349/2349_300.png" style="width:65px;height:65px;">'}],    
+    'ir':[{label:'ir',emoji:'<img src="https://static.arasaac.org/pictograms/31758/31758_300.png" style="width:65px;height:65px;">'}],  
+    'dormir':[{label:'dormir',emoji:'<img src="https://static.arasaac.org/pictograms/2369/2369_300.png" style="width:65px;height:65px;">'}],  
+    'sentar':[{label:'sentar',emoji:'<img src="https://static.arasaac.org/pictograms/2801/2801_300.png" style="width:65px;height:65px;">'}], 
+    'levantar':[{label:'levantar',emoji:'<img src="https://static.arasaac.org/pictograms/8151/8151_300.png" style="width:65px;height:65px;">'}],     
+    'me mexer':[{label:'me mexer',emoji:'<img src="https://static.arasaac.org/pictograms/26728/26728_300.png" style="width:65px;height:65px;">'}],
+    'beijar':[{label:'beijar',emoji:'<img src="https://static.arasaac.org/pictograms/32886/32886_300.png" style="width:65px;height:65px;">'}],
+    'abraçar':[{label:'abraçar',emoji:'<img src="https://static.arasaac.org/pictograms/4550/4550_300.png" style="width:65px;height:65px;">'}],
+    'agradecer':[{label:'agradecer',emoji:'<img src="https://static.arasaac.org/pictograms/36093/36093_300.png" style="width:65px;height:65px;">'}],   
+    'visitas':[ {label:'visitas',emoji:'<img src="https://static.arasaac.org/pictograms/28187/28187_300.png" style="width:65px;height:65px;">'}],
+    'ter alta':[ {label:'ter alta',emoji:'<img src="https://static.arasaac.org/pictograms/39196/39196_300.png" style="width:65px;height:65px;">'}],    
+    'ligar':[{label:'ligar',emoji:'<img src="https://static.arasaac.org/pictograms/21818/21818_300.png" style="width:65px;height:65px;">'}], 
+    'desligar':[{label:'desligar',emoji:'<img src="https://static.arasaac.org/pictograms/21365/21365_300.png" style="width:65px;height:65px;">'}],
+    'ligar a luz':[{label:'ligar a luz',emoji:'<img src="https://static.arasaac.org/pictograms/8103/8103_300.png" style="width:65px;height:65px;">'}],  
+    'desligar a luz':[{label:'desligar a luz',emoji:'<img src="https://static.arasaac.org/pictograms/8027/8027_300.png" style="width:65px;height:65px;">'}],
+    'aumentar ar':[{label:'aumentar ar',emoji:'<img src="https://static.arasaac.org/pictograms/6218/6218_300.png" style="width:65px;height:65px;">'}],    
+    'diminuir ar':[{label:'diminuir ar',emoji:'<img src="https://static.arasaac.org/pictograms/5916/5916_300.png" style="width:65px;height:65px;">'}],
+    'escrever':[{label:'escrever',emoji:'<img src="https://static.arasaac.org/pictograms/10312/10312_300.png" style="width:65px;height:65px;">'}],
+    'brincar':[{label:'brincar',emoji:'<img src="https://static.arasaac.org/pictograms/32568/32568_300.png" style="width:65px;height:65px;">'}],
+    'música':[{label:'música',emoji:'<img src="https://static.arasaac.org/pictograms/37486/37486_300.png" style="width:65px;height:65px;">'}], 
+    'ler':[{label:'ler',emoji:'<img src="https://static.arasaac.org/pictograms/31680/31680_300.png" style="width:65px;height:65px;">'}],
+    'estudar':[{label:'estudar',emoji:'<img src="https://static.arasaac.org/pictograms/35979/35979_300.png" style="width:65px;height:65px;">'}],
+    'celular':[{label:'celular',emoji:'<img src="https://static.arasaac.org/pictograms/25269/25269_300.png" style="width:65px;height:65px;">'}],
+    'internet':[{label:'internet',emoji:'<img src="https://static.arasaac.org/pictograms/37366/37366_300.png" style="width:65px;height:65px;">'}],
+    'assistir televisão':[{label:'assistir televisão',emoji:'<img src="https://static.arasaac.org/pictograms/9802/9802_300.png" style="width:65px;height:65px;">'}],
+    'tablet':[{label:'tablet',emoji:'<img src="https://static.arasaac.org/pictograms/28099/28099_300.png" style="width:65px;height:65px;">'}],
+    'jogar':[{label:'jogar',emoji:'<img src="https://static.arasaac.org/pictograms/29151/29151_300.png" style="width:65px;height:65px;">'}],
+    'comemorar':[{label:'comemorar',emoji:'<img src="https://static.arasaac.org/pictograms/26786/26786_300.png" style="width:65px;height:65px;">'}],
+    'viajar':[{label:'viajar',emoji:'<img src="https://static.arasaac.org/pictograms/36974/36974_300.png" style="width:65px;height:65px;">'}],
+    'praia':[{label:'praia',emoji:'<img src="https://static.arasaac.org/pictograms/4746/4746_300.png" style="width:65px;height:65px;">'}],    
+
+  },
+  objetos:{
+    'Ar':[ {label:'ar',emoji:'<img src="https://static.arasaac.org/pictograms/2640/2640_300.png" style="width:65px;height:65px;">'}], 
+    'Carro':[ {label:'carro',emoji:'<img src="https://static.arasaac.org/pictograms/2339/2339_300.png" style="width:65px;height:65px;">'}],     
+    'Controle':[ {label:'controle',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/3592/3592810.png" style="width:65px;height:65px;">'}],
+    'Celular':[ {label:'celular',emoji:'<img src="https://static.arasaac.org/pictograms/25269/25269_300.png" style="width:65px;height:65px;">'}],  
+    'Fone de ouvido':[ {label:'fone de ouvido',emoji:'<img src="https://static.arasaac.org/pictograms/11208/11208_300.png" style="width:65px;height:65px;">'}],
+    'Óculos':[ {label:'óculos',emoji:'<img src="https://static.arasaac.org/pictograms/37615/37615_300.png" style="width:65px;height:65px;">'}],  
+    'Lente de contato':[ {label:'lentes de contato',emoji:'<img src="https://static.arasaac.org/pictograms/28511/28511_300.png" style="width:65px;height:65px;">'}],
+    'Aparelho auditivo':[ {label:'aparelho auditivo',emoji:'<img src="https://static.arasaac.org/pictograms/38630/38630_300.png" style="width:65px;height:65px;">'}],
+    'Batom':[ {label:'batom',emoji:'<img src="https://static.arasaac.org/pictograms/2992/2992_300.png" style="width:65px;height:65px;">'}], 
+    'Maquiagem':[ {label:'maquiagem',emoji:'<img src="https://static.arasaac.org/pictograms/3388/3388_300.png" style="width:65px;height:65px;">'}],     
+    'Bola':[ {label:'bola',emoji:'<img src="https://static.arasaac.org/pictograms/2269/2269_300.png" style="width:65px;height:65px;">'}],
+    'Boneca':[ {label:'boneca',emoji:'<img src="https://static.arasaac.org/pictograms/26238/26238_300.png" style="width:65px;height:65px;">'}],    
+    'Lápis':[ {label:'lápis',emoji:'<img src="https://static.arasaac.org/pictograms/2440/2440_300.png" style="width:65px;height:65px;">'}],
+    'Caneta':[ {label:'caneta',emoji:'<img src="https://static.arasaac.org/pictograms/2282/2282_300.png" style="width:65px;height:65px;">'}],
+    'Folha de papel':[ {label:'folha de papel',emoji:'<img src="https://static.arasaac.org/pictograms/8349/8349_300.png" style="width:65px;height:65px;">'}],
+    'Revista':[ {label:'revista',emoji:'<img src="https://static.arasaac.org/pictograms/24364/24364_300.png" style="width:65px;height:65px;">'}],
+    'Jornal':[ {label:'jornal',emoji:'<img src="https://static.arasaac.org/pictograms/2845/2845_300.png" style="width:65px;height:65px;">'}],    
+    'Cobertor':[ {label:'cobertor',emoji:'<img src="https://static.arasaac.org/pictograms/2459/2459_300.png" style="width:65px;height:65px;">'}],
+    'Meia':[ {label:'meia',emoji:'<img src="https://static.arasaac.org/pictograms/8339/8339_300.png" style="width:65px;height:65px;">'}],
+    'Chinelo':[ {label:'chinelo',emoji:'<img src="https://static.arasaac.org/pictograms/8343/8343_300.png" style="width:65px;height:65px;">'}],    
+    'Travesseiro':[ {label:'travesseiro',emoji:'<img src="https://static.arasaac.org/pictograms/2250/2250_300.png" style="width:65px;height:65px;">'}],  
+    'Botão de chamada':[ {label:'botão de chamada',emoji:'<img src="https://static.arasaac.org/pictograms/31947/31947_300.png" style="width:65px;height:65px;">'}],
+    'Copo':[ {label:'copo',emoji:'<img src="https://static.arasaac.org/pictograms/2610/2610_300.png" style="width:65px;height:65px;">'}],  
+    'Escova de dentes':[ {label:'escova',emoji:'<img src="https://static.arasaac.org/pictograms/38813/38813_300.png" style="width:65px;height:65px;">'}],
+    'Sabonete':[ {label:'sabonete',emoji:'<img src="https://static.arasaac.org/pictograms/25171/25171_300.png" style="width:65px;height:65px;">'}],  
+    'Shampoo':[ {label:'shampoo',emoji:'<img src="https://static.arasaac.org/pictograms/8094/8094_300.png" style="width:65px;height:65px;">'}],  
+    'Comadre':[ {label:'comadre',emoji:'<img src="https://static.arasaac.org/pictograms/37243/37243_300.png" style="width:65px;height:65px;">'}],
+    'Papagaio':[ {label:'papagaio',emoji:'<img src="https://static.arasaac.org/pictograms/30765/30765_300.png" style="width:65px;height:65px;">'}],    
+    'Papel':[ {label:'papel higiênico',emoji:'<img src="https://static.arasaac.org/pictograms/37261/37261_300.png" style="width:65px;height:65px;">'}], 
+    'Pente':[ {label:'pente',emoji:'<img src="https://static.arasaac.org/pictograms/2852/2852_300.png" style="width:65px;height:65px;">'}],  
+    'Escova':[ {label:'escova',emoji:'<img src="https://static.arasaac.org/pictograms/2695/2695_300.png" style="width:65px;height:65px;">'}], 
+    'Boné':[ {label:'boné',emoji:'<img src="https://static.arasaac.org/pictograms/2411/2411_300.png" style="width:65px;height:65px;">'}],    
+    'Fralda':[ {label:'fralda',emoji:'<img src="https://static.arasaac.org/pictograms/22017/22017_300.png" style="width:65px;height:65px;">'}],
+    'Absorvente':[ {label:'absorvente',emoji:'<img src="https://static.arasaac.org/pictograms/3018/3018_300.png" style="width:65px;height:65px;">'}], 
+    'Cadeira de rodas':[ {label:'cadeira de rodas',emoji:'<img src="https://static.arasaac.org/pictograms/25467/25467_300.png" style="width:65px;height:65px;">'}],
+    'Andador':[ {label:'andador',emoji:'<img src="https://static.arasaac.org/pictograms/24850/24850_300.png" style="width:65px;height:65px;">'}],
+    'Muletas':[ {label:'muletas',emoji:'<img src="https://static.arasaac.org/pictograms/6154/6154_300.png" style="width:65px;height:65px;">'}], 
+    'Relógio':[ {label:'relógio',emoji:'<img src="https://static.arasaac.org/pictograms/2549/2549_300.png" style="width:65px;height:65px;">'}],
+    'Carregador':[ {label:'carregador',emoji:'<img src="https://static.arasaac.org/pictograms/27651/27651_300.png" style="width:65px;height:65px;">'}], 
+    'Bolsa':[ {label:'bolsa',emoji:'<img src="https://static.arasaac.org/pictograms/7053/7053_300.png" style="width:65px;height:65px;">'}],
+    'Carteira':[ {label:'carteira',emoji:'<img src="https://static.arasaac.org/pictograms/2689/2689_300.png" style="width:65px;height:65px;">'}],
+    'Cadeira':[ {label:'cadeira',emoji:'<img src="https://static.arasaac.org/pictograms/3155/3155_300.png" style="width:65px;height:65px;">'}],
+    'Mesa':[ {label:'mesa',emoji:'<img src="https://static.arasaac.org/pictograms/3129/3129_300.png" style="width:65px;height:65px;">'}],
+    'Flores':[ {label:'flores',emoji:'<img src="https://static.arasaac.org/pictograms/7105/7105_300.png" style="width:65px;height:65px;">'}], 
+    'Cortina':[ {label:'cortina',emoji:'<img src="https://static.arasaac.org/pictograms/8344/8344_300.png" style="width:65px;height:65px;">'}],    
+    
+  },
+};
+const board = document.getElementById('board');
+const phraseBar = document.getElementById('phraseBar');
+let phrase=[];
+let history=[];
+
+function render(items){
+  board.innerHTML='';
+  if(history.length>0){
+    const backBtn=document.createElement('div');
+    backBtn.className='card';
+    backBtn.innerHTML='<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
+    backBtn.onclick=()=>{ history.pop(); renderCurrent(); };
+    board.appendChild(backBtn);
+  }
+  Object.keys(items).forEach(group=>{
+    const groupData = items[group];
+    if(Array.isArray(groupData)){
+      groupData.forEach(item=>{
+        const div=document.createElement('div');
+        div.className='card';
+        div.innerHTML=`<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
+        div.onclick=()=>{ addToPhrase(item.label); };
+        board.appendChild(div);
+      });
+    } else {
+      const div=document.createElement('div');
+      div.className='card';
+      div.innerHTML=`<div style="font-size:50px">${groupData[0]?.emoji||'📂'}</div><div class='label'>${group}</div>`;
+      div.onclick=()=>{ history.push(items); render(groupData); };
+      board.appendChild(div);
+    }
+  });
+}
+
+function renderCurrent(){
+  const current = history.length>0 ? history[history.length-1] : data.home;
+  if(Array.isArray(current)){
+    board.innerHTML='';
+    current.forEach(item=>{
+      const div=document.createElement('div');
+      div.className='card';
+      div.innerHTML=`<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
+      if(item.children){
+        div.onclick=()=>{ history.push(data[item.children]); render(data[item.children]); };
+      } else {
+        div.onclick=()=>{ addToPhrase(item.label); };
+      }
+      board.appendChild(div);
+    });
+  } else {
+    render(current);
+  }
+}
+
+function addToPhrase(label){
+  phrase.push(label);
+  phraseBar.textContent=phrase.join(' ');
+  speak(label);
+  addLog(label);
+}
+
+function speak(text){
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='pt-BR';
+  window.speechSynthesis.speak(u);
+}
+
+function speakSequence(){ 
+    if(phrase.length===0) return; 
+    
+    let finalSpeechText = '';
+    let currentWord = '';
+    
+    // 1. Monta a string de fala, unindo as letras sequenciais (do alfabeto) em palavras.
+    for (const token of phrase) {
+        // Heurística: Considera um token como 'letra' se tiver comprimento 1 e não for o caractere de espaço.
+        // As letras do seu arquivo são tokens de comprimento 1 (ex: 'a', 'b', 'c').
+        if (token.length === 1 && token.trim() !== '') {
+            currentWord += token; // Acumula a letra para formar a palavra
+        } else {
+            // Encontrou um token que não é letra (palavra completa ou o caractere 'Espaço')
+            
+            // 1a. Se havia letras acumuladas (currentWord), adiciona a palavra formada, seguida de um espaço.
+            if (currentWord.length > 0) {
+                finalSpeechText += currentWord + ' ';
+                currentWord = '';
+            }
+            
+            // 1b. Adiciona o token atual, garantindo que haja um espaço de separação.
+            finalSpeechText += token + ' ';
+        }
+    }
+    
+    // 2. Adiciona a última palavra formada (se houver)
+    if (currentWord.length > 0) {
+        finalSpeechText += currentWord;
+    }
+    
+    // 3. Remove espaços múltiplos e iniciais/finais, resultando em uma frase bem formatada.
+    const textToSpeak = finalSpeechText.replace(/\s+/g, ' ').trim();
+
+    // Fala a frase completa.
+    speak(textToSpeak);
+
+}
+
+function clearPhrase(){
+  phrase=[];
+  phraseBar.textContent='';
+}
+
+function deleteLastToken() {
+    // 1. Verifica se a frase não está vazia para evitar erros
+    if (phrase.length > 0) {
+        // 2. Remove o ÚLTIMO elemento do array 'phrase'
+        phrase.pop();
+        
+        // 3. Atualiza a barra visual da frase (phraseBar)
+        // Isso assume que 'phraseBar' é o ID do elemento que exibe a frase.
+        const phraseBar = document.getElementById('phraseBar');
+        
+        // Para exibir na tela, unimos os tokens com um espaço, como estava antes.
+        phraseBar.textContent = phrase.join(' ');
+    }
+}
+
+const LOG_KEY='caa_ucs_logs';
+function loadLogs(){ return JSON.parse(localStorage.getItem(LOG_KEY)||'[]'); }
+function saveLogs(arr){ localStorage.setItem(LOG_KEY,JSON.stringify(arr)); }
+function addLog(label){
+  const arr=loadLogs();
+  arr.push({label,patient:document.getElementById('patientName').value||'',t:new Date().toISOString()});
+  saveLogs(arr);
+}
+function clearLogs(){
+  if(confirm('Limpar registros?')){
+    localStorage.removeItem(LOG_KEY);
+    alert('Registros limpos!');
+  }
+}
+function exportLogs(){
+    // 1. Carrega os logs do armazenamento local
+    const arr = loadLogs();
+    
+    // 2. Cria o Blob (o arquivo) com os dados
+    const blob = new Blob([JSON.stringify(arr, null, 2)], { type: 'application/json' });
+    
+    // 3. Cria o elemento de link invisível (o 'a' para o download)
+    const a = document.createElement('a');
+
+    // 4. Lógica para buscar e limpar o nome do paciente
+    // Se essa lógica anterior tinha um erro, ela pode ter parado a função aqui.
+    const patientNameValue = document.getElementById('patientName').value;
+    const safePatientName = patientNameValue 
+        ? patientNameValue.trim().replace(/[^a-z0-9\s]/gi, '_').replace(/\s+/g, '_')
+        : 'SemNome';
+    
+    // 5. Configura o link
+    a.href = URL.createObjectURL(blob);
+    
+    // 6. Configura o nome do arquivo conforme solicitado
+    a.download = `Conversa CAA UCS - ${safePatientName}_${new Date().toISOString()}.json`;
+    
+    // 7. Dispara o clique no link invisível para iniciar o download
+    a.click(); // IMPORTANTE: Garante que esta linha seja executada!
+}
+renderCurrent();
+</script>
+
+</body>
+<footer style="color: #000000; text-align: center; font-size: 0.8em;">
+    <p>
+        Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.
+    </p>
+    <p>
+        <strong>Versão 1.0 | Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados</strong>
+    </p>
+</footer>
+</html>
