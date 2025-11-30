@@ -75,21 +75,24 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 #icon-indicator {
     font-size: 24px; /* Tamanho do ícone */
     line-height: 5;  /* Garante que o ícone esteja bem centralizado */
-}
 
-/* Seleciona o botão de acesso do VLibras */
-[vw-access-button] {
-    /* Define a posição fixa na tela */
-    position: fixed;
-    /* Remove a posição 'right' padrão */
-    right: auto !important; 
-    /* Define o posicionamento à esquerda */
-    left: -965px !important; 
-    /* Mantém a posição inferior (ajuste o valor conforme necessário) */
-    bottom: 360px !important; 
-    /* Garante que o ícone fique acima de outros elementos */
-    z-index: 99999; 
 }
+/* CSS para o botão flutuante dentro do cabeçalho */
+    [vw-access-button] {
+        /* Muda de 'fixed' para 'absolute' */
+        position: absolute !important; 
+        
+        /* Define a posição no canto superior esquerdo */
+        top: -362px !important;    /* Distância do topo do cabeçalho */
+        left: -965px !important;   /* Distância da lateral esquerda do cabeçalho */
+        
+        /* Remove o posicionamento fixo e inferior */
+        right: auto !important; 
+        bottom: auto !important; 
+        
+        /* Garante que o ícone apareça sobre o texto do cabeçalho */
+        z-index: 1000; 
+    }
 </style>
 
 </head>
