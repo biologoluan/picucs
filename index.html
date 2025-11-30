@@ -77,24 +77,36 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     line-height: 5;  /* Garante que o ícone esteja bem centralizado */
 
 }
-/* CSS para o botão flutuante dentro do cabeçalho */
+
+</style>
+<style>
+    /* CSS do Botão Fullscreen (Seu código original) */
+    #fullscreen-toggle {
+        position: fixed;
+        top: 20px;       /* Distância do topo */
+        right: 15px;     /* Ancorado à direita */
+        z-index: 1000;
+        /* ... outros estilos ... */
+    }
+
+    /* CSS para o Botão VLibras (Canto Superior Esquerdo) */
     [vw-access-button] {
-        /* Muda de 'fixed' para 'absolute' */
-        position: absolute !important; 
+        /* Garante que suas regras tenham prioridade sobre as do plugin */
+        position: fixed !important; 
         
-        /* Define a posição no canto superior esquerdo */
-        top: -362px !important;    /* Distância do topo do cabeçalho */
-        left: -965px !important;   /* Distância da lateral esquerda do cabeçalho */
+        /* Mesma distância do topo que o seu botão de fullscreen */
+        top: 20px !important;    
         
-        /* Remove o posicionamento fixo e inferior */
+        /* Lado oposto: Ancorado à esquerda, usando a mesma distância lateral */
+        left: 15px !important;   
+        
+        /* Remove a ancoragem padrão do VLibras (bottom e right) */
         right: auto !important; 
         bottom: auto !important; 
         
-        /* Garante que o ícone apareça sobre o texto do cabeçalho */
-        z-index: 1000; 
+        z-index: 1000 !important; /* Mesma camada de profundidade */
     }
 </style>
-
 </head>
 <button id="fullscreen-toggle" onclick="toggleFullscreen()">
     <span id="icon-indicator">
