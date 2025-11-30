@@ -300,8 +300,8 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <button onclick="speakSequence()">🔊 Escutar</button>
 <button onclick="deleteLastToken()">↩ Apagar</button>
 <button onclick="clearPhrase()">✂️ Excluir frase</button>
-<button onclick="clearLogs()">🧹 Limpar conversa</button>
-<button onclick="exportLogs()">💾 Exportar conversa</button>
+<button onclick="clearLogs()">🧹 Limpar log</button>
+<button onclick="exportLogs()">💾 Exportar log</button>
 <button id="listenButton" style="background-color: #f7a900; color: #000;">
         <span id="listenIcon">🎤</span> Responder
     </button>
@@ -879,9 +879,8 @@ function addLog(label){
   saveLogs(arr);
 }
 function clearLogs(){
-  if(confirm('Limpar registros?')){
+{
     localStorage.removeItem(LOG_KEY);
-    alert('Registros limpos!');
   }
 }
 function exportLogs(){
