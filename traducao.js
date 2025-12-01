@@ -1,19 +1,20 @@
 // 🚨 Importante: Certifique-se de que a sua variável 'data'
-// esteja definida e acessível globalmente (ou passada para esta função).
-// Exemplo de como o 'data' deve estar estruturado:
-/*
-const data = {
-    home: [
-        {label:'Teclado', emoji: '...'},
-        // ...
-    ],
-    alimentacao: [
-        {label:'sal', emoji: '...'},
-        // ...
-    ],
-    // ...outras páginas...
+// (sua estrutura da prancha em Português) esteja definida e acessível.
+
+/**
+ * Função placeholder: Você deve substituir o corpo desta função 
+ * pelo seu código real de renderização da prancha na tela.
+ * * @param {object} translatedStructure - O objeto 'data' com os labels traduzidos.
+ */
+const renderBoard = (translatedStructure) => {
+    // 🚨 SUBSTITUA este bloco (apenas o bloco de código) pela sua 
+    // função real que desenha os botões na tela usando 'translatedStructure'.
+    // Exemplo: updateUI(translatedStructure); 
+    
+    // Nenhuma mensagem será exibida na tela.
+    console.log(`Prancha traduzida para o idioma. Renderizando...`);
 };
-*/
+
 
 /**
  * Função que carrega o JSON do idioma e traduz a estrutura de dados 'data'.
@@ -21,23 +22,11 @@ const data = {
  */
 async function setLanguage(lang) {
     
-    // ⚠️ ATENÇÃO: Esta é a função que você precisa ter pronta.
-    // Ela deve pegar o objeto completo da prancha traduzida e desenhar os botões na tela.
-    const renderBoard = (translatedStructure) => {
-        // console.log(`Renderizando prancha no idioma: ${lang}`);
-        // console.log("Primeiro item traduzido:", translatedStructure.home[0].label); 
-        
-        // 🚨 SUBSTITUA esta linha pela sua função real de renderização da prancha!
-        // Exemplo: updateUI(translatedStructure); 
-        alert(`Prancha pronta para renderizar em ${lang}. 
-Verifique o console para ver o primeiro botão traduzido (se o JSON foi carregado).`);
-    };
-
-
     if (lang === 'pt') {
-        // 1. Se for português, usa a estrutura ORIGINAL (data)
-        renderBoard(data);
+        // 1. Se for português, redireciona para a página inicial (index.html)
+        // Isso simula um reset da prancha para o idioma padrão.
         localStorage.setItem('userLang', 'pt');
+        window.location.href = 'index.html'; 
         return;
     }
 
@@ -52,7 +41,6 @@ Verifique o console para ver o primeiro botão traduzido (se o JSON foi carregad
         const translations = await response.json();
 
         // 3. Cria uma cópia profunda da estrutura original para traduzir
-        // Isso evita modificar o objeto 'data' original
         const translatedStructure = JSON.parse(JSON.stringify(data)); 
 
         // 4. Percorre todas as páginas/grupos (home, alimentacao, etc.) dentro de 'data'
@@ -73,19 +61,19 @@ Verifique o console para ver o primeiro botão traduzido (se o JSON foi carregad
             }
         }
         
-        // 5. Salva a preferência de idioma e Renderiza a prancha com a nova estrutura traduzida
+        // 5. Salva a preferência de idioma e Renderiza a prancha (silenciosamente)
         localStorage.setItem('userLang', lang);
         renderBoard(translatedStructure);
 
     } catch (error) {
+        // Apenas registra o erro no console, sem exibir na tela.
         console.error(`[ERRO DE TRADUÇÃO] Falha ao carregar ou aplicar a tradução para ${lang}.`, error);
-        alert('Erro ao carregar a tradução. Por favor, verifique se os arquivos JSON existem.');
     }
 }
 
 // Conectando os botões de idioma e carregamento inicial
 document.addEventListener('DOMContentLoaded', () => {
-    // 6. Listener para os botões de idioma
+    // 6. Listener para os botões de idioma (assumindo que eles têm o atributo data-lang)
     document.querySelectorAll('[data-lang]').forEach(button => {
         button.addEventListener('click', () => {
             const lang = button.getAttribute('data-lang');
@@ -93,7 +81,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 7. Carregamento inicial (Mantém o último idioma usado ou inicia em PT)
-    const savedLang = localStorage.getItem('userLang') || 'pt';
-    setLanguage(savedLang); 
+    // 7. Carregamento inicial (aplica o idioma salvo, SE NÃO FOR PORTUGUÊS)
+    const savedLang = localStorage.getItem('userLang');
+    
+    // Se o idioma salvo for diferente de português, aplica a tradução 
+    // (A página index.html é carregada por padrão, se savedLang for 'pt', 
+    // o script apenas espera a interação do usuário).
+    if (savedLang && savedLang !== 'pt') {
+        setLanguage(savedLang); 
+    } 
+    // Se for 'pt', apenas renderiza a estrutura 'data' original, 
+    // pois estamos em index.html.
+    else if (savedLang === 'pt' || !savedLang) {
+        renderBoard(data);
+    }
 });
