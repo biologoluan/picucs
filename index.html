@@ -157,75 +157,55 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
         <div class="vw-plugin-top-wrapper"></div>
     </div>
 </div>
-<div id="google_translate_element"></div>
 
-  <script type="text/javascript">
-    
-    var comboGoogleTradutor = null;
-
-    function habilitarBotoes() {
-        document.getElementById('btn-pt').disabled = false;
-        document.getElementById('btn-en').disabled = false;
-        document.getElementById('btn-es').disabled = false;
-        console.log("Botões de tradução habilitados.");
-    }
-
-    function googleTranslateElementInit() {
-      // 1. Inicializa o widget do Google Tradutor
-      new google.translate.TranslateElement({
-        pageLanguage: 'pt',
-        includedLanguages: 'en,es',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-      
-      // 2. Aguarda e captura o elemento SELECT criado pelo widget
-      var tentativas = 0;
-      function aguardaCombo() {
-        comboGoogleTradutor = document.querySelector('.goog-te-combo');
-        if (comboGoogleTradutor) {
-          // SE ENCONTRAR O WIDGET: HABILITA OS BOTÕES!
-          habilitarBotoes(); 
-        } else if (tentativas < 20) { // AUMENTAMOS AS TENTATIVAS para maior segurança
-          tentativas++;
-          setTimeout(aguardaCombo, 500);
-        } else {
-            console.error("Não foi possível encontrar o combo do Google Tradutor. Verifique se o script foi carregado.");
-        }
-      }
-      aguardaCombo();
-    }
-
-    // Função auxiliar para disparar o evento 'change' (sem alteração)
-    function changeEvent(el) {
-      if (el.fireEvent) {
-        el.fireEvent('onchange');
-      } else {
-        var evObj = document.createEvent('HTMLEvents');
-        evObj.initEvent("change", false, true);
-        el.dispatchEvent(evObj);
-      }
-    }
-
-    // Sua função customizada chamada pelos botões de bandeira (sem alteração)
-    function trocarIdioma(sigla) {
-      if (comboGoogleTradutor) {
-        comboGoogleTradutor.value = sigla;
-        changeEvent(comboGoogleTradutor);
-      } else {
-        // Se o erro ainda ocorrer, significa que o widget falhou ao carregar
-        alert("O tradutor ainda não está pronto ou falhou na inicialização. Tente recarregar a página.");
-      }
-    }
-</script>
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js"></script>
     <script>
     new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
 <body>
+<script>
+const API_URL = "https://de.libretranslate.com/translate";
+
+// Função principal para traduzir toda a página
+async function traduzirPagina(lang) {
+    const elementos = document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, span, button, div.label");
+
+    for (let el of elementos) {
+        const textoOriginal = el.getAttribute("data-original") || el.innerText.trim();
+        if (!textoOriginal) continue;
+
+        if (!el.getAttribute("data-original")) {
+            el.setAttribute("data-original", textoOriginal);
+        }
+
+        const traduzido = await traduzirTexto(textoOriginal, lang);
+        if (traduzido) el.innerText = traduzido;
+    }
+}
+
+async function traduzirTexto(texto, lang) {
+  try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          q: texto,
+          source: "auto",
+          target: lang,
+          format: "text"
+        })
+      });
+      const data = await res.json();
+      return data.translatedText;
+  } catch(e) {
+      console.error(e);
+      return texto;
+  }
+}
+</script>
 <div id="tradutions"> 
     <img src="https://flagcdn.com/h20/br.png" width="30" style="cursor:pointer;" data-lang="pt" onclick="window.location.href = 'index.html'">
-    <img src="https://flagcdn.com/h20/us.png" height="20" width=29 style="cursor:pointer;" onclick="trocarIdioma('en');" disable>
-    <img src="https://flagcdn.com/h20/es.png" width="30" style="cursor:pointer;" onclick="trocarIdioma('es');" disable>
+    <img src="https://flagcdn.com/h20/us.png" height="20" width=29 style="cursor:pointer;" onclick="traduzirPaginaInteira('en')">
+    <img src="https://flagcdn.com/h20/es.png" width="30" style="cursor:pointer;" onclick="traduzirPaginaInteira('es')">
 </div>
     <script>
         function formatarDataEHora() {
