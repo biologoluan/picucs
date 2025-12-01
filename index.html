@@ -104,7 +104,7 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 <style>
     /* CSS do Botão Fullscreen (Seu código original) */
     #fullscreen-toggle {
-        position: fixed;
+            position: absolute; /* Agora, se posiciona em relação ao <header> */
         top: 20px;       /* Distância do topo */
         right: 15px;     /* Ancorado à direita */
         z-index: 1000;
@@ -140,6 +140,7 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 <div vw class="enabled">
     <div vw-access-button class="active"></div>
     <div vw-plugin-wrapper>
+        
         <div class="vw-plugin-top-wrapper"></div>
     </div>
 </div>
