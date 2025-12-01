@@ -77,36 +77,29 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     line-height: 5;  /* Garante que o ícone esteja bem centralizado */
 
 }#tradutions {
-    /* POSICIONAMENTO FIXO APLICADO AO CONTÊINER */
-    position: fixed !important;
-    top: 15px;
-    left: 40px;
-    z-index: 1000;
+    position: absolute; /* Agora, se posiciona em relação ao <header> */
     
-    /* LAYOUT: Usa Flexbox para colocar as bandeiras lado a lado */
+    /* Centraliza Verticalmente no meio do <header> */
+    top: 3%; 
+    transform: translateY(-50%); /* Ajuste fino para centralização perfeita */
+    
+    /* Posição Horizontal (40px da borda esquerda do cabeçalho) */
+    left: 40px; 
+    
+    z-index: 1000; /* Garante que fique acima de outros elementos do header */
+    
+    /* Layout e Estilos (mantidos do seu código anterior) */
     display: flex;
-    align-items: center; /* Alinha verticalmente */
-    gap: 8px; /* Adicionado para espaçamento entre as bandeiras */
+    align-items: center; 
+    gap: 8px; /* Espaçamento entre as bandeiras */
     
-    /* Removemos o width/height de 20px, pois o contêiner deve se ajustar ao conteúdo.
-       As outras propriedades de estilo do botão (border, box-shadow, etc.) 
-       não são necessárias aqui, pois o contêiner não tem fundo. */
+    /* Removendo estilos desnecessários no contêiner: */
+ #tradutions img {
+    width: 28px; 
+    height: 28px; 
+    border-radius: 50%; 
+    cursor: pointer;
 }
-
-/* 🆕 NOVO BLOCO CSS: Estilizando as imagens dentro do contêiner fixo */
-#tradutions img {
-    /* Aplica os estilos de "botão" às imagens individuais */
-    width: 28px; /* Usa a largura que você definiu no HTML */
-    height: auto;
-    border-radius: 50%; /* Opcional: para deixar as bandeiras redondas */
-    transition: transform 0.2s; /* Efeito hover */
-}
-
-#tradutions img:hover {
-    transform: scale(1.1);
-}
-
-
 </style>
 <style>
     /* CSS do Botão Fullscreen (Seu código original) */
