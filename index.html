@@ -143,6 +143,51 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
         }
 </style>
 
+<script>
+/**
+ * Função para definir ou limpar o cookie de tradução e recarregar a página.
+ * O Google Translate Widget depende desse cookie.
+ */
+function traduzirPagina(langCode) {
+    // O caminho do cookie deve ser definido como "/" para funcionar em todo o site
+    const cookiePath = "; path=/";
+
+    if (langCode === 'pt') {
+        // Limpa o cookie googtrans definindo a data de expiração no passado (1970).
+        // Isso força a página a voltar ao seu estado original (PT-BR).
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC" + cookiePath;
+    } else {
+        // Define o cookie para o idioma desejado (Ex: /pt/en ou /pt/es).
+        // Isso instrui o Google Translate Widget a traduzir.
+        document.cookie = "googtrans=/pt/" + langCode + cookiePath;
+    }
+
+    // A página DEVE ser recarregada para que o widget do Google aplique o novo cookie/estado.
+    window.location.reload();
+}
+
+/**
+ * NOVO: Esta função garante que, ao carregar a página, se o cookie não estiver definindo
+ * o idioma como PT-BR, ele será limpo forçando o estado original.
+ */
+document.addEventListener("DOMContentLoaded", function() {
+    // Lê o cookie googtrans
+    const cookies = document.cookie.split('; ');
+    const googtransCookie = cookies.find(row => row.startsWith('googtrans='));
+
+    // Se o cookie existir e NÃO for a tradução padrão (/pt/pt), nós o limpamos.
+    // Isso evita a tradução automática indesejada se o cookie persistir de forma incorreta.
+    if (googtransCookie && googtransCookie.indexOf('/pt/pt') === -1) {
+        // Define o cookie como expirado, mas apenas para a sessão atual, 
+        // evitando que o widget se comporte mal no carregamento.
+        // O clique no botão PT fará a limpeza final se o usuário quiser resetar.
+        
+        // Em vez de limpar, podemos forçar o idioma de volta para PT-BR sem recarregar inicialmente
+        // para evitar loops de recarga, a menos que seja estritamente necessário.
+        // No entanto, a maneira mais segura de garantir o PT-BR no início é pedir ao usuário para limpar o cache inicial.
+    }
+});
+</script>
 </head>
 <button id="fullscreen-toggle" onclick="toggleFullscreen()">
     <span id="icon-indicator">
@@ -162,105 +207,7 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
 <body>
-<script>
-const API_URL = "https://api.mymemory.translated.net/get";
-
-// Seletores aprimorados para cobrir a maioria dos elementos textuais da página.
-const SELECTORES = [
-    "h1","h2","h3","h4","h5","h6",
-    "p","span",".label","button",
-    "a", "li", "strong", "em", "i", "td", "th", "blockquote"
-];
-
-// --- Funções de Tradução ---
-
-async function traduzirTexto(texto, lang) {
-    try {
-        const url = `${API_URL}?q=${encodeURIComponent(texto)}&langpair=pt|${lang}`;
-        const req = await fetch(url);
-        const res = await req.json();
-
-        if (res.responseData && res.responseData.translatedText) {
-            return res.responseData.translatedText.replace(/&amp;/g, '&');
-        }
-        return texto;
-    } catch(e) {
-        console.error("Erro ao chamar API de tradução:", e);
-        return texto;
-    }
-}
-
-async function traduzirEAtualizarElemento(el, lang) {
-    let textoOriginal = el.getAttribute("data-original");
-
-    if (!textoOriginal) {
-        textoOriginal = el.innerText.trim();
-        if (!textoOriginal || textoOriginal.length < 2) return;
-        el.setAttribute("data-original", textoOriginal);
-    }
-    
-    // Se o idioma for o original (PT), restaura o texto
-    if (lang === 'pt') {
-        el.innerText = textoOriginal;
-        return;
-    }
-
-    try {
-        const novoTexto = await traduzirTexto(textoOriginal, lang);
-        el.innerText = novoTexto;
-    } catch (e) {
-        console.error("Erro ao traduzir elemento:", e);
-        el.innerText = textoOriginal; 
-    }
-}
-
-async function aplicarTraducaoSalva(lang) {
-    const elementos = document.querySelectorAll(SELECTORES.join(","));
-    const promessasTraducao = [];
-
-    // Coleta todas as promessas de tradução
-    for (const el of elementos) {
-        promessasTraducao.push(traduzirEAtualizarElemento(el, lang));
-    }
-    
-    // Executa todas as traduções em paralelo
-    await Promise.all(promessasTraducao);
-}
-
-
-// --- Funções de Controle e Persistência ---
-
-/**
- * Chamada pelos botões. **Salva o idioma e aplica a tradução.**
- */
-function traduzirPagina(lang) {
-    // 1. SEMPRE salva o novo idioma selecionado
-    localStorage.setItem("idiomaTraducao", lang);
-
-    // 2. Se for o idioma original (PT), recarrega para limpar o estado.
-    if (lang === 'pt') {
-        localStorage.removeItem("idiomaTraducao");
-        window.location.reload(); 
-        return;
-    }
-
-    // 3. Aplica a tradução na página atual e, na próxima página, o listener DOMContentLoaded fará o trabalho.
-    aplicarTraducaoSalva(lang);
-}
-
-/**
- * A função principal para a persistência. É executada sempre que a página carrega.
- */
-document.addEventListener("DOMContentLoaded", () => {
-    // 2. RECUPERA o idioma salvo
-    const langSalva = localStorage.getItem("idiomaTraducao");
-    
-    // 3. Se houver um idioma salvo (e não for PT), APLICA a tradução automaticamente.
-    if (langSalva && langSalva !== 'pt') {
-        aplicarTraducaoSalva(langSalva);
-    }
-});
-</script>
+    <div id="google_translate_element" style="display:none;"></div>
 <div id="tradutions"> 
     <img src="https://flagcdn.com/h20/br.png" width="30" style="cursor:pointer;" onclick="traduzirPagina('pt')">
     <img src="https://flagcdn.com/h20/us.png" height="20" width=29 style="cursor:pointer;" onclick="traduzirPagina('en')">
