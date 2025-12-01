@@ -163,63 +163,106 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 </script>
 <body>
 <script>
-const API_URL = "https://libretranslate.com/translate";
+const API_URL = "https://api.mymemory.translated.net/get";
 
-// Seletores de elementos que realmente têm texto
+// Seletores aprimorados para cobrir a maioria dos elementos textuais da página.
 const SELECTORES = [
-    "h1", "h2", "h3", "h4", "h5", "h6",
-    "p", "span", ".label", "button"
+    "h1","h2","h3","h4","h5","h6",
+    "p","span",".label","button",
+    "a", "li", "strong", "em", "i", "td", "th", "blockquote"
 ];
 
-async function traduzirPagina(lang) {
-    const elementos = document.querySelectorAll(SELECTORES.join(","));
-
-    for (let el of elementos) {
-        let textoOriginal = el.getAttribute("data-original");
-
-        // Captura o texto original apenas uma vez
-        if (!textoOriginal) {
-            textoOriginal = el.innerText.trim();
-
-            // ignora elementos sem texto ou com emojis
-            if (!textoOriginal || textoOriginal.length < 2) continue;
-
-            el.setAttribute("data-original", textoOriginal);
-        }
-
-        const novoTexto = await traduzirTexto(textoOriginal, lang);
-
-        if (novoTexto && novoTexto !== "undefined") {
-            el.innerText = novoTexto;
-        }
-    }
-}
+// --- Funções de Tradução ---
 
 async function traduzirTexto(texto, lang) {
     try {
-        const req = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                q: texto,
-                source: "pt",
-                target: lang,
-                format: "text"
-            })
-        });
-
+        const url = `${API_URL}?q=${encodeURIComponent(texto)}&langpair=pt|${lang}`;
+        const req = await fetch(url);
         const res = await req.json();
 
-        return res.translatedText || texto;
-
-    } catch (err) {
-        console.error("Erro ao traduzir:", err);
+        if (res.responseData && res.responseData.translatedText) {
+            return res.responseData.translatedText.replace(/&amp;/g, '&');
+        }
+        return texto;
+    } catch(e) {
+        console.error("Erro ao chamar API de tradução:", e);
         return texto;
     }
 }
+
+async function traduzirEAtualizarElemento(el, lang) {
+    let textoOriginal = el.getAttribute("data-original");
+
+    if (!textoOriginal) {
+        textoOriginal = el.innerText.trim();
+        if (!textoOriginal || textoOriginal.length < 2) return;
+        el.setAttribute("data-original", textoOriginal);
+    }
+    
+    // Se o idioma for o original (PT), restaura o texto
+    if (lang === 'pt') {
+        el.innerText = textoOriginal;
+        return;
+    }
+
+    try {
+        const novoTexto = await traduzirTexto(textoOriginal, lang);
+        el.innerText = novoTexto;
+    } catch (e) {
+        console.error("Erro ao traduzir elemento:", e);
+        el.innerText = textoOriginal; 
+    }
+}
+
+async function aplicarTraducaoSalva(lang) {
+    const elementos = document.querySelectorAll(SELECTORES.join(","));
+    const promessasTraducao = [];
+
+    // Coleta todas as promessas de tradução
+    for (const el of elementos) {
+        promessasTraducao.push(traduzirEAtualizarElemento(el, lang));
+    }
+    
+    // Executa todas as traduções em paralelo
+    await Promise.all(promessasTraducao);
+}
+
+
+// --- Funções de Controle e Persistência ---
+
+/**
+ * Chamada pelos botões. **Salva o idioma e aplica a tradução.**
+ */
+function traduzirPagina(lang) {
+    // 1. SEMPRE salva o novo idioma selecionado
+    localStorage.setItem("idiomaTraducao", lang);
+
+    // 2. Se for o idioma original (PT), recarrega para limpar o estado.
+    if (lang === 'pt') {
+        localStorage.removeItem("idiomaTraducao");
+        window.location.reload(); 
+        return;
+    }
+
+    // 3. Aplica a tradução na página atual e, na próxima página, o listener DOMContentLoaded fará o trabalho.
+    aplicarTraducaoSalva(lang);
+}
+
+/**
+ * A função principal para a persistência. É executada sempre que a página carrega.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    // 2. RECUPERA o idioma salvo
+    const langSalva = localStorage.getItem("idiomaTraducao");
+    
+    // 3. Se houver um idioma salvo (e não for PT), APLICA a tradução automaticamente.
+    if (langSalva && langSalva !== 'pt') {
+        aplicarTraducaoSalva(langSalva);
+    }
+});
 </script>
-<div id="tradutions"> 
-    <img src="https://flagcdn.com/h20/br.png" width="30" style="cursor:pointer;" data-lang="pt" onclick="window.location.href = 'index.html'">
+<div id="tradutions"> 
+    <img src="https://flagcdn.com/h20/br.png" width="30" style="cursor:pointer;" onclick="traduzirPagina('pt')">
     <img src="https://flagcdn.com/h20/us.png" height="20" width=29 style="cursor:pointer;" onclick="traduzirPagina('en')">
     <img src="https://flagcdn.com/h20/es.png" width="30" style="cursor:pointer;" onclick="traduzirPagina('es')">
 </div>
