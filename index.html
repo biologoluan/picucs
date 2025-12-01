@@ -70,13 +70,42 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     display: flex;
     align-items: center;
     justify-content: center;
+    
 }
-
 #icon-indicator {
     font-size: 24px; /* Tamanho do ícone */
     line-height: 5;  /* Garante que o ícone esteja bem centralizado */
 
+}#tradutions {
+    /* POSICIONAMENTO FIXO APLICADO AO CONTÊINER */
+    position: fixed;
+    top: 15px;
+    left: 40px;
+    z-index: 1000;
+    
+    /* LAYOUT: Usa Flexbox para colocar as bandeiras lado a lado */
+    display: flex;
+    align-items: center; /* Alinha verticalmente */
+    gap: 8px; /* Adicionado para espaçamento entre as bandeiras */
+    
+    /* Removemos o width/height de 20px, pois o contêiner deve se ajustar ao conteúdo.
+       As outras propriedades de estilo do botão (border, box-shadow, etc.) 
+       não são necessárias aqui, pois o contêiner não tem fundo. */
 }
+
+/* 🆕 NOVO BLOCO CSS: Estilizando as imagens dentro do contêiner fixo */
+#tradutions img {
+    /* Aplica os estilos de "botão" às imagens individuais */
+    width: 28px; /* Usa a largura que você definiu no HTML */
+    height: auto;
+    border-radius: 50%; /* Opcional: para deixar as bandeiras redondas */
+    transition: transform 0.2s; /* Efeito hover */
+}
+
+#tradutions img:hover {
+    transform: scale(1.1);
+}
+
 
 </style>
 <style>
@@ -107,6 +136,7 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
         z-index: 1000 !important; /* Mesma camada de profundidade */
     }
 </style>
+
 </head>
 <button id="fullscreen-toggle" onclick="toggleFullscreen()">
     <span id="icon-indicator">
@@ -124,6 +154,11 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
 <body>
+<div id="tradutions"> 
+        <img src="https://flagcdn.com/48x36/br.png" width="28" style="cursor:pointer;" onclick="setLanguage('pt')">
+        <img src="https://flagcdn.com/48x36/gb.png" width="28" style="cursor:pointer;" onclick="setLanguage('en')">
+        <img src="https://flagcdn.com/48x36/es.png" width="28" style="cursor:pointer;" onclick="setLanguage('es')">
+    </div>
     <script>
         function formatarDataEHora() {
             // Cria um novo objeto Date com a data e hora atuais do sistema
