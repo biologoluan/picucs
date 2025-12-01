@@ -142,52 +142,53 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
             display: none;
         }
 </style>
+<div id="google_translate_element" style="display:none;"></div>
 
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js"></script>
 <script>
+// Variável global para armazenar a instância do tradutor
+let tradutorInicializado = false;
+
 /**
- * Função para definir ou limpar o cookie de tradução e recarregar a página.
- * O Google Translate Widget depende desse cookie.
+ * Função que o Google Translate precisa para inicializar o widget.
+ * Chamada apenas uma vez, no primeiro clique.
  */
-function traduzirPagina(langCode) {
-    // O caminho do cookie deve ser definido como "/" para funcionar em todo o site
-    const cookiePath = "; path=/";
-
-    if (langCode === 'pt') {
-        // Limpa o cookie googtrans definindo a data de expiração no passado (1970).
-        // Isso força a página a voltar ao seu estado original (PT-BR).
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC" + cookiePath;
-    } else {
-        // Define o cookie para o idioma desejado (Ex: /pt/en ou /pt/es).
-        // Isso instrui o Google Translate Widget a traduzir.
-        document.cookie = "googtrans=/pt/" + langCode + cookiePath;
+function inicializarTradutor() {
+    if (!tradutorInicializado) {
+        // Inicializa o widget do Google com as configurações desejadas
+        new google.translate.TranslateElement({
+            pageLanguage: 'pt-BR',
+            includedLanguages: 'en,es',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false 
+        }, 'google_translate_element');
+        tradutorInicializado = true;
     }
-
-    // A página DEVE ser recarregada para que o widget do Google aplique o novo cookie/estado.
-    window.location.reload();
 }
 
 /**
- * NOVO: Esta função garante que, ao carregar a página, se o cookie não estiver definindo
- * o idioma como PT-BR, ele será limpo forçando o estado original.
+ * Controla a mudança de idioma, garantindo a persistência.
  */
-document.addEventListener("DOMContentLoaded", function() {
-    // Lê o cookie googtrans
-    const cookies = document.cookie.split('; ');
-    const googtransCookie = cookies.find(row => row.startsWith('googtrans='));
+function traduzirPagina(langCode) {
+    // 1. Inicializa o tradutor no primeiro clique
+    inicializarTradutor();
 
-    // Se o cookie existir e NÃO for a tradução padrão (/pt/pt), nós o limpamos.
-    // Isso evita a tradução automática indesejada se o cookie persistir de forma incorreta.
-    if (googtransCookie && googtransCookie.indexOf('/pt/pt') === -1) {
-        // Define o cookie como expirado, mas apenas para a sessão atual, 
-        // evitando que o widget se comporte mal no carregamento.
-        // O clique no botão PT fará a limpeza final se o usuário quiser resetar.
-        
-        // Em vez de limpar, podemos forçar o idioma de volta para PT-BR sem recarregar inicialmente
-        // para evitar loops de recarga, a menos que seja estritamente necessário.
-        // No entanto, a maneira mais segura de garantir o PT-BR no início é pedir ao usuário para limpar o cache inicial.
+    // 2. Gerencia o cookie "googtrans"
+    const cookiePath = "; path=/";
+
+    if (langCode === 'pt') {
+        // Limpa o cookie googtrans.
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC" + cookiePath;
+    } else {
+        // Define o cookie para o idioma desejado.
+        document.cookie = "googtrans=/pt/" + langCode + cookiePath;
     }
-});
+
+    // 3. Recarrega a página para aplicar a alteração do cookie
+    window.location.reload();
+}
 </script>
+<div id="google_translate_element" style="display:none;"></div>
 </head>
 <button id="fullscreen-toggle" onclick="toggleFullscreen()">
     <span id="icon-indicator">
