@@ -74,6 +74,29 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     align-items: center;
     justify-content: center;
     
+        }
+     #alarme-toggle {
+    /* Posicionamento */
+    position: fixed;
+    top: 20px;      /* Um pouco mais de distância */
+    right: 15px;    
+    z-index: 1000;  
+    
+    /* Estilo do Botão */
+    width: 20px;       /* Tamanho maior para tablets */
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px; /* Cantos arredondados */
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    /* Centralizando o Ícone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 #icon-indicator {
     font-size: 24px; /* Tamanho do ícone */
@@ -96,6 +119,8 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     align-items: center; 
     gap: 8px; /* Espaçamento entre as bandeiras */
     
+    
+    
     /* Removendo estilos desnecessários no contêiner: */
  #tradutions img {
     width: 28px; 
@@ -103,6 +128,77 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     border-radius: 50%; 
     cursor: pointer;
 }
+}#alarme-toggle {
+    position: absolute; /* Agora, se posiciona em relação ao <header> */
+    
+    /* Centraliza Verticalmente no meio do <header> */
+    top: 3%; 
+    transform: translateY(-30%); /* Ajuste fino para centralização perfeita */
+    
+    /* Posição Horizontal (40px da borda esquerda do cabeçalho) */
+    right: 40px; 
+    
+    z-index: 1000; /* Garante que fique acima de outros elementos do header */
+    
+    /* Layout e Estilos (mantidos do seu código anterior) */
+    display: flex;
+    align-items: center; 
+        /* Estilo do Botão */
+    width: 20px;       /* Tamanho maior para tablets */
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px; /* Cantos arredondados */
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    /* Centralizando o Ícone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+<style>
+    /* CSS do Botão Fullscreen (Seu código original) */
+    #alarme-toggle {
+            position: absolute; /* Agora, se posiciona em relação ao <header> */
+        top: 23px;       /* Distância do topo */
+        right: 50px;     /* Ancorado à direita */
+        z-index: 1000;
+        /* ... outros estilos ... */
+    }
+
+    /* CSS para o Botão VLibras (Canto Superior Esquerdo) */
+    [vw-access-button] {
+        /* Garante que suas regras tenham prioridade sobre as do plugin */
+        position: fixed !important; 
+        
+        /* Mesma distância do topo que o seu botão de fullscreen */
+        top: 20px !important;    
+        
+        /* Lado oposto: Ancorado à esquerda, usando a mesma distância lateral */
+        left: 15px !important;   
+        
+        /* Remove a ancoragem padrão do VLibras (bottom e right) */
+        right: auto !important; 
+        bottom: auto !important; 
+        
+        z-index: 1000 !important; /* Mesma camada de profundidade */
+    }
+    .skiptranslate {
+            display: none !important;
+        }
+
+        /* 2. Impede que a tradução altere o padding superior do corpo */
+        body {
+            top: 0px !important;
+        }
+
+        /* 3. Garante que o widget principal (que contém a caixa de seleção padrão) não apareça */
+        #google_translate_element {
+            display: none;
+        }
 </style>
 <style>
     /* CSS do Botão Fullscreen (Seu código original) */
@@ -147,8 +243,15 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 </style>
 </head>
 <button id="fullscreen-toggle" onclick="toggleFullscreen()">
+    
     <span id="icon-indicator">
         <img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">
+    </span>
+</button>
+<button id="alarme-toggle" onclick="tocarAlarmePorDezSegundos()">
+    
+    <span id="alarme-indicator">
+        <img src="https://cdn-icons-png.flaticon.com/128/3837/3837866.png" style="width:25px;height:25px;">
     </span>
 </button>
 <script src="https://cdn.jsdelivr.net/gh/spbgovbr-vlibras/vlibras-portal@dev/app/vlibras-plugin.js"></script>
@@ -417,6 +520,24 @@ function initializeSpeechRecognition() {
 document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 
 </script>
+<script>function tocarAlarmePorDezSegundos() {
+  const alarme = document.getElementById('alarme');
+  const duracao = 20000; // 20 segundos em milissegundos
+
+  // 1. Toca o alarme
+  alarme.play();
+
+  // 2. Define um temporizador para parar o alarme após 'duracao' milissegundos
+  // A função setTimeout executa a função de callback apenas uma vez.
+  setTimeout(() => {
+    alarme.pause();     // Pausa a reprodução
+    alarme.currentTime = 0; // Volta o áudio para o início (opcional, mas recomendado)
+  }, duracao);
+}
+
+// Nota: A reprodução de mídia (como audio.play()) geralmente precisa ser iniciada
+// a partir de uma interação do usuário (como um clique no botão) devido às
+// políticas de reprodução automática dos navegadores.</script>
 <body oncontextmenu="return false">  
 <header>
   <div class="header-content">
@@ -433,6 +554,12 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <button onclick="speakSequence()">🔊 Escutar</button>
 <button onclick="deleteLastToken()">↩ Apagar</button>
 <button onclick="clearPhrase()">✂️ Excluir frase</button>
+<audio id="alarme" src="https://biologoluan.github.io/picucs/alarme.mp3" preload="auto"></audio>
+
+<button onclick="tocarAlarmePorDezSegundos()">
+  Alarme 🚨
+</button>
+
 <button onclick="clearLogs()">🧹 Limpar log</button>
 <button onclick="exportLogs()">💾 Exportar log</button>
 <button id="listenButton" style="background-color: #f7a900; color: #000;">
@@ -444,6 +571,7 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <!-- Página inicial será renderizada via script -->
 </section>
 <script>
+
 const data = {
   home:[
     {label:'Teclado',emoji:'<img src="https://static.arasaac.org/pictograms/3050/3050_300.png" alt="Digitar" style="width:65px;height:65px;">',children:'alfabeto'},
@@ -1062,4 +1190,3 @@ renderCurrent();
     </p>
 </footer>
 </html>
-
