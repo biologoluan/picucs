@@ -225,8 +225,11 @@ async function traduzirPagina(lang) {
 
 // Reaplica tradução sempre que labels forem recriados
 function reaplicarTraducao() {
-    const lang = localStorage.getItem("idiomaAtual");
-    if (!lang) return;
+const lang = localStorage.getItem("idiomaAtual");
+
+// Só reaplica se idioma NÃO for "pt"
+// PT é o idioma nativo, então não traduz novamente
+if (!lang || lang === "pt") return;
 
     registrarTextosOriginais();
 
