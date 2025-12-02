@@ -916,8 +916,7 @@ function render(items){
         }
     });
 
-    // 3. CORREÇÃO: Chamada da função de tradução AGORA, depois que todos os cards foram inseridos no DOM.
-    reaplicarTraducao();
+setTimeout(reaplicarTraducao, 0);
 }
 
 function renderCurrent(){
