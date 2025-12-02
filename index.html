@@ -142,53 +142,6 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
             display: none;
         }
 </style>
-<div id="google_translate_element" style="display:none;"></div>
-
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js"></script>
-<script>
-// Variável global para armazenar a instância do tradutor
-let tradutorInicializado = false;
-
-/**
- * Função que o Google Translate precisa para inicializar o widget.
- * Chamada apenas uma vez, no primeiro clique.
- */
-function inicializarTradutor() {
-    if (!tradutorInicializado) {
-        // Inicializa o widget do Google com as configurações desejadas
-        new google.translate.TranslateElement({
-            pageLanguage: 'pt-BR',
-            includedLanguages: 'en,es',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false 
-        }, 'google_translate_element');
-        tradutorInicializado = true;
-    }
-}
-
-/**
- * Controla a mudança de idioma, garantindo a persistência.
- */
-function traduzirPagina(langCode) {
-    // 1. Inicializa o tradutor no primeiro clique
-    inicializarTradutor();
-
-    // 2. Gerencia o cookie "googtrans"
-    const cookiePath = "; path=/";
-
-    if (langCode === 'pt') {
-        // Limpa o cookie googtrans.
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC" + cookiePath;
-    } else {
-        // Define o cookie para o idioma desejado.
-        document.cookie = "googtrans=/pt/" + langCode + cookiePath;
-    }
-
-    // 3. Recarrega a página para aplicar a alteração do cookie
-    window.location.reload();
-}
-</script>
-<div id="google_translate_element" style="display:none;"></div>
 </head>
 <button id="fullscreen-toggle" onclick="toggleFullscreen()">
     <span id="icon-indicator">
@@ -203,12 +156,96 @@ function traduzirPagina(langCode) {
         <div class="vw-plugin-top-wrapper"></div>
     </div>
 </div>
+<script>
+// Seletores que devem ser traduzidos
+const SELECTORES = [
+    "h1","h2","h3","h4","h5","h6",
+    "p","span","button",".label","a","li"
+];
 
+// Cache em memória
+let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
+
+// Salvar texto original quando aparece na tela
+function registrarTextosOriginais() {
+    document.querySelectorAll(SELECTORES.join(",")).forEach(el => {
+        if (!el.getAttribute("data-original")) {
+            el.setAttribute("data-original", el.innerText.trim());
+        }
+    });
+}
+
+// Traduz a página com Google API (e salva cache)
+async function traduzirPagina(lang) {
+    registrarTextosOriginais();
+
+    const elementos = document.querySelectorAll(SELECTORES.join(","));
+
+    for (const el of elementos) {
+        const original = el.getAttribute("data-original");
+        if (!original) continue;
+
+        // Se já está no cache, usa
+        if (translationCache[lang] && translationCache[lang][original]) {
+            el.innerText = translationCache[lang][original];
+            continue;
+        }
+
+        // Chamada ao Google
+        const url =
+            "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&dt=t" +
+            "&tl=" + lang +
+            "&q=" + encodeURIComponent(original);
+
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+
+            const translated = data?.[0]?.[0]?.[0];
+            if (!translated) continue;
+
+            // Aplica a tradução
+            el.innerText = translated;
+
+            // Salva no cache
+            if (!translationCache[lang]) translationCache[lang] = {};
+            translationCache[lang][original] = translated;
+
+            // salva no localStorage
+            localStorage.setItem("translationCache", JSON.stringify(translationCache));
+
+        } catch (e) {
+            console.log("Erro ao traduzir:", e);
+        }
+    }
+
+    // salva idioma atual
+    localStorage.setItem("idiomaAtual", lang);
+}
+
+// Reaplica tradução sempre que labels forem recriados
+function reaplicarTraducao() {
+    const lang = localStorage.getItem("idiomaAtual");
+    if (!lang) return;
+
+    registrarTextosOriginais();
+
+    const elementos = document.querySelectorAll(SELECTORES.join(","));
+
+    for (const el of elementos) {
+        const original = el.getAttribute("data-original");
+        if (!original) continue;
+
+        if (translationCache[lang] && translationCache[lang][original]) {
+            el.innerText = translationCache[lang][original];
+        }
+    }
+}
+</script>
     <script>
     new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
 <body>
-    <div id="google_translate_element" style="display:none;"></div>
 <div id="tradutions"> 
     <img src="https://flagcdn.com/h20/br.png" width="30" style="cursor:pointer;" onclick="traduzirPagina('pt')">
     <img src="https://flagcdn.com/h20/us.png" height="20" width=29 style="cursor:pointer;" onclick="traduzirPagina('en')">
@@ -373,6 +410,7 @@ function initializeSpeechRecognition() {
 }
 
 document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
+
 </script>
 <body oncontextmenu="return false">  
 <header>
@@ -858,6 +896,7 @@ function render(items){
         div.onclick=()=>{ addToPhrase(item.label); };
         board.appendChild(div);
       });
+        reaplicarTraducao();
     } else {
       const div=document.createElement('div');
       div.className='card';
