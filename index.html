@@ -198,7 +198,7 @@ async function traduzirPagina(lang) {
         const url =
             "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&dt=t" +
             "&tl=" + lang +
-            "&q=" + encodeURIComponent(bloco);
+            "&q=" + encodeURIComponent(original);
 
         try {
             const res = await fetch(url);
@@ -254,47 +254,45 @@ function reaplicarTraducao() {
     <img src="https://flagcdn.com/h20/us.png" height="20" width=29 style="cursor:pointer;" onclick="traduzirPagina('en')">
     <img src="https://flagcdn.com/h20/es.png" width="30" style="cursor:pointer;" onclick="traduzirPagina('es')">
 </div>
-<script>
-    function formatarDataEHora() {
-        const agora = new Date();
+    <script>
+        function formatarDataEHora() {
+            // Cria um novo objeto Date com a data e hora atuais do sistema
+            const agora = new Date();
 
-        // Obtém idioma que o usuário escolheu para a página
-        let lang = localStorage.getItem("idiomaAtual") || "pt";
+            // Opções de formatação para a Data (por extenso, em português)
+            const opcoesData = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
 
-        // Converte para códigos de locale
-        let locale = "pt-BR";
-        if (lang === "en") locale = "en-US";
-        if (lang === "es") locale = "es-ES";
+            // Opções de formatação para o Horário
+            const opcoesHora = { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit', 
+                hour12: false 
+            };
 
-        const opcoesData = { 
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        };
+            // Formata a data e hora usando a localização 'pt-BR'
+            const dataFormatada = agora.toLocaleDateString('pt-BR', opcoesData);
+            const horaFormatada = agora.toLocaleTimeString('pt-BR', opcoesHora);
 
-        const opcoesHora = {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        };
+            // Constrói a string final (ex: "terça-feira, 25 de novembro de 2025 - 11:06:19")
+            const dataPorExtensoEHora = `📆 ${dataFormatada} - ${horaFormatada}`;
 
-        // Agora formata na língua escolhida
-        const dataFormatada = agora.toLocaleDateString(locale, opcoesData);
-        const horaFormatada = agora.toLocaleTimeString(locale, opcoesHora);
-
-        const dataPorExtensoEHora = `📆 ${dataFormatada} - ${horaFormatada}`;
-
-        const container = document.getElementById('data-hora-container');
-        if (container) {
-            container.textContent = dataPorExtensoEHora;
+            // Encontra o elemento HTML e atualiza seu conteúdo
+            const container = document.getElementById('data-hora-container');
+            if (container) {
+                container.textContent = dataPorExtensoEHora;
+            }
         }
-    }
 
-    formatarDataEHora();
-    setInterval(formatarDataEHora, 1000);
-</script>
+        // Chama a função imediatamente e agenda para cada segundo
+        formatarDataEHora();
+        setInterval(formatarDataEHora, 1000);
+    </script>
 <script>
     function toggleFullscreen() {
         const doc = document.documentElement;
