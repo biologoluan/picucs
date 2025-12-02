@@ -198,7 +198,7 @@ async function traduzirPagina(lang) {
         const url =
             "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&dt=t" +
             "&tl=" + lang +
-            "&q=" + encodeURIComponent(original);
+            "&q=" + encodeURIComponent(bloco);
 
         try {
             const res = await fetch(url);
