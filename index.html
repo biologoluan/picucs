@@ -177,19 +177,33 @@ function registrarTextosOriginais() {
 
 // Traduz a página com Google API (e salva cache)
 async function traduzirPagina(lang) {
+  // PROTEÇÃO: se lang não estiver definido, ou for 'pt', não faz nada
+  if (!lang || lang === "pt") {
+    console.debug("traduzirPagina: ignorando porque lang é:", lang);
+    return;
+  }
+
+  // evitar chamadas concorrentes desnecessárias
+  if (traducaoEmAndamento) {
+    console.debug("traduzirPagina: já há tradução em andamento, ignorando.");
+    return;
+  }
+  traducaoEmAndamento = true;
+
+  try {
     registrarTextosOriginais();
 
     const elementos = document.querySelectorAll(SELECTORES.join(","));
 
     for (const el of elementos) {
-        const original = el.getAttribute("data-original");
-        if (!original) continue;
+      const original = el.getAttribute("data-original");
+      if (!original) continue;
 
-        // Se já está no cache, usa
-        if (translationCache[lang] && translationCache[lang][original]) {
-            el.innerText = translationCache[lang][original];
-            continue;
-        }
+      // Se já está no cache, usa
+      if (translationCache[lang] && translationCache[lang][original]) {
+        el.innerText = translationCache[lang][original];
+        continue;
+      }
 
         // Chamada ao Google
         const url =
