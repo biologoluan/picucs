@@ -904,7 +904,7 @@ function render(items){
       board.appendChild(div);
     }
   });
-  reaplicarTraducao();
+traduzirPagina(localStorage.getItem("idiomaAtual"));
 }
 
 function renderCurrent() {
@@ -928,7 +928,7 @@ function renderCurrent() {
 
       board.appendChild(div);
     });
-    reaplicarTraducao();
+traduzirPagina(localStorage.getItem("idiomaAtual"));
 
   } else {
     render(current);
