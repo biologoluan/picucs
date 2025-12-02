@@ -878,33 +878,46 @@ let phrase=[];
 let history=[];
 
 function render(items){
-  board.innerHTML='';
-  if(history.length>0){
-    const backBtn=document.createElement('div');
-    backBtn.className='card';
-    backBtn.innerHTML='<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
-    backBtn.onclick=()=>{ history.pop(); renderCurrent(); };
-    board.appendChild(backBtn);
-  }
-  Object.keys(items).forEach(group=>{
-    const groupData = items[group];
-    if(Array.isArray(groupData)){
-      groupData.forEach(item=>{
-        const div=document.createElement('div');
-        div.className='card';
-        div.innerHTML=`<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
-        div.onclick=()=>{ addToPhrase(item.label); };
-        board.appendChild(div);
-      });
-        reaplicarTraducao();
-    } else {
-      const div=document.createElement('div');
-      div.className='card';
-      div.innerHTML=`<div style="font-size:50px">${groupData[0]?.emoji||'📂'}</div><div class='label'>${group}</div>`;
-      div.onclick=()=>{ history.push(items); render(groupData); };
-      board.appendChild(div);
-    }
-  });
+    board.innerHTML=''; 
+    
+    // 1. Lógica para o botão Voltar (se houver histórico)
+    if(history.length>0){
+        const backBtn=document.createElement('div');
+        backBtn.className='card';
+        // A tradução foi removida daqui, onde estava antes!
+        backBtn.innerHTML='<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
+        backBtn.onclick=()=>{ 
+            history.pop(); 
+            renderCurrent(); 
+        };
+        board.appendChild(backBtn);
+    } 
+    
+    // 2. Lógica para renderizar todos os novos cards (children)
+    Object.keys(items).forEach(group=>{
+        const groupData = items[group];
+        if(Array.isArray(groupData)){
+            groupData.forEach(item=>{
+                const div=document.createElement('div');
+                div.className='card';
+                div.innerHTML=`<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
+                div.onclick=()=>{ addToPhrase(item.label); };
+                board.appendChild(div);
+            });
+        } else {
+            const div=document.createElement('div');
+            div.className='card';
+            div.innerHTML=`<div style="font-size:50px">${groupData[0]?.emoji||'📂'}</div><div class='label'>${group}</div>`;
+            div.onclick=()=>{ 
+                history.push(group); 
+                render(groupData); 
+            }; 
+            board.appendChild(div);
+        }
+    });
+
+    // 3. CORREÇÃO: Chamada da função de tradução AGORA, depois que todos os cards foram inseridos no DOM.
+    reaplicarTraducao();
 }
 
 function renderCurrent(){
