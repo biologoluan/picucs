@@ -906,7 +906,8 @@ function render(items){
       board.appendChild(div);
     }
   });
-traduzirPagina(localStorage.getItem("idiomaAtual"));
+const lang = localStorage.getItem("idiomaAtual");
+if (lang && lang !== "pt") traduzirPagina(lang);
 }
 
 function renderCurrent() {
