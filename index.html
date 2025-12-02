@@ -444,7 +444,7 @@ const data = {
     {label:'Teclado',emoji:'<img src="https://static.arasaac.org/pictograms/3050/3050_300.png" alt="Digitar" style="width:65px;height:65px;">',children:'alfabeto'},
     {label:'Sim/Não',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/2665/2665089.png" alt="Sim/Não" style="width:65px;height:65px;">',children:'simounao'},
     {label:'bem',emoji:'<img src="https://static.arasaac.org/pictograms/21383/21383_300.png" alt="bem" style="width:65px;height:65px;">'},
-    {label:'ruim',emoji:'<img src="https://static.arasaac.org/pictograms/29639/29639_300.png" alt="ruim" style="width:65px;height:65px;">'},
+    {label:'ruim',emoji:'<img src="https://static.arasaac.org/pictograms/29639/29639_300.png" alt="mal" style="width:65px;height:65px;">'},
     {label:'Dor',emoji:'<img src="https://static.arasaac.org/pictograms/39516/39516_300.png" style="width:65px;height:65px;">',children:'escaladedor'},
     {label:'Cuidados',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/16951/16951158.png" style="width:65px;height:65px;">',children:'Procedimentos'},
     {label:'Como estou?',emoji:'<img src="https://static.arasaac.org/pictograms/12293/12293_300.png" style="width:65px;height:65px;">'},
@@ -878,67 +878,62 @@ let phrase=[];
 let history=[];
 
 function render(items){
-    board.innerHTML=''; 
-    
-    // 1. Lógica para o botão Voltar (se houver histórico)
-    if(history.length>0){
-        const backBtn=document.createElement('div');
-        backBtn.className='card';
-        // A tradução foi removida daqui, onde estava antes!
-        backBtn.innerHTML='<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
-        backBtn.onclick=()=>{ 
-            history.pop(); 
-            renderCurrent(); 
-        };
-        board.appendChild(backBtn);
-    } 
-    
-    // 2. Lógica para renderizar todos os novos cards (children)
-    Object.keys(items).forEach(group=>{
-        const groupData = items[group];
-        if(Array.isArray(groupData)){
-            groupData.forEach(item=>{
-                const div=document.createElement('div');
-                div.className='card';
-                div.innerHTML=`<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
-                div.onclick=()=>{ addToPhrase(item.label); };
-                board.appendChild(div);
-            });
-        } else {
-            const div=document.createElement('div');
-            div.className='card';
-            div.innerHTML=`<div style="font-size:50px">${groupData[0]?.emoji||'📂'}</div><div class='label'>${group}</div>`;
-            div.onclick=()=>{ 
-                history.push(group); 
-                render(groupData); 
-            }; 
-            board.appendChild(div);
-        }
-    });
-
-setTimeout(reaplicarTraducao, 0);
-}
-
-function renderCurrent(){
-  const current = history.length>0 ? history[history.length-1] : data.home;
-  if(Array.isArray(current)){
-    board.innerHTML='';
-    current.forEach(item=>{
+  board.innerHTML='';
+  if(history.length>0){
+    const backBtn=document.createElement('div');
+    backBtn.className='card';
+    backBtn.innerHTML='<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
+    backBtn.onclick=()=>{ history.pop(); renderCurrent(); };
+    board.appendChild(backBtn);
+  }
+  Object.keys(items).forEach(group=>{
+    const groupData = items[group];
+    if(Array.isArray(groupData)){
+      groupData.forEach(item=>{
+        const div=document.createElement('div');
+        div.className='card';
+        div.innerHTML=`<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
+        div.onclick=()=>{ addToPhrase(item.label); };
+        board.appendChild(div);
+      });
+    } else {
       const div=document.createElement('div');
       div.className='card';
-      div.innerHTML=`<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
-      if(item.children){
-        div.onclick=()=>{ history.push(data[item.children]); render(data[item.children]); };
+      div.innerHTML=`<div style="font-size:50px">${groupData[0]?.emoji||'📂'}</div><div class='label'>${group}</div>`;
+      div.onclick=()=>{ history.push(items); render(groupData); };
+      board.appendChild(div);
+    }
+  });
+  reaplicarTraducao();
+}
+
+function renderCurrent() {
+  const current = history.length > 0 ? history[history.length - 1] : data.home;
+
+  if (Array.isArray(current)) {
+    board.innerHTML = '';
+    current.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
+
+      if (item.children) {
+        div.onclick = () => {
+          history.push(data[item.children]);
+          render(data[item.children]);
+        };
       } else {
-        div.onclick=()=>{ addToPhrase(item.label); };
+        div.onclick = () => { addToPhrase(item.label); };
       }
+
       board.appendChild(div);
     });
+    reaplicarTraducao();
+
   } else {
     render(current);
   }
 }
-
 function addToPhrase(label){
   phrase.push(label);
   phraseBar.textContent=phrase.join(' ');
