@@ -36,92 +36,82 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 .header-content{
   display: flex;
   align-items: center;
-  gap: 60px; /* espaço entre logo e título */
-  justify-content: center; /* centraliza tudo horizontalmente */
+  gap: 60px;
+  justify-content: center; 
 }
 
 .logo{
-  height: 45px;       /* Ajuste conforme necessário */
+  height: 45px;
   width: auto;
-  border-radius: 10px; /* opcional */
+  border-radius: 10px;
   
 }
 #data-hora-container {
             text-align: center; 
-            font-size: 0.9em; /* Tamanho maior para destaque */
+            font-size: 0.9em;
             font-weight: bold;
             color: #333; 
         }
         #fullscreen-toggle {
-    /* Posicionamento */
     position: fixed;
-    top: 20px;      /* Um pouco mais de distância */
+    top: 20px; 
     right: 15px;    
     z-index: 1000;  
     
-    /* Estilo do Botão */
-    width: 20px;       /* Tamanho maior para tablets */
+    width: 20px; 
     height: 20px;
     background-color: transparent;
     color: white;
     border: none;
-    border-radius: 0px; /* Cantos arredondados */
+    border-radius: 0px; 
     cursor: pointer;
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
     
-    /* Centralizando o Ícone */
+
     display: flex;
     align-items: center;
     justify-content: center;
     
         }
      #alarme-toggle {
-    /* Posicionamento */
+
     position: fixed;
-    top: 20px;      /* Um pouco mais de distância */
+    top: 20px; 
     right: 15px;    
     z-index: 1000;  
     
-    /* Estilo do Botão */
-    width: 20px;       /* Tamanho maior para tablets */
+    width: 20px; 
     height: 20px;
     background-color: transparent;
     color: white;
     border: none;
-    border-radius: 0px; /* Cantos arredondados */
+    border-radius: 0px;
     cursor: pointer;
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
     
-    /* Centralizando o Ícone */
     display: flex;
     align-items: center;
     justify-content: center;
     
 }
 #icon-indicator {
-    font-size: 24px; /* Tamanho do ícone */
-    line-height: 5;  /* Garante que o ícone esteja bem centralizado */
+    font-size: 24px;
+    line-height: 5; 
 
 }#tradutions {
-    position: absolute; /* Agora, se posiciona em relação ao <header> */
+    position: absolute; 
     
-    /* Centraliza Verticalmente no meio do <header> */
     top: 3%; 
-    transform: translateY(-50%); /* Ajuste fino para centralização perfeita */
+    transform: translateY(-50%);
     
-    /* Posição Horizontal (40px da borda esquerda do cabeçalho) */
     left: 40px; 
     
-    z-index: 1000; /* Garante que fique acima de outros elementos do header */
+    z-index: 1000;
     
-    /* Layout e Estilos (mantidos do seu código anterior) */
     display: flex;
     align-items: center; 
     gap: 8px; /* Espaçamento entre as bandeiras */
-    
-    
-    
-    /* Removendo estilos desnecessários no contêiner: */
+
  #tradutions img {
     width: 28px; 
     height: 28px; 
@@ -129,114 +119,90 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     cursor: pointer;
 }
 }#alarme-toggle {
-    position: absolute; /* Agora, se posiciona em relação ao <header> */
-    
-    /* Centraliza Verticalmente no meio do <header> */
+    position: absolute;
     top: 3%; 
-    transform: translateY(-30%); /* Ajuste fino para centralização perfeita */
+    transform: translateY(-30%);
     
-    /* Posição Horizontal (40px da borda esquerda do cabeçalho) */
+    /* Posição Horizontal */
     right: 20px; 
     
-    z-index: 1000; /* Garante que fique acima de outros elementos do header */
-    
-    /* Layout e Estilos (mantidos do seu código anterior) */
+    z-index: 1000;
     display: flex;
     align-items: center; 
         /* Estilo do Botão */
-    width: 45px;       /* Tamanho maior para tablets */
+    width: 45px;   
     height: 20px;
     background-color: transparent;
     color: white;
     border: none;
-    border-radius: 0px; /* Cantos arredondados */
+    border-radius: 0px;
     cursor: pointer;
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
     
-    /* Centralizando o Ícone */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 </style>
 <style>
-    /* CSS do Botão Fullscreen (Seu código original) */
+    /* CSS do Botão Fullscreen */
     #alarme-toggle {
-            position: absolute; /* Agora, se posiciona em relação ao <header> */
-        top: 23px;       /* Distância do topo */
-        right: 50px;     /* Ancorado à direita */
+            position: absolute;
+        top: 23px;
+        right: 50px;
         z-index: 1000;
-        /* ... outros estilos ... */
     }
-
-    /* CSS para o Botão VLibras (Canto Superior Esquerdo) */
     [vw-access-button] {
-        /* Garante que suas regras tenham prioridade sobre as do plugin */
         position: fixed !important; 
         
-        /* Mesma distância do topo que o seu botão de fullscreen */
         top: 20px !important;    
         
-        /* Lado oposto: Ancorado à esquerda, usando a mesma distância lateral */
         left: 15px !important;   
         
-        /* Remove a ancoragem padrão do VLibras (bottom e right) */
         right: auto !important; 
         bottom: auto !important; 
         
-        z-index: 1000 !important; /* Mesma camada de profundidade */
+        z-index: 1000 !important; 
     }
     .skiptranslate {
             display: none !important;
         }
-
-        /* 2. Impede que a tradução altere o padding superior do corpo */
         body {
             top: 0px !important;
         }
-
-        /* 3. Garante que o widget principal (que contém a caixa de seleção padrão) não apareça */
         #google_translate_element {
             display: none;
         }
 </style>
 <style>
-    /* CSS do Botão Fullscreen (Seu código original) */
+    /* CSS do Botão Fullscreen */
     #fullscreen-toggle {
-            position: absolute; /* Agora, se posiciona em relação ao <header> */
+            position: absolute;
         top: 20px;       /* Distância do topo */
-        right: 15px;     /* Ancorado à direita */
+        right: 15px;   
         z-index: 1000;
-        /* ... outros estilos ... */
     }
 
-    /* CSS para o Botão VLibras (Canto Superior Esquerdo) */
     [vw-access-button] {
-        /* Garante que suas regras tenham prioridade sobre as do plugin */
         position: fixed !important; 
         
-        /* Mesma distância do topo que o seu botão de fullscreen */
         top: 20px !important;    
         
-        /* Lado oposto: Ancorado à esquerda, usando a mesma distância lateral */
         left: 15px !important;   
         
-        /* Remove a ancoragem padrão do VLibras (bottom e right) */
         right: auto !important; 
         bottom: auto !important; 
         
-        z-index: 1000 !important; /* Mesma camada de profundidade */
+        z-index: 1000 !important; 
     }
     .skiptranslate {
             display: none !important;
         }
 
-        /* 2. Impede que a tradução altere o padding superior do corpo */
         body {
             top: 0px !important;
         }
 
-        /* 3. Garante que o widget principal (que contém a caixa de seleção padrão) não apareça */
         #google_translate_element {
             display: none;
         }
@@ -403,7 +369,7 @@ function reaplicarTraducao() {
         const doc = document.documentElement;
         const iconIndicator = document.getElementById('icon-indicator');
 
-        // Esta linha verifica o estado atual de Fullscreen em vários navegadores
+        // verifica o estado atual de Fullscreen em vários navegadores
         const isFullscreen = document.fullscreenElement ||
                              document.mozFullScreenElement ||
                              document.webkitFullscreenElement ||
@@ -420,8 +386,6 @@ function reaplicarTraducao() {
             } else if (document.msExitFullscreen) {
                 document.msExitFullscreen();
             }
-
-            // CORREÇÃO: Colocar o código <img> entre aspas simples
             // Ícone para "Entrar Tela Cheia"
             iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">';
 
@@ -437,7 +401,7 @@ function reaplicarTraducao() {
                 doc.msRequestFullscreen();
             }
 
-            // CORREÇÃO: Colocar o código <img> entre aspas simples
+            
             // Ícone para "Sair Tela Cheia"
             iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/1828/1828851.png" style="width:25px;height:25px;">';
         }
@@ -460,7 +424,6 @@ function initializeSpeechRecognition() {
     const phraseBar    = document.getElementById("phraseBar");
     const statusDiv    = document.getElementById("status");
 
-    // Teste correto para Android
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SR) {
@@ -473,8 +436,6 @@ function initializeSpeechRecognition() {
     let isListening = false;
 
     listenButton.addEventListener("click", () => {
-
-        // Somente cria a instância AGORA — requisito do Chrome Android
         if (!recognition) {
             recognition = new SR();
             recognition.lang = "pt-BR";
@@ -524,20 +485,14 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
   const alarme = document.getElementById('alarme');
   const duracao = 20000; // 20 segundos em milissegundos
 
-  // 1. Toca o alarme
   alarme.play();
-
-  // 2. Define um temporizador para parar o alarme após 'duracao' milissegundos
-  // A função setTimeout executa a função de callback apenas uma vez.
   setTimeout(() => {
-    alarme.pause();     // Pausa a reprodução
-    alarme.currentTime = 0; // Volta o áudio para o início (opcional, mas recomendado)
+    alarme.pause();
+    alarme.currentTime = 0; // Volta o áudio para o início
   }, duracao);
 }
 
-// Nota: A reprodução de mídia (como audio.play()) geralmente precisa ser iniciada
-// a partir de uma interação do usuário (como um clique no botão) devido às
-// políticas de reprodução automática dos navegadores.</script>
+</script>
 <body oncontextmenu="return false">  
 <header>
   <div class="header-content">
@@ -792,7 +747,7 @@ outros:{
     'ao urinar':[ {label:'ao urinar',emoji:'<img src="https://static.arasaac.org/pictograms/37687/37687_300.png" style="width:65px;height:65px;">'}],
   },
 alfabeto:{
-    // Linha Numérica
+    // Linha numérica
     '1':[{label:'1',emoji:'<img src="https://static.arasaac.org/pictograms/2627/2627_300.png" style="width:65px;height:65px;">'}],
     '2':[{label:'2',emoji:'<img src="https://static.arasaac.org/pictograms/2628/2628_300.png" style="width:65px;height:65px;">'}],
     '3':[{label:'3',emoji:'<img src="https://static.arasaac.org/pictograms/2629/2629_300.png" style="width:65px;height:65px;">'}],
@@ -842,13 +797,11 @@ alfabeto:{
     'N':[ {label:'n',emoji:'<img src="https://static.arasaac.org/pictograms/3036/3036_300.png" style="width:65px;height:65px;">'}],
     'M':[ {label:'m',emoji:'<img src="https://static.arasaac.org/pictograms/3035/3035_300.png" style="width:65px;height:65px;">'}],
     
-    // Controles e Símbolos
     'Espaço':[ {label:'‍',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/11480/11480323.png" style="width:65px;height:65px;">'}],
     '.':[ {label:'.',emoji:'<img src="https://static.arasaac.org/pictograms/3218/3218_300.png" style="width:65px;height:65px;">'}],
     ',':[ {label:',',emoji:'<img src="https://static.arasaac.org/pictograms/3189/3189_300.png" style="width:65px;height:65px;">'}],
     '?':[ {label:'?',emoji:'<img src="https://static.arasaac.org/pictograms/3418/3418_300.png" alt="?" style="width:65px;height:65px;">'}],
     '"':[ {label:'!',emoji:'<img src="https://static.arasaac.org/pictograms/3417/3417_300.png" alt="?" style="width:65px;height:65px;">'}],
-    // Você pode adicionar outros caracteres (como os acentuados restantes ou símbolos) aqui, seguindo a ordem desejada.
   },
   simounao:{
     'Sim':[ {label:'sim',emoji:'<img src="https://static.arasaac.org/pictograms/5584/5584_300.png" style="width:65px;height:65px;">'}],
@@ -1015,15 +968,12 @@ let history=[];
 function createCardElement(item) {
     const div = document.createElement('div');
     div.className = 'card';
-    
-    // VERIFICAÇÃO E APLICAÇÃO DA COR CUSTOMIZADA
     if (item.customColor) {
         div.style.backgroundColor = item.customColor;
-        // Lógica de cor do texto (melhora o contraste em cores claras)
         if (item.customColor.toUpperCase() === '#FFD700' || item.customColor.toUpperCase() === '#FFEB99') {
-            div.style.color = 'black'; // Usa texto preto para cores como Amarelo/Ouro
+            div.style.color = 'black';
         } else {
-            div.style.color = 'white'; // Mantém o texto branco (padrão para cores escuras)
+            div.style.color = 'white'; 
         }
     }
     
@@ -1031,10 +981,6 @@ function createCardElement(item) {
     
     return div;
 }
-
-// -----------------------------------------------------------
-// FUNÇÃO RENDER MODIFICADA (Substitua a sua existente)
-// -----------------------------------------------------------
 function render(items){
   board.innerHTML='';
   
@@ -1049,7 +995,6 @@ function render(items){
     const groupData = items[group];
     if(Array.isArray(groupData)){
       groupData.forEach(item=>{
-        // NOVO: Usa a função auxiliar para criar o card com a cor
         const div = createCardElement(item); 
         div.onclick=()=>{ addToPhrase(item.label); };
         board.appendChild(div);
@@ -1064,17 +1009,12 @@ function render(items){
   });
 traduzirPagina(localStorage.getItem("idiomaAtual"));
 }
-
-// -----------------------------------------------------------
-// FUNÇÃO RENDERCURRENT MODIFICADA (Substitua a sua existente)
-// -----------------------------------------------------------
 function renderCurrent() {
   const current = history.length > 0 ? history[history.length - 1] : data.home;
 
   if (Array.isArray(current)) {
     board.innerHTML = '';
     current.forEach(item => {
-      // NOVO: Usa a função auxiliar para criar o card com a cor
       const div = createCardElement(item); 
 
       if (item.children) {
@@ -1113,35 +1053,21 @@ function speakSequence(){
     let finalSpeechText = '';
     let currentWord = '';
     
-    // 1. Monta a string de fala, unindo as letras sequenciais (do alfabeto) em palavras.
     for (const token of phrase) {
-        // Heurística: Considera um token como 'letra' se tiver comprimento 1 e não for o caractere de espaço.
-        // As letras do seu arquivo são tokens de comprimento 1 (ex: 'a', 'b', 'c').
         if (token.length === 1 && token.trim() !== '') {
-            currentWord += token; // Acumula a letra para formar a palavra
+            currentWord += token;
         } else {
-            // Encontrou um token que não é letra (palavra completa ou o caractere 'Espaço')
-            
-            // 1a. Se havia letras acumuladas (currentWord), adiciona a palavra formada, seguida de um espaço.
             if (currentWord.length > 0) {
                 finalSpeechText += currentWord + ' ';
                 currentWord = '';
             }
-            
-            // 1b. Adiciona o token atual, garantindo que haja um espaço de separação.
             finalSpeechText += token + ' ';
         }
     }
-    
-    // 2. Adiciona a última palavra formada (se houver)
     if (currentWord.length > 0) {
         finalSpeechText += currentWord;
     }
-    
-    // 3. Remove espaços múltiplos e iniciais/finais, resultando em uma frase bem formatada.
     const textToSpeak = finalSpeechText.replace(/\s+/g, ' ').trim();
-
-    // Fala a frase completa.
     speak(textToSpeak);
 
 }
@@ -1152,16 +1078,9 @@ function clearPhrase(){
 }
 
 function deleteLastToken() {
-    // 1. Verifica se a frase não está vazia para evitar erros
     if (phrase.length > 0) {
-        // 2. Remove o ÚLTIMO elemento do array 'phrase'
         phrase.pop();
-        
-        // 3. Atualiza a barra visual da frase (phraseBar)
-        // Isso assume que 'phraseBar' é o ID do elemento que exibe a frase.
         const phraseBar = document.getElementById('phraseBar');
-        
-        // Para exibir na tela, unimos os tokens com um espaço, como estava antes.
         phraseBar.textContent = phrase.join(' ');
     }
 }
@@ -1180,30 +1099,16 @@ function clearLogs(){
   }
 }
 function exportLogs(){
-    // 1. Carrega os logs do armazenamento local
     const arr = loadLogs();
-    
-    // 2. Cria o Blob (o arquivo) com os dados
     const blob = new Blob([JSON.stringify(arr, null, 2)], { type: 'application/json' });
-    
-    // 3. Cria o elemento de link invisível (o 'a' para o download)
     const a = document.createElement('a');
-
-    // 4. Lógica para buscar e limpar o nome do paciente
-    // Se essa lógica anterior tinha um erro, ela pode ter parado a função aqui.
     const patientNameValue = document.getElementById('patientName').value;
     const safePatientName = patientNameValue 
         ? patientNameValue.trim().replace(/[^a-z0-9\s]/gi, '_').replace(/\s+/g, '_')
         : 'SemNome';
-    
-    // 5. Configura o link
     a.href = URL.createObjectURL(blob);
-    
-    // 6. Configura o nome do arquivo conforme solicitado
     a.download = `Conversa CAA UCS - ${safePatientName}_${new Date().toISOString()}.json`;
-    
-    // 7. Dispara o clique no link invisível para iniciar o download
-    a.click(); // IMPORTANTE: Garante que esta linha seja executada!
+    a.click(); //
 }
 renderCurrent();
 </script>
