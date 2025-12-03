@@ -549,51 +549,54 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <script>
 // --- INÍCIO DA LÓGICA DE RASTREAMENTO OCULAR (DWELL CLICK) ---
 
-let currentTarget = null; // O card que está sendo olhado no momento
-let dwellStartTime = null; // Timestamp de quando o olhar parou no card
-const DWELL_TIME_MS = 5000; // TEMPO DE PERMANÊNCIA (5 segundos)
+let currentTarget = null; 
+let dwellStartTime = null; 
+const DWELL_TIME_MS = 5000; // 5 segundos
 
 const eyeTrackingButton = document.getElementById('eyeTrackingButton');
 
 function iniciarRastreador() {
+    console.log("Tentando iniciar o rastreador...");
+
     if (!window.webgazer) {
         alert("WebGazer.js não carregada. Verifique o link no HTML.");
         return;
     }
     
-    // 1. Configurações da WebGazer
+    // Configurações da WebGazer
     webgazer.setGazeListener(function(gazeData, elapsedTime) {
         if (gazeData == null) {
             return;
         }
 
-        const x = gazeData.x; // Coordenada X estimada do olhar na tela
-        const y = gazeData.y; // Coordenada Y estimada do olhar na tela
+        const x = gazeData.x; 
+        const y = gazeData.y; 
 
-        // getCardUnderGaze procura o card sob o olhar
+        // Adicionando um console.log para verificar o fluxo de dados:
+        // ABRIR O CONSOLE (F12) E VERIFICAR SE ESSA MENSAGEM APARECE CONSTANTEMENTE.
+        // Se ela aparecer, a WebGazer está enviando os dados (x, y).
+        // Se o valor de 'hoveredCard' estiver sempre 'Nenhum', o erro está na função getCardUnderGaze.
         const hoveredCard = getCardUnderGaze(x, y);
+        console.log(`Gaze: (${x.toFixed(0)}, ${y.toFixed(0)}). Card Hovered: ${hoveredCard ? hoveredCard.id : 'Nenhum'}`);
+
 
         // 2. Lógica de Dwell Click
         if (hoveredCard) {
-            // Se o olhar está sobre um card
             if (hoveredCard !== currentTarget) {
-                // O card mudou, reinicia o timer
+                // O card mudou
                 resetDwellState();
                 currentTarget = hoveredCard;
-                dwellStartTime = performance.now(); // Inicia o timer
-                currentTarget.classList.add('card-target'); // Adiciona estilo de foco
-                currentTarget.classList.add('card-dwell-progress'); // Adiciona animação de progresso
+                dwellStartTime = performance.now(); 
+                currentTarget.classList.add('card-target'); 
+                currentTarget.classList.add('card-dwell-progress'); 
             } else {
-                // O olhar permaneceu no mesmo card
+                // O olhar permaneceu
                 const timeElapsed = performance.now() - dwellStartTime;
 
                 if (timeElapsed >= DWELL_TIME_MS) {
-                    // Tempo de Dwell atingido! Seleciona o card.
-                    
-                    // Chama a função de clique do card (o seu onclick de navegação/adição à frase)
+                    // Seleção por Dwell!
+                    console.log(`DWELL CLICK em: ${currentTarget.id}`);
                     currentTarget.click(); 
-
-                    // Reinicia o estado para evitar múltiplos cliques em sequência
                     resetDwellState();
                 }
             }
@@ -602,18 +605,24 @@ function iniciarRastreador() {
             resetDwellState();
         }
 
-    }).begin(); // Inicia o rastreamento
+    }).begin() // Inicia o rastreamento
+    .then(() => {
+        console.log("WebGazer.js iniciado com sucesso.");
+        // Exibir a prévia da câmera e o ponto estimado
+        webgazer.showVideoPreview(true)
+                .showPredictionPoints(true);
+        // Desativa a interface de calibração padrão
+        webgazer.showFaceFeedbackBox(false);
 
-    // Exibir a prévia da câmera e o ponto estimado
-    webgazer.showVideoPreview(true).showPredictionPoints(true);
-    // Desativa a interface de calibração padrão da WebGazer
-    webgazer.showFaceFeedbackBox(false);
-
-    // Feedback visual de inicialização
-    if (eyeTrackingButton) {
-        eyeTrackingButton.textContent = "👁️ Rastreamento ATIVO";
-        eyeTrackingButton.disabled = true; // Desabilita o botão após iniciar
-    }
+        if (eyeTrackingButton) {
+            eyeTrackingButton.textContent = "👁️ Rastreamento ATIVO";
+            eyeTrackingButton.disabled = true; 
+        }
+    })
+    .catch((error) => {
+        console.error("Erro ao iniciar WebGazer:", error);
+        alert("Erro ao iniciar a câmera. Verifique as permissões do navegador.");
+    });
 }
 
 // 3. Função para determinar qual card está sendo olhado
@@ -621,12 +630,13 @@ function getCardUnderGaze(gazeX, gazeY) {
     // Seleciona todos os seus elementos interativos com a classe '.card'
     const cards = document.querySelectorAll('.card');
     for (let i = 0; i < cards.length; i++) {
-        const rect = cards[i].getBoundingClientRect();
+        const card = cards[i];
+        const rect = card.getBoundingClientRect();
         
         // Verifica se o ponto do olhar (gazeX, gazeY) está dentro do card
         if (gazeX >= rect.left && gazeX <= rect.right &&
             gazeY >= rect.top && gazeY <= rect.bottom) {
-            return cards[i]; // Retorna o elemento HTML do card
+            return card; // Retorna o elemento HTML do card
         }
     }
     return null;
@@ -635,7 +645,6 @@ function getCardUnderGaze(gazeX, gazeY) {
 // 4. Função para limpar o estado de Dwell
 function resetDwellState() {
     if (currentTarget) {
-        // Remove os estilos e animações do card anterior
         currentTarget.classList.remove('card-target');
         currentTarget.classList.remove('card-dwell-progress');
     }
