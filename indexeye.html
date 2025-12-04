@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -318,11 +319,12 @@ function reaplicarTraducao() {
     new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
 <body>
-<div id="tradutions"> 
+<div id="tradutions"> 
     <img src="https://flagcdn.com/h20/br.png" width="30" style="cursor:pointer;" onclick="traduzirPagina('pt')">
     <img src="https://flagcdn.com/h20/us.png" height="20" width=29 style="cursor:pointer;" onclick="traduzirPagina('en')">
     <img src="https://flagcdn.com/h20/es.png" width="30" style="cursor:pointer;" onclick="traduzirPagina('es')">
 </div>
+<video id="camera" autoplay playsinline style="display:none;"></video>
 <script>
     function formatarDataEHora() {
         const agora = new Date();
@@ -505,6 +507,7 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
     🔃 Aguarde, carregando...
 </p>
 <div class="controls">
+    
 <input type="text" id="patientName" placeholder="🙎🏻‍♀️️️ Nome do(a) paciente">
 <button onclick="speakSequence()">🔊 Escutar</button>
 <button onclick="deleteLastToken()">↩ Apagar</button>
@@ -513,11 +516,11 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 
 <button onclick="clearLogs()">🧹 Limpar log</button>
 <button onclick="exportLogs()">💾 Exportar log</button>
-<button id="listenButton" style="background-color: #f7a900; color: #000;">
+<button id="listenButton" style="background-color: #b1d34b; color: #000;">
         <span id="listenIcon">🎤</span> Responder
-    </button><button id="gazerBtn" onclick="toggleEyeControl()" style="background-color: #a4d8de; color: #000;">
-    <span id="gazerIcon">👁️</span> Rastreio ocular
-</button>
+<button id="eyeControlBtn" onclick="toggleEyeControl()" style="background-color: #a4d8de; color: #000;">
+        <span id="listenIcon">👁️</span> Rastreio      
+    </button>
 </div>
 <div class="phrase-bar" id="phraseBar"></div>
 <section class="board" id="board">
@@ -527,46 +530,46 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 
 const data = {
 home:[
-    {label:'Teclado',emoji:'<img src="https://static.arasaac.org/pictograms/3050/3050_300.png" alt="Digitar" style="width:65px;height:65px;">',children:'alfabeto', customColor:'#E0E0E0'},
-    {label:'Sim/Não',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/2665/2665089.png" alt="Sim/Não" style="width:65px;height:65px;">',children:'simounao', customColor:'#c0ddff'}, 
-    {label:'bem',emoji:'<img src="https://static.arasaac.org/pictograms/21383/21383_300.png" alt="bem" style="width:65px;height:65px;">', customColor:'#c0ddff'},
-    {label:'ruim',emoji:'<img src="https://static.arasaac.org/pictograms/29639/29639_300.png" alt="mal" style="width:65px;height:65px;">', customColor:'#c0ddff'},
-    {label:'não sei',emoji:'<img src="https://static.arasaac.org/pictograms/27705/27705_300.png" style="width:65px;height:65px;">', customColor:'#c0ddff'}, 
-    {label:'Dor',emoji:'<img src="https://static.arasaac.org/pictograms/39516/39516_300.png" style="width:65px;height:65px;">',children:'escaladedor', customColor:'#E0E0E0'},
-    {label:'Cuidados',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/16951/16951158.png" style="width:65px;height:65px;">',children:'Procedimentos', customColor:'#E0E0E0'},
-    {label:'Como estou?',emoji:'<img src="https://static.arasaac.org/pictograms/12293/12293_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
-    {label:'Quanto tempo?',emoji:'<img src="https://static.arasaac.org/pictograms/17052/17052_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
-    {label:'Eu',emoji:'<img src="https://static.arasaac.org/pictograms/31807/31807_300.png" alt="Eu" style="width:65px;height:65px;">', customColor:'#FFFD97'},
-    {label:'Você',emoji:'<img src="https://static.arasaac.org/pictograms/31801/31801_300.png" alt="Você" style="width:65px;height:65px;">', customColor:'#FFFD97'},
-    {label:'Ele',emoji:'<img src="https://static.arasaac.org/pictograms/6480/6480_300.png" alt="Ele" style="width:65px;height:65px;">', customColor:'#FFFD97'},
-    {label:'Ela',emoji:'<img src="https://static.arasaac.org/pictograms/7028/7028_300.png" alt="Você" style="width:65px;height:65px;">', customColor:'#FFFD97'},   
-    {label:'Nós',emoji:'<img src="https://static.arasaac.org/pictograms/31674/31674_300.png" alt="Nós" style="width:65px;height:65px;">', customColor:'#FFFD97'},
-    {label:'estou',emoji:'<img src="https://static.arasaac.org/pictograms/36480/36480_300.png" alt="Estou" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'está',emoji:'<img src="https://static.arasaac.org/pictograms/7095/7095_300.png" alt="está" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'posso',emoji:'<img src="https://static.arasaac.org/pictograms/11750/11750_300.png" alt="está" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'quero',emoji:'<img src="https://static.arasaac.org/pictograms/5441/5441_300.png" alt="quero" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'quer',emoji:'<img src="https://static.arasaac.org/pictograms/5441/5441_300.png" alt="quer" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'usar',emoji:'<img src="https://static.arasaac.org/pictograms/15485/15485_300.png" alt="usar" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'ir',emoji:'<img src="https://static.arasaac.org/pictograms/31758/31758_300.png" alt="ir" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'sinto',emoji:'<img src="https://static.arasaac.org/pictograms/30197/30197_300.png" alt="sinto" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'sente',emoji:'<img src="https://static.arasaac.org/pictograms/30197/30197_300.png" alt="sente" style="width:65px;height:65px;">', customColor:'#fde6e5'},
-    {label:'para',emoji:'<img src="https://static.arasaac.org/pictograms/7125/7125_300.png" alt="está" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
-    {label:'com',emoji:'<img src="https://static.arasaac.org/pictograms/7064/7064_300.png" alt="com" style="width:65px;height:65px;">', customColor:'#E0E0E0'}, 
-    {label:'de',emoji:'<img src="https://static.arasaac.org/pictograms/7064/7064_300.png" alt="de" style="width:65px;height:65px;">', customColor:'#E0E0E0'}, 
-    {label:'vontade',emoji:'<img src="https://static.arasaac.org/pictograms/37369/37369_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
-    {label:'obrigado',emoji:'<img src="https://static.arasaac.org/pictograms/36093/36093_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
-    {label:'desculpa',emoji:'<img src="https://static.arasaac.org/pictograms/38361/38361_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
-    {label:'Emoções',emoji:'<img src="https://static.arasaac.org/pictograms/32123/32123_300.png" style="width:65px;height:65px;">',children:'emocoes', customColor:'#c0ddff'},
-    {label:'Sintomas',emoji:'<img src="https://static.arasaac.org/pictograms/28766/28766_300.png" style="width:65px;height:65px;">',children:'sintomas', customColor:'#c0ddff'},
-    {label:'calor',emoji:'<img src="https://static.arasaac.org/pictograms/35597/35597_300.png" style="width:65px;height:65px;">', customColor: '#c0ddff'},
-    {label:'frio',emoji:'<img src="https://static.arasaac.org/pictograms/26865/26865_300.png" alt="está" style="width:65px;height:65px;">', customColor: '#c0ddff'}, 
-    {label:'Vontades',emoji:'<img src="https://static.arasaac.org/pictograms/37160/37160_300.png" style="width:65px;height:65px;">',children:'vontades', customColor:'#f9dd8a'},
-    {label:'Refeição',emoji:'<img src="https://static.arasaac.org/pictograms/10228/10228_300.png" style="width:65px;height:65px;">',children:'alimentacao', customColor:'#f9dd8a'},
-    {label:'Higiene',emoji:'<img src="https://static.arasaac.org/pictograms/30524/30524_300.png" style="width:65px;height:65px;">',children:'higiene', customColor:'#f9dd8a'},   
-    {label:'Objetos',emoji:'<img src="https://static.arasaac.org/pictograms/3329/3329_300.png" style="width:65px;height:65px;">',children:'objetos', customColor:'#f9dd8a'},
-    {label:'ajuda',emoji:'<img src="https://static.arasaac.org/pictograms/12252/12252_300.png" style="width:65px;height:65px;">', customColor: '#fde6e5'},
-    {label:'parar',emoji:'<img src="https://static.arasaac.org/pictograms/27393/27393_300.png" alt="está" style="width:65px;height:65px;">', customColor: '#fde6e5'}, 
-    {label:'mais comandos',emoji:'<img src="https://static.arasaac.org/pictograms/38218/38218_300.png" style="width:65px;height:65px;">',children:'outros',customColor:'#E0E0E0'},
+    {label:'Teclado',emoji:'<img src="https://static.arasaac.org/pictograms/3050/3050_300.png" alt="Digitar" style="width:65px;height:65px;">',children:'alfabeto', customColor:'#E0E0E0'},
+    {label:'Sim/Não',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/2665/2665089.png" alt="Sim/Não" style="width:65px;height:65px;">',children:'simounao', customColor:'#c0ddff'}, 
+    {label:'bem',emoji:'<img src="https://static.arasaac.org/pictograms/21383/21383_300.png" alt="bem" style="width:65px;height:65px;">', customColor:'#c0ddff'},
+    {label:'ruim',emoji:'<img src="https://static.arasaac.org/pictograms/29639/29639_300.png" alt="mal" style="width:65px;height:65px;">', customColor:'#c0ddff'},
+    {label:'não sei',emoji:'<img src="https://static.arasaac.org/pictograms/27705/27705_300.png" style="width:65px;height:65px;">', customColor:'#c0ddff'}, 
+    {label:'Dor',emoji:'<img src="https://static.arasaac.org/pictograms/39516/39516_300.png" style="width:65px;height:65px;">',children:'escaladedor', customColor:'#E0E0E0'},
+    {label:'Cuidados',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/16951/16951158.png" style="width:65px;height:65px;">',children:'Procedimentos', customColor:'#E0E0E0'},
+    {label:'Como estou?',emoji:'<img src="https://static.arasaac.org/pictograms/12293/12293_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
+    {label:'Quanto tempo?',emoji:'<img src="https://static.arasaac.org/pictograms/17052/17052_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
+    {label:'Eu',emoji:'<img src="https://static.arasaac.org/pictograms/31807/31807_300.png" alt="Eu" style="width:65px;height:65px;">', customColor:'#FFFD97'},
+    {label:'Você',emoji:'<img src="https://static.arasaac.org/pictograms/31801/31801_300.png" alt="Você" style="width:65px;height:65px;">', customColor:'#FFFD97'},
+    {label:'Ele',emoji:'<img src="https://static.arasaac.org/pictograms/6480/6480_300.png" alt="Ele" style="width:65px;height:65px;">', customColor:'#FFFD97'},
+    {label:'Ela',emoji:'<img src="https://static.arasaac.org/pictograms/7028/7028_300.png" alt="Você" style="width:65px;height:65px;">', customColor:'#FFFD97'},   
+    {label:'Nós',emoji:'<img src="https://static.arasaac.org/pictograms/31674/31674_300.png" alt="Nós" style="width:65px;height:65px;">', customColor:'#FFFD97'},
+    {label:'estou',emoji:'<img src="https://static.arasaac.org/pictograms/36480/36480_300.png" alt="Estou" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'está',emoji:'<img src="https://static.arasaac.org/pictograms/7095/7095_300.png" alt="está" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'posso',emoji:'<img src="https://static.arasaac.org/pictograms/11750/11750_300.png" alt="está" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'quero',emoji:'<img src="https://static.arasaac.org/pictograms/5441/5441_300.png" alt="quero" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'quer',emoji:'<img src="https://static.arasaac.org/pictograms/5441/5441_300.png" alt="quer" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'usar',emoji:'<img src="https://static.arasaac.org/pictograms/15485/15485_300.png" alt="usar" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'ir',emoji:'<img src="https://static.arasaac.org/pictograms/31758/31758_300.png" alt="ir" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'sinto',emoji:'<img src="https://static.arasaac.org/pictograms/30197/30197_300.png" alt="sinto" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'sente',emoji:'<img src="https://static.arasaac.org/pictograms/30197/30197_300.png" alt="sente" style="width:65px;height:65px;">', customColor:'#fde6e5'},
+    {label:'para',emoji:'<img src="https://static.arasaac.org/pictograms/7125/7125_300.png" alt="está" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
+    {label:'com',emoji:'<img src="https://static.arasaac.org/pictograms/7064/7064_300.png" alt="com" style="width:65px;height:65px;">', customColor:'#E0E0E0'}, 
+    {label:'de',emoji:'<img src="https://static.arasaac.org/pictograms/7064/7064_300.png" alt="de" style="width:65px;height:65px;">', customColor:'#E0E0E0'}, 
+    {label:'vontade',emoji:'<img src="https://static.arasaac.org/pictograms/37369/37369_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
+    {label:'obrigado',emoji:'<img src="https://static.arasaac.org/pictograms/36093/36093_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
+    {label:'desculpa',emoji:'<img src="https://static.arasaac.org/pictograms/38361/38361_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
+    {label:'Emoções',emoji:'<img src="https://static.arasaac.org/pictograms/32123/32123_300.png" style="width:65px;height:65px;">',children:'emocoes', customColor:'#c0ddff'},
+    {label:'Sintomas',emoji:'<img src="https://static.arasaac.org/pictograms/28766/28766_300.png" style="width:65px;height:65px;">',children:'sintomas', customColor:'#c0ddff'},
+    {label:'calor',emoji:'<img src="https://static.arasaac.org/pictograms/35597/35597_300.png" style="width:65px;height:65px;">', customColor: '#c0ddff'},
+    {label:'frio',emoji:'<img src="https://static.arasaac.org/pictograms/26865/26865_300.png" alt="está" style="width:65px;height:65px;">', customColor: '#c0ddff'}, 
+    {label:'Vontades',emoji:'<img src="https://static.arasaac.org/pictograms/37160/37160_300.png" style="width:65px;height:65px;">',children:'vontades', customColor:'#f9dd8a'},
+    {label:'Refeição',emoji:'<img src="https://static.arasaac.org/pictograms/10228/10228_300.png" style="width:65px;height:65px;">',children:'alimentacao', customColor:'#f9dd8a'},
+    {label:'Higiene',emoji:'<img src="https://static.arasaac.org/pictograms/30524/30524_300.png" style="width:65px;height:65px;">',children:'higiene', customColor:'#f9dd8a'},   
+    {label:'Objetos',emoji:'<img src="https://static.arasaac.org/pictograms/3329/3329_300.png" style="width:65px;height:65px;">',children:'objetos', customColor:'#f9dd8a'},
+    {label:'ajuda',emoji:'<img src="https://static.arasaac.org/pictograms/12252/12252_300.png" style="width:65px;height:65px;">', customColor: '#fde6e5'},
+    {label:'parar',emoji:'<img src="https://static.arasaac.org/pictograms/27393/27393_300.png" alt="está" style="width:65px;height:65px;">', customColor: '#fde6e5'}, 
+    {label:'mais comandos',emoji:'<img src="https://static.arasaac.org/pictograms/38218/38218_300.png" style="width:65px;height:65px;">',children:'outros',customColor:'#E0E0E0'},
 ],
 alimentacao:{
     'sal':[ {label:'sal',emoji:'<img src="https://static.arasaac.org/pictograms/25576/25576_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
@@ -624,42 +627,42 @@ alimentacao:{
     'batata frita':[{label:'batata frita',emoji:'<img src="https://static.arasaac.org/pictograms/8653/8653_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],     
 },
 escaladedor: {
-  '1':[{label:'sem dor',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/725/725105.png" style="width:65px;height:65px;">',customColor:'#7BE87B'}],
-  '2':[{label:'dor suave',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/742/742774.png" style="width:65px;height:65px;">',customColor:'#D9E46A'}],  
-  '3':[{label:'dor moderada',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/725/725099.png" style="width:65px;height:65px;">',customColor:'#F7C85A'}],
-  '4':[{label:'dor forte',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/1791/1791330.png" style="width:65px;height:65px;">',customColor:'#F7A84A'}],  
-  '5':[{label:'dor muito forte',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/743/743413.png" style="width:65px;height:65px;">',customColor:'#F27A4A'}],  
-  '6':[{label:'dor máxima',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/11782/11782860.png" style="width:65px;height:65px;">',customColor:'#E96A6A'}]  
+  '1':[{label:'sem dor',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/725/725105.png" style="width:65px;height:65px;">',customColor:'#7BE87B'}],
+  '2':[{label:'dor suave',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/742/742774.png" style="width:65px;height:65px;">',customColor:'#D9E46A'}],  
+  '3':[{label:'dor moderada',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/725/725099.png" style="width:65px;height:65px;">',customColor:'#F7C85A'}],
+  '4':[{label:'dor forte',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/1791/1791330.png" style="width:65px;height:65px;">',customColor:'#F7A84A'}],  
+  '5':[{label:'dor muito forte',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/743/743413.png" style="width:65px;height:65px;">',customColor:'#F27A4A'}],  
+  '6':[{label:'dor máxima',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/11782/11782860.png" style="width:65px;height:65px;">',customColor:'#E96A6A'}]  
 },
 outros:{
-  'pergunta':[{label:'?',emoji:'<img src="https://static.arasaac.org/pictograms/3418/3418_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
-  'bom':[{ label: 'bom', emoji:'<img src="https://static.arasaac.org/pictograms/31410/31410_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],  
-  'ruim':[{ label: 'ruim',emoji:'<img src="https://static.arasaac.org/pictograms/5504/5504_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],   
-  'ficar':[{label:'ficar',emoji:'<img src="https://static.arasaac.org/pictograms/27206/27206_300.png" alt="ficar" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-  'outro':[{ label: 'outro', emoji:'<img src="https://static.arasaac.org/pictograms/17054/17054_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'mais':[{ label: 'mais',emoji:'<img src="https://static.arasaac.org/pictograms/5508/5508_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],  
-  'menos':[{ label: 'menos',emoji:'<img src="https://static.arasaac.org/pictograms/5512/5512_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'agora':[{ label: 'agora',emoji:'<img src="https://static.arasaac.org/pictograms/13026/13026_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'da':[{label:'da',emoji:'<img src="https://static.arasaac.org/pictograms/11712/11712_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
-  'de':[{label:'de',emoji:'<img src="https://static.arasaac.org/pictograms/7074/7074_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
-  'do':[{label:'do',emoji:'<img src="https://static.arasaac.org/pictograms/11712/11712_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
-  'horas':[{label:'horas',emoji:'<img src="https://static.arasaac.org/pictograms/7129/7129_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'dia':[{label:'dia',emoji:'<img src="https://static.arasaac.org/pictograms/37731/37731_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'semana':[{label:'semana',emoji:'<img src="https://static.arasaac.org/pictograms/7244/7244_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'mês':[{label:'mês',emoji:'<img src="https://static.arasaac.org/pictograms/7161/7161_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'ano':[{label:'ano',emoji:'<img src="https://static.arasaac.org/pictograms/6903/6903_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'segunda':[{label:'segunda',emoji:'<img src="https://static.arasaac.org/pictograms/37723/37723_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'terça':[{label:'terça',emoji:'<img src="https://static.arasaac.org/pictograms/37730/37730_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'quarta':[{label:'quarta',emoji:'<img src="https://static.arasaac.org/pictograms/37729/37729_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'quinta':[{label:'quinta',emoji:'<img src="https://static.arasaac.org/pictograms/37728/37728_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'sexta':[{label:'sexta',emoji:'<img src="https://static.arasaac.org/pictograms/37727/37727_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'sábado':[{label:'sábado',emoji:'<img src="https://static.arasaac.org/pictograms/37726/37726_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'domingo':[{label:'domingo',emoji:'<img src="https://static.arasaac.org/pictograms/37725/37725_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'tempo':[{label:'tempo',emoji:'<img src="https://static.arasaac.org/pictograms/22631/22631_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'clima':[{label:'clima',emoji:'<img src="https://static.arasaac.org/pictograms/2883/2883_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'sol':[{label:'sol',emoji:'<img src="https://static.arasaac.org/pictograms/7252/7252_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'chuva':[{label:'chuva',emoji:'<img src="https://static.arasaac.org/pictograms/3123/3123_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
-  'raio':[{label:'raio',emoji:'<img src="https://static.arasaac.org/pictograms/34545/34545_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'pergunta':[{label:'?',emoji:'<img src="https://static.arasaac.org/pictograms/3418/3418_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+  'bom':[{ label: 'bom', emoji:'<img src="https://static.arasaac.org/pictograms/31410/31410_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],  
+  'ruim':[{ label: 'ruim',emoji:'<img src="https://static.arasaac.org/pictograms/5504/5504_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],   
+  'ficar':[{label:'ficar',emoji:'<img src="https://static.arasaac.org/pictograms/27206/27206_300.png" alt="ficar" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+  'outro':[{ label: 'outro', emoji:'<img src="https://static.arasaac.org/pictograms/17054/17054_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'mais':[{ label: 'mais',emoji:'<img src="https://static.arasaac.org/pictograms/5508/5508_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],  
+  'menos':[{ label: 'menos',emoji:'<img src="https://static.arasaac.org/pictograms/5512/5512_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'agora':[{ label: 'agora',emoji:'<img src="https://static.arasaac.org/pictograms/13026/13026_300.png" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'da':[{label:'da',emoji:'<img src="https://static.arasaac.org/pictograms/11712/11712_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+  'de':[{label:'de',emoji:'<img src="https://static.arasaac.org/pictograms/7074/7074_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+  'do':[{label:'do',emoji:'<img src="https://static.arasaac.org/pictograms/11712/11712_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+  'horas':[{label:'horas',emoji:'<img src="https://static.arasaac.org/pictograms/7129/7129_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'dia':[{label:'dia',emoji:'<img src="https://static.arasaac.org/pictograms/37731/37731_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'semana':[{label:'semana',emoji:'<img src="https://static.arasaac.org/pictograms/7244/7244_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'mês':[{label:'mês',emoji:'<img src="https://static.arasaac.org/pictograms/7161/7161_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'ano':[{label:'ano',emoji:'<img src="https://static.arasaac.org/pictograms/6903/6903_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'segunda':[{label:'segunda',emoji:'<img src="https://static.arasaac.org/pictograms/37723/37723_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'terça':[{label:'terça',emoji:'<img src="https://static.arasaac.org/pictograms/37730/37730_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'quarta':[{label:'quarta',emoji:'<img src="https://static.arasaac.org/pictograms/37729/37729_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'quinta':[{label:'quinta',emoji:'<img src="https://static.arasaac.org/pictograms/37728/37728_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'sexta':[{label:'sexta',emoji:'<img src="https://static.arasaac.org/pictograms/37727/37727_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'sábado':[{label:'sábado',emoji:'<img src="https://static.arasaac.org/pictograms/37726/37726_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'domingo':[{label:'domingo',emoji:'<img src="https://static.arasaac.org/pictograms/37725/37725_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'tempo':[{label:'tempo',emoji:'<img src="https://static.arasaac.org/pictograms/22631/22631_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'clima':[{label:'clima',emoji:'<img src="https://static.arasaac.org/pictograms/2883/2883_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'sol':[{label:'sol',emoji:'<img src="https://static.arasaac.org/pictograms/7252/7252_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'chuva':[{label:'chuva',emoji:'<img src="https://static.arasaac.org/pictograms/3123/3123_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
+  'raio':[{label:'raio',emoji:'<img src="https://static.arasaac.org/pictograms/34545/34545_300.png" alt="?" style="width:65px;height:65px;">',customColor: '#c0ddff'}],
 },
 emocoes:{
 'amo':[{label:'amo',emoji:'<img src="https://static.arasaac.org/pictograms/37721/37721_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
@@ -673,12 +676,12 @@ emocoes:{
 'sem fome':[{label:'sem fome',emoji:'<img src="https://static.arasaac.org/pictograms/8674/8674_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'sede':[{label:'sede',emoji:'<img src="https://static.arasaac.org/pictograms/2276/2276_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'sem sede':[{label:'sem sede',emoji:'<img src="https://static.arasaac.org/pictograms/8673/8673_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
-'entubado':[{label:'entubado',emoji:'<img src="https://static.arasaac.org/pictograms/39255/39255_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],  
+'entubado':[{label:'entubado',emoji:'<img src="https://static.arasaac.org/pictograms/39255/39255_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],  
 'ansioso':[{label:'ansioso',emoji:'<img src="https://static.arasaac.org/pictograms/37176/37176_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'preocupado':[{label:'aflito',emoji:'<img src="https://static.arasaac.org/pictograms/26985/26985_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'pra baixo':[{label:'pra baixo',emoji:'<img src="https://static.arasaac.org/pictograms/32300/32300_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'gostando':[{label:'gostando',emoji:'<img src="https://static.arasaac.org/pictograms/31995/31995_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
-'surpreso':[{label:'surpreso',emoji:'<img src="https://static.arasaac.org/pictograms/32170/32170_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}], 
+'surpreso':[{label:'surpreso',emoji:'<img src="https://static.arasaac.org/pictograms/32170/32170_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}], 
 'vergonha':[{label:'vergonha',emoji:'<img src="https://static.arasaac.org/pictograms/31919/31919_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'aliviado':[{label:'aliviado',emoji:'<img src="https://static.arasaac.org/pictograms/4581/4581_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'confiante':[{label:'confiante',emoji:'<img src="https://static.arasaac.org/pictograms/38564/38564_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
@@ -705,18 +708,18 @@ sintomas:{
 'de cabeça':[ {label:'de cabeça',emoji:'<img src="https://static.arasaac.org/pictograms/32160/32160_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'no ouvido':[ {label:'no ouvido',emoji:'<img src="https://static.arasaac.org/pictograms/28777/28777_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'de garganta':[ {label:'de garganta',emoji:'<img src="https://static.arasaac.org/pictograms/28761/28761_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
-'de dente':[ {label:'de dente',emoji:'<img src="https://static.arasaac.org/pictograms/28757/28757_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],  
+'de dente':[ {label:'de dente',emoji:'<img src="https://static.arasaac.org/pictograms/28757/28757_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],  
 'nas pernas':[ {label:'nas pernas',emoji:'<img src="https://static.arasaac.org/pictograms/28769/28769_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'nas costas':[ {label:'nas costas',emoji:'<img src="https://static.arasaac.org/pictograms/7775/7775_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
-'nas mãos':[ {label:'nas mãos',emoji:'<img src="https://static.arasaac.org/pictograms/37532/37532_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],    
+'nas mãos':[ {label:'nas mãos',emoji:'<img src="https://static.arasaac.org/pictograms/37532/37532_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],    
 'nos pés':[ {label:'nos pés',emoji:'<img src="https://static.arasaac.org/pictograms/35809/35809_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
-'nas nádegas':[ {label:'nas nádegas',emoji:'<img src="https://static.arasaac.org/pictograms/28789/28789_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],    
+'nas nádegas':[ {label:'nas nádegas',emoji:'<img src="https://static.arasaac.org/pictograms/28789/28789_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],    
 'cansado':[ {label:'cansado',emoji:'<img src="https://static.arasaac.org/pictograms/31925/31925_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'fraco':[ {label:'fraco',emoji:'<img src="https://static.arasaac.org/pictograms/4620/4620_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'mal-estar':[ {label:'mal-estar',emoji:'<img src="https://static.arasaac.org/pictograms/37182/37182_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'ferida':[ {label:'ferida',emoji:'<img src="https://static.arasaac.org/pictograms/5484/5484_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'coceira':[ {label:'coceira',emoji:'<img src="https://static.arasaac.org/pictograms/11356/11356_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
-'erupção':[ {label:'erupção',emoji:'<img src="https://static.arasaac.org/pictograms/5578/5578_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],   
+'erupção':[ {label:'erupção',emoji:'<img src="https://static.arasaac.org/pictograms/5578/5578_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],   
 'dormência':[ {label:'dormência',emoji:'<img src="https://static.arasaac.org/pictograms/34276/34276_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'inchaço':[ {label:'inchaço',emoji:'<img src="https://static.arasaac.org/pictograms/31678/31678_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
 'suando muito':[ {label:'suando muito',emoji:'<img src="https://static.arasaac.org/pictograms/32125/32125_300.png" style="width:65px;height:65px;">',customColor:'#c0ddff'}],
@@ -823,77 +826,77 @@ Procedimentos:{
 'tomar remédio':[{label:'tomar remédio',emoji:'<img src="https://static.arasaac.org/pictograms/8163/8163_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'saber a medicação':[ {label:'saber a medicação',emoji:'<img src="https://static.arasaac.org/pictograms/30790/30790_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'resultado de exame':[ {label:'resultado de exame',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/7748/7748989.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'saber sobre alta':[ {label:'saber sobre alta',emoji:'<img src="https://static.arasaac.org/pictograms/38462/38462_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
+'saber sobre alta':[ {label:'saber sobre alta',emoji:'<img src="https://static.arasaac.org/pictograms/38462/38462_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
 'aferir a pressão':[ {label:'aferir a pressão',emoji:'<img src="https://static.arasaac.org/pictograms/38855/38855_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'ver a saturação':[ {label:'ver a saturação',emoji:'<img src="https://static.arasaac.org/pictograms/38905/38905_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'medir a glicose':[ {label:'medir a glicose',emoji:'<img src="https://static.arasaac.org/pictograms/24591/24591_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
-'aferir grau':[ {label:'aferir grau',emoji:'<img src="https://static.arasaac.org/pictograms/2789/2789_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
+'medir a glicose':[ {label:'medir a glicose',emoji:'<img src="https://static.arasaac.org/pictograms/24591/24591_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
+'aferir grau':[ {label:'aferir grau',emoji:'<img src="https://static.arasaac.org/pictograms/2789/2789_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
 'trocar soro':[ {label:'trocar soro',emoji:'<img src="https://static.arasaac.org/pictograms/5927/5927_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'trocar de posição':[ {label:'trocar de posição',emoji:'<img src="https://static.arasaac.org/pictograms/4553/4553_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'ser examinado':[ {label:'ser examinado',emoji:'<img src="https://static.arasaac.org/pictograms/6000/6000_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'oxigênio':[ {label:'oxigênio',emoji:'<img src="https://static.arasaac.org/pictograms/24216/24216_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'inalação':[ {label:'inalação',emoji:'<img src="https://static.arasaac.org/pictograms/30128/30128_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'conferir a sonda':[ {label:'conferir a sonda',emoji:'<img src="https://static.arasaac.org/pictograms/30112/30112_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'conferir a bolsa':[ {label:'conferir a bolsa',emoji:'<img src="https://static.arasaac.org/pictograms/37377/37377_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
+'conferir a bolsa':[ {label:'conferir a bolsa',emoji:'<img src="https://static.arasaac.org/pictograms/37377/37377_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
 'usar a máscara':[ {label:'usar a máscara',emoji:'<img src="https://static.arasaac.org/pictograms/36787/36787_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'ver o monitor':[ {label:'ver o monitor',emoji:'<img src="https://static.arasaac.org/pictograms/35527/35527_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'trocar curativo':[ {label:'trocar curativo',emoji:'<img src="https://static.arasaac.org/pictograms/30150/30150_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'exame de sangue':[ {label:'exame de sangue',emoji:'<img src="https://static.arasaac.org/pictograms/30084/30084_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
-'exame de urina':[ {label:'exame de urina',emoji:'<img src="https://static.arasaac.org/pictograms/31725/31725_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
+'exame de sangue':[ {label:'exame de sangue',emoji:'<img src="https://static.arasaac.org/pictograms/30084/30084_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
+'exame de urina':[ {label:'exame de urina',emoji:'<img src="https://static.arasaac.org/pictograms/31725/31725_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
 'exame de fezes':[ {label:'exame de fezes',emoji:'<img src="https://static.arasaac.org/pictograms/5901/5901_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'raio-x':[ {label:'raio-x',emoji:'<img src="https://static.arasaac.org/pictograms/38865/38865_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'eletrocardiograma':[ {label:'eletro',emoji:'<img src="https://static.arasaac.org/pictograms/30805/30805_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
-'ultrassom':[ {label:'ultrassom',emoji:'<img src="https://static.arasaac.org/pictograms/38862/38862_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
-'tomografia':[ {label:'tomografia',emoji:'<img src="https://static.arasaac.org/pictograms/38354/38354_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
-'colono':[ {label:'colono',emoji:'<img src="https://static.arasaac.org/pictograms/31771/31771_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}]  
+'eletrocardiograma':[ {label:'eletro',emoji:'<img src="https://static.arasaac.org/pictograms/30805/30805_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
+'ultrassom':[ {label:'ultrassom',emoji:'<img src="https://static.arasaac.org/pictograms/38862/38862_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
+'tomografia':[ {label:'tomografia',emoji:'<img src="https://static.arasaac.org/pictograms/38354/38354_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
+'colono':[ {label:'colono',emoji:'<img src="https://static.arasaac.org/pictograms/31771/31771_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}]  
 },
 higiene:{
-    'trocar roupa':[{label:'trocar roupa',emoji:'<img src="https://static.arasaac.org/pictograms/4697/4697_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
-    'molhar a boca':[{label:'molhar a boca',emoji:'<img src="https://static.arasaac.org/pictograms/29169/29169_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
-    'limpar a boca':[{label:'limpar a boca',emoji:'<img src="https://static.arasaac.org/pictograms/17271/17271_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
-    'limpar ouvidos':[{label:'limpar ouvidos',emoji:'<img src="https://static.arasaac.org/pictograms/29834/29834_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],    
-    'limpar as mãos':[{label:'limpar as mãos',emoji:'<img src="https://static.arasaac.org/pictograms/2443/2443_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
-    'cortar as unhas':[{label:'cortar as unhas',emoji:'<img src="https://static.arasaac.org/pictograms/10152/10152_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
-    'fazer a barba':[{label:'fazer a barba',emoji:'<img src="https://static.arasaac.org/pictograms/5361/5361_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
-    'cortar o cabelo':[{label:'cortar o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/27695/27695_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
-    'lavar o rosto':[{label:'lavar o rosto',emoji:'<img src="https://static.arasaac.org/pictograms/34775/34775_300.png" style=width:65px;height:65px;">',customColor:'fde6e5'}],
-    'fazer xixi':[{label:'fazer xixi',emoji:'<img src="https://static.arasaac.org/pictograms/3429/3429_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
-    'fazer cocô':[{label:'fazer cocô',emoji:'<img src="https://static.arasaac.org/pictograms/35349/35349_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'me vestir':[{label:'me vestir',emoji:'<img src="https://static.arasaac.org/pictograms/2781/2781_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'escovar os dentes':[{label:'escovar os dentes',emoji:'<img src="https://static.arasaac.org/pictograms/31880/31880_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'tomar banho':[{label:'tomar banho',emoji:'<img src="https://static.arasaac.org/pictograms/2371/2371_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'lavar o cabelo':[{label:'lavar o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/38555/38555_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'pentear o cabelo':[{label:'pentear o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/2512/2512_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'hidratar o corpo':[{label:'hidratar o corpo',emoji:'<img src="https://static.arasaac.org/pictograms/35829/35829_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'limpar axilas':[{label:'limpar axilas',emoji:'<img src="https://static.arasaac.org/pictograms/39672/39672_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
-    'trocar fralda':[{label:'trocar fralda',emoji:'<img src="https://static.arasaac.org/pictograms/22017/22017_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'secar':[{label:'secar',emoji:'<img src="https://static.arasaac.org/pictograms/2566/2566_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-    'limpar os olhos':[{label:'limpar os olhos',emoji:'<img src="https://static.arasaac.org/pictograms/39202/39202_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
-    'trocar roupa':[{label:'trocar roupa',emoji:'<img src="https://static.arasaac.org/pictograms/4697/4697_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}] 
-  },
+    'trocar roupa':[{label:'trocar roupa',emoji:'<img src="https://static.arasaac.org/pictograms/4697/4697_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
+    'molhar a boca':[{label:'molhar a boca',emoji:'<img src="https://static.arasaac.org/pictograms/29169/29169_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
+    'limpar a boca':[{label:'limpar a boca',emoji:'<img src="https://static.arasaac.org/pictograms/17271/17271_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
+    'limpar ouvidos':[{label:'limpar ouvidos',emoji:'<img src="https://static.arasaac.org/pictograms/29834/29834_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],    
+    'limpar as mãos':[{label:'limpar as mãos',emoji:'<img src="https://static.arasaac.org/pictograms/2443/2443_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
+    'cortar as unhas':[{label:'cortar as unhas',emoji:'<img src="https://static.arasaac.org/pictograms/10152/10152_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
+    'fazer a barba':[{label:'fazer a barba',emoji:'<img src="https://static.arasaac.org/pictograms/5361/5361_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
+    'cortar o cabelo':[{label:'cortar o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/27695/27695_300.png" style="width:65px;height:65px;">',customColor:'fde6e5'}],
+    'lavar o rosto':[{label:'lavar o rosto',emoji:'<img src="https://static.arasaac.org/pictograms/34775/34775_300.png" style=width:65px;height:65px;">',customColor:'fde6e5'}],
+    'fazer xixi':[{label:'fazer xixi',emoji:'<img src="https://static.arasaac.org/pictograms/3429/3429_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
+    'fazer cocô':[{label:'fazer cocô',emoji:'<img src="https://static.arasaac.org/pictograms/35349/35349_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'me vestir':[{label:'me vestir',emoji:'<img src="https://static.arasaac.org/pictograms/2781/2781_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'escovar os dentes':[{label:'escovar os dentes',emoji:'<img src="https://static.arasaac.org/pictograms/31880/31880_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'tomar banho':[{label:'tomar banho',emoji:'<img src="https://static.arasaac.org/pictograms/2371/2371_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'lavar o cabelo':[{label:'lavar o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/38555/38555_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'pentear o cabelo':[{label:'pentear o cabelo',emoji:'<img src="https://static.arasaac.org/pictograms/2512/2512_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'hidratar o corpo':[{label:'hidratar o corpo',emoji:'<img src="https://static.arasaac.org/pictograms/35829/35829_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'limpar axilas':[{label:'limpar axilas',emoji:'<img src="https://static.arasaac.org/pictograms/39672/39672_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
+    'trocar fralda':[{label:'trocar fralda',emoji:'<img src="https://static.arasaac.org/pictograms/22017/22017_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'secar':[{label:'secar',emoji:'<img src="https://static.arasaac.org/pictograms/2566/2566_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+    'limpar os olhos':[{label:'limpar os olhos',emoji:'<img src="https://static.arasaac.org/pictograms/39202/39202_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
+    'trocar roupa':[{label:'trocar roupa',emoji:'<img src="https://static.arasaac.org/pictograms/4697/4697_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}] 
+  },
 vontades:{
-'silêncio':[{label:'silêncio',emoji:'<img src="https://static.arasaac.org/pictograms/5936/5936_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],    
-'beber':[{label:'beber',emoji:'<img src="https://static.arasaac.org/pictograms/2276/2276_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],     
-'comer':[{label:'comer',emoji:'<img src="https://static.arasaac.org/pictograms/2349/2349_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
-'ir':[{label:'ir',emoji:'<img src="https://static.arasaac.org/pictograms/31758/31758_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
-'dormir':[{label:'dormir',emoji:'<img src="https://static.arasaac.org/pictograms/2369/2369_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
-'sentar':[{label:'sentar',emoji:'<img src="https://static.arasaac.org/pictograms/2801/2801_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
-'levantar':[{label:'levantar',emoji:'<img src="https://static.arasaac.org/pictograms/8151/8151_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],     
+'silêncio':[{label:'silêncio',emoji:'<img src="https://static.arasaac.org/pictograms/5936/5936_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],    
+'beber':[{label:'beber',emoji:'<img src="https://static.arasaac.org/pictograms/2276/2276_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],     
+'comer':[{label:'comer',emoji:'<img src="https://static.arasaac.org/pictograms/2349/2349_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
+'ir':[{label:'ir',emoji:'<img src="https://static.arasaac.org/pictograms/31758/31758_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
+'dormir':[{label:'dormir',emoji:'<img src="https://static.arasaac.org/pictograms/2369/2369_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
+'sentar':[{label:'sentar',emoji:'<img src="https://static.arasaac.org/pictograms/2801/2801_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
+'levantar':[{label:'levantar',emoji:'<img src="https://static.arasaac.org/pictograms/8151/8151_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],     
 'me mexer':[{label:'me mexer',emoji:'<img src="https://static.arasaac.org/pictograms/26728/26728_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'beijar':[{label:'beijar',emoji:'<img src="https://static.arasaac.org/pictograms/32886/32886_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'abraçar':[{label:'abraçar',emoji:'<img src="https://static.arasaac.org/pictograms/4550/4550_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'agradecer':[{label:'agradecer',emoji:'<img src="https://static.arasaac.org/pictograms/36093/36093_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],   
+'agradecer':[{label:'agradecer',emoji:'<img src="https://static.arasaac.org/pictograms/36093/36093_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],   
 'visitas':[ {label:'visitas',emoji:'<img src="https://static.arasaac.org/pictograms/28187/28187_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
-'ter alta':[ {label:'ter alta',emoji:'<img src="https://static.arasaac.org/pictograms/39196/39196_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
-'ligar':[{label:'ligar',emoji:'<img src="https://static.arasaac.org/pictograms/21818/21818_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
+'ter alta':[ {label:'ter alta',emoji:'<img src="https://static.arasaac.org/pictograms/39196/39196_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
+'ligar':[{label:'ligar',emoji:'<img src="https://static.arasaac.org/pictograms/21818/21818_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
 'desligar':[{label:'desligar',emoji:'<img src="https://static.arasaac.org/pictograms/21365/21365_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'ligar a luz':[{label:'ligar a luz',emoji:'<img src="https://static.arasaac.org/pictograms/8103/8103_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
+'ligar a luz':[{label:'ligar a luz',emoji:'<img src="https://static.arasaac.org/pictograms/8103/8103_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
  'desligar a luz':[{label:'desligar a luz',emoji:'<img src="https://static.arasaac.org/pictograms/8027/8027_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'aumentar ar':[{label:'aumentar ar',emoji:'<img src="https://static.arasaac.org/pictograms/6218/6218_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
+'aumentar ar':[{label:'aumentar ar',emoji:'<img src="https://static.arasaac.org/pictograms/6218/6218_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
 'diminuir ar':[{label:'diminuir ar',emoji:'<img src="https://static.arasaac.org/pictograms/5916/5916_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'escrever':[{label:'escrever',emoji:'<img src="https://static.arasaac.org/pictograms/10312/10312_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'brincar':[{label:'brincar',emoji:'<img src="https://static.arasaac.org/pictograms/32568/32568_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'música':[{label:'música',emoji:'<img src="https://static.arasaac.org/pictograms/37486/37486_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
+'música':[{label:'música',emoji:'<img src="https://static.arasaac.org/pictograms/37486/37486_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
 'ler':[{label:'ler',emoji:'<img src="https://static.arasaac.org/pictograms/31680/31680_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'estudar':[{label:'estudar',emoji:'<img src="https://static.arasaac.org/pictograms/35979/35979_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'celular':[{label:'celular',emoji:'<img src="https://static.arasaac.org/pictograms/25269/25269_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
@@ -902,20 +905,20 @@ vontades:{
 'desenhar':[{label:'desenhar',emoji:'<img src="https://static.arasaac.org/pictograms/6285/6285_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'trabalhar':[{label:'trabalhar',emoji:'<img src="https://static.arasaac.org/pictograms/34393/34393_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'jogo':[{label:'jogo',emoji:'<img src="https://static.arasaac.org/pictograms/6170/6170_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
-'novela':[{label:'novela',emoji:'<img src="https://static.arasaac.org/pictograms/29125/29125_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
-'igreja':[{label:'igreja',emoji:'<img src="https://static.arasaac.org/pictograms/6530/6530_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
-'centro':[{label:'centro',emoji:'<img src="https://static.arasaac.org/pictograms/2460/2460_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
-'missa':[{label:'missa',emoji:'<img src="https://static.arasaac.org/pictograms/24189/24189_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],  
-'culto':[{label:'culto',emoji:'<img src="https://static.arasaac.org/pictograms/30903/30903_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],     
+'novela':[{label:'novela',emoji:'<img src="https://static.arasaac.org/pictograms/29125/29125_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
+'igreja':[{label:'igreja',emoji:'<img src="https://static.arasaac.org/pictograms/6530/6530_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
+'centro':[{label:'centro',emoji:'<img src="https://static.arasaac.org/pictograms/2460/2460_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
+'missa':[{label:'missa',emoji:'<img src="https://static.arasaac.org/pictograms/24189/24189_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],  
+'culto':[{label:'culto',emoji:'<img src="https://static.arasaac.org/pictograms/30903/30903_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],     
 'tablet':[{label:'tablet',emoji:'<img src="https://static.arasaac.org/pictograms/28099/28099_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
 'jogar':[{label:'jogar',emoji:'<img src="https://static.arasaac.org/pictograms/29151/29151_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'comemorar':[{label:'comemorar',emoji:'<img src="https://static.arasaac.org/pictograms/16475/16475_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'aniversário':[{label:'aniversário',emoji:'<img src="https://static.arasaac.org/pictograms/28491/28491_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],    
+'aniversário':[{label:'aniversário',emoji:'<img src="https://static.arasaac.org/pictograms/28491/28491_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],    
 'viajar':[{label:'viajar',emoji:'<img src="https://static.arasaac.org/pictograms/36974/36974_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'praia':[{label:'praia',emoji:'<img src="https://static.arasaac.org/pictograms/4746/4746_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
 'futebol':[{label:'futebol',emoji:'<img src="https://static.arasaac.org/pictograms/7137/7137_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
-'meu cão':[{label:'meu cão',emoji:'<img src="https://static.arasaac.org/pictograms/38967/38967_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],    
-'meu gato':[{label:'meu gato',emoji:'<img src="https://static.arasaac.org/pictograms/38968/38968_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}]    
+'meu cão':[{label:'meu cão',emoji:'<img src="https://static.arasaac.org/pictograms/38967/38967_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],    
+'meu gato':[{label:'meu gato',emoji:'<img src="https://static.arasaac.org/pictograms/38968/38968_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}]    
 },
   objetos:{
     'Ar':[ {label:'ar',emoji:'<img src="https://static.arasaac.org/pictograms/2640/2640_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
@@ -994,53 +997,53 @@ function createCardElement(item) {
     return div;
 }
 function render(items){
-  board.innerHTML='';
-  
-  if(history.length>0){
-    const backBtn=document.createElement('div');
-    backBtn.className='card';
-    backBtn.style.backgroundColor = '#E0E0E0';
-    backBtn.innerHTML='<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
-    backBtn.onclick=()=>{ history.pop(); renderCurrent(); };
-    board.appendChild(backBtn);
-  }
-  Object.keys(items).forEach(group=>{
-    const groupData = items[group];
-    if(Array.isArray(groupData)){
-      groupData.forEach(item=>{
-        const div = createCardElement(item); 
-        div.onclick=()=>{ addToPhrase(item.label); };
-        board.appendChild(div);
-      });
-    } else {
-      const div=document.createElement('div');
-      div.className='card';
-      div.innerHTML=`<div style="font-size:50px">${groupData[0]?.emoji||'📂'}</div><div class='label'>${group}</div>`;
-      div.onclick=()=>{ history.push(items); render(groupData); };
-      board.appendChild(div);
-    }
-  });
+  board.innerHTML='';
+  
+  if(history.length>0){
+    const backBtn=document.createElement('div');
+    backBtn.className='card';
+    backBtn.style.backgroundColor = '#E0E0E0';
+    backBtn.innerHTML='<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
+    backBtn.onclick=()=>{ history.pop(); renderCurrent(); };
+    board.appendChild(backBtn);
+  }
+  Object.keys(items).forEach(group=>{
+    const groupData = items[group];
+    if(Array.isArray(groupData)){
+      groupData.forEach(item=>{
+        const div = createCardElement(item); 
+        div.onclick=()=>{ addToPhrase(item.label); };
+        board.appendChild(div);
+      });
+    } else {
+      const div=document.createElement('div');
+      div.className='card';
+      div.innerHTML=`<div style="font-size:50px">${groupData[0]?.emoji||'📂'}</div><div class='label'>${group}</div>`;
+      div.onclick=()=>{ history.push(items); render(groupData); };
+      board.appendChild(div);
+    }
+  });
 traduzirPagina(localStorage.getItem("idiomaAtual"));
 }
 function renderCurrent() {
-  const current = history.length > 0 ? history[history.length - 1] : data.home;
+  const current = history.length > 0 ? history[history.length - 1] : data.home;
 
-  if (Array.isArray(current)) {
-    board.innerHTML = '';
-    current.forEach(item => {
-      const div = createCardElement(item); 
+  if (Array.isArray(current)) {
+    board.innerHTML = '';
+    current.forEach(item => {
+      const div = createCardElement(item); 
 
-      if (item.children) {
-        div.onclick = () => {
-          history.push(data[item.children]);
-          render(data[item.children]);
-        };
-      } else {
-        div.onclick = () => { addToPhrase(item.label); };
-      }
+      if (item.children) {
+        div.onclick = () => {
+          history.push(data[item.children]);
+          render(data[item.children]);
+        };
+      } else {
+        div.onclick = () => { addToPhrase(item.label); };
+      }
 
-      board.appendChild(div);
-    });
+      board.appendChild(div);
+    });
 traduzirPagina(localStorage.getItem("idiomaAtual"));
 
   } else {
@@ -1125,10 +1128,11 @@ function exportLogs(){
 }
 renderCurrent();
 </script>
+
 </body>
 <footer style="color: #000000; text-align: center; font-size: 0.8em;">
     <p>
-        Ferramenta desenvolvida pela Inovação vinculada à TI, utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.
+        Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.
     </p>
     <p>
         <strong>Versão 1.0 - Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados</strong>
