@@ -595,7 +595,7 @@ function startGaze() {
 
     gazeEnabled = true;
     createGazeDot();
-
+    .showPredictionPoints(false)  // remove segundo ponto
     webgazer.setGazeListener((data) => {
         if (!data || !gazeEnabled) return;
 
