@@ -528,9 +528,9 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <!-- Página inicial será renderizada via script -->
 </section>
 <script>
-/* ==========================
-   RASTREIO OCULAR – WEBGAZER
-   ========================== */
+/* ====================================
+   RASTREIO OCULAR – PRECISÃO MÁXIMA
+   ==================================== */
 
 let gazeEnabled = false;
 let gazeDot = null;
@@ -538,8 +538,48 @@ let gazeTimer = null;
 let gazeStart = 0;
 const HOLD_TIME = 5000; // 5 segundos olhando fixa
 
-// Criar mira vermelha (único círculo)
+// ---------------------------
+// Filtro Kalman + Média Móvel
+// ---------------------------
+let kalman = {
+    x: 0,
+    y: 0,
+    px: 0,
+    py: 0,
+    initialized: false,
+    smooth(dataX, dataY) {
+        if (!this.initialized) {
+            this.px = dataX;
+            this.py = dataY;
+            this.initialized = true;
+        }
+        // Kalman simples
+        const K = 0.3; // ganho
+        this.px = this.px + K * (dataX - this.px);
+        this.py = this.py + K * (dataY - this.py);
+
+        return { x: this.px, y: this.py };
+    }
+};
+
+const smoothBuffer = [];
+const BUFFER_SIZE = 5;
+function movingAverage(x, y) {
+    smoothBuffer.push({ x, y });
+    if (smoothBuffer.length > BUFFER_SIZE) smoothBuffer.shift();
+    const avg = smoothBuffer.reduce((a, b) => {
+        a.x += b.x;
+        a.y += b.y;
+        return a;
+    }, { x: 0, y: 0 });
+    return { x: avg.x / smoothBuffer.length, y: avg.y / smoothBuffer.length };
+}
+
+// ---------------------------
+// Criar mira vermelha + círculo de progresso
+// ---------------------------
 function createGazeDot() {
+    // mira
     gazeDot = document.createElement("div");
     gazeDot.id = "gaze-dot";
     gazeDot.style.position = "fixed";
@@ -553,15 +593,35 @@ function createGazeDot() {
     gazeDot.style.left = "-100px";
     gazeDot.style.top = "-100px";
     document.body.appendChild(gazeDot);
+
+    // círculo de progresso
+    const progressCircle = document.createElement("div");
+    progressCircle.id = "gaze-progress";
+    progressCircle.style.position = "fixed";
+    progressCircle.style.width = "36px";
+    progressCircle.style.height = "36px";
+    progressCircle.style.borderRadius = "50%";
+    progressCircle.style.border = "3px solid rgba(0,200,0,0.7)";
+    progressCircle.style.boxSizing = "border-box";
+    progressCircle.style.zIndex = "99998";
+    progressCircle.style.pointerEvents = "none";
+    progressCircle.style.left = "-100px";
+    progressCircle.style.top = "-100px";
+    progressCircle.style.clipPath = "circle(0% at 50% 50%)"; // inicialmente vazio
+    document.body.appendChild(progressCircle);
 }
 
-// Remover mira
+// remover mira + progresso
 function removeGazeDot() {
     if (gazeDot) gazeDot.remove();
     gazeDot = null;
+    const progressCircle = document.getElementById("gaze-progress");
+    if (progressCircle) progressCircle.remove();
 }
 
-// Verificar cards
+// ---------------------------
+// Checar gaze e atualizar progresso
+// ---------------------------
 function checkGaze(x, y) {
     const cards = document.querySelectorAll(".card");
     let hoveredCard = null;
@@ -573,70 +633,89 @@ function checkGaze(x, y) {
         }
     });
 
+    const progressCircle = document.getElementById("gaze-progress");
+
     if (hoveredCard) {
         if (!gazeTimer) {
             gazeStart = Date.now();
             gazeTimer = setInterval(() => {
                 const elapsed = Date.now() - gazeStart;
+                const percent = Math.min(elapsed / HOLD_TIME, 1);
+                if (progressCircle) {
+                    progressCircle.style.clipPath = `circle(${percent * 50}% at 50% 50%)`;
+                }
+
                 if (elapsed >= HOLD_TIME) {
-                    hoveredCard.click();        // 🔥 AGORA FUNCIONA
+                    hoveredCard.click();
                     clearInterval(gazeTimer);
                     gazeTimer = null;
+                    if (progressCircle) progressCircle.style.clipPath = "circle(0% at 50% 50%)";
                 }
-            }, 150);
+            }, 50);
         }
     } else {
         clearInterval(gazeTimer);
         gazeTimer = null;
+        if (progressCircle) progressCircle.style.clipPath = "circle(0% at 50% 50%)";
+    }
+
+    // mover círculo de progresso
+    if (progressCircle) {
+        progressCircle.style.left = (x - 18) + "px";
+        progressCircle.style.top = (y - 18) + "px";
     }
 }
 
+// ---------------------------
 // Iniciar rastreio
+// ---------------------------
 function startGaze() {
     if (gazeEnabled) return;
 
     gazeEnabled = true;
     createGazeDot();
 
-    // 🔥 Remove overlays AUTOMÁTICOS do WebGazer
-    webgazer.showVideoPreview(false)      // remove vídeo
-            .showPredictionPoints(false)  // remove segundo ponto
-            .showFaceOverlay(false)       // remove caixa grande
-            .showFaceFeedbackBox(false);  // remove quadro facial
+    webgazer
+        .showVideoPreview(false)
+        .showPredictionPoints(false)
+        .showFaceOverlay(false)
+        .showFaceFeedbackBox(false);
 
     webgazer.setGazeListener((data) => {
         if (!data || !gazeEnabled) return;
 
-        const x = data.x;
-        const y = data.y;
+        const kalmanPos = kalman.smooth(data.x, data.y);
+        const smoothed = movingAverage(kalmanPos.x, kalmanPos.y);
 
-        // Suavização para melhorar precisão
         if (gazeDot) {
-            gazeDot.style.left = (x - 11) + "px";
-            gazeDot.style.top  = (y - 11) + "px";
+            gazeDot.style.left = (smoothed.x - 11) + "px";
+            gazeDot.style.top = (smoothed.y - 11) + "px";
         }
 
-        checkGaze(x, y);
+        checkGaze(smoothed.x, smoothed.y);
+
     }).begin();
 }
 
+// ---------------------------
 // Parar rastreio
+// ---------------------------
 function stopGaze() {
     gazeEnabled = false;
     removeGazeDot();
     clearInterval(gazeTimer);
     gazeTimer = null;
+    smoothBuffer.length = 0;
+    kalman.initialized = false;
 
     try { webgazer.end(); } catch(e){}
 }
 
-// Alternância do botão
+// Alternância sem alert
 function toggleGaze() {
     if (!gazeEnabled) {
-        alert("Rastreio ocular ativado.");
         startGaze();
     } else {
-        alert("Rastreio ocular desativado.");
         stopGaze();
     }
 }
