@@ -535,11 +535,11 @@ let gazeDot = null;
 let progressCircle = null;
 let gazeTimer = null;
 let gazeStart = 0;
-const HOLD_TIME = 5000; // ms
+const HOLD_TIME = 3000; // ms
 
 // SUAVIZAÇÃO BUFFER
 const smoothBuffer = [];
-const BUFFER_SIZE = 6; // média móvel curta
+const BUFFER_SIZE = 30; // média móvel curta
 function movingAverage(x,y){
   smoothBuffer.push({x,y});
   if(smoothBuffer.length>BUFFER_SIZE) smoothBuffer.shift();
@@ -563,8 +563,8 @@ function createKalman(R = 0.01, Q = 0.1) {
     reset(v=0){ x=v; p=1; }
   }
 }
-const kx = createKalman(0.005,0.01);
-const ky = createKalman(0.005,0.01);
+const kx = createKalman(0.0008, 0.008);  // ruído menor, suavização maior
+const ky = createKalman(0.0008, 0.008);
 
 // CALIBRAÇÃO 4 PONTOS (coleta e ajuste affine)
 let calib = {
@@ -927,8 +927,12 @@ function startGaze() {
 
     // Move mira (centro ajustado)
     if(gazeDot){
-      gazeDot.style.left = (kxf - 9) + 'px';
-      gazeDot.style.top  = (kyf - 9) + 'px';
+// Amortecimento visual: suaviza mais um pouco
+const dampX = (parseFloat(gazeDot.style.left) || kxf) * 0.7 + kxf * 0.3;
+const dampY = (parseFloat(gazeDot.style.top)  || kyf) * 0.7 + kyf * 0.3;
+
+gazeDot.style.left = (dampX - 9) + 'px';
+gazeDot.style.top  = (dampY - 9) + 'px';
     }
     if(progressCircle){
       progressCircle.style.left = (kxf - 23) + 'px';
