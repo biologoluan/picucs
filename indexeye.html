@@ -596,13 +596,16 @@ function startGaze() {
     gazeEnabled = true;
     createGazeDot();
 
+    // Desativa a mira padrão do WebGazer
+    webgazer.showVideo(false).showFaceOverlay(false).showPredictionPoints(false);
+
     webgazer.setGazeListener((data) => {
         if (!data || !gazeEnabled) return;
 
         const x = data.x;
         const y = data.y;
 
-        // Move mira
+        // Move mira personalizada
         if (gazeDot) {
             gazeDot.style.left = (x - 14) + "px";
             gazeDot.style.top = (y - 14) + "px";
