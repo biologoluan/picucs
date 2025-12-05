@@ -502,10 +502,11 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
     <img src="https://cepunimedcostadosol.com.br/wp-content/uploads/2023/10/logo-unimed-costa-do-sol-2048x732.png" class="logo">
     <h1>Prancha Interativa de Cuidado - Hospitalar</h1>
   </div>
-  <style>
+<style>
 .card.selecionado {
-    outline: 4px solid red;
-    transition: outline 0.2s;
+    outline: 5px solid red;
+    outline-offset: -2px;
+    transition: outline 0.1s;
 }
 </style>
 </header>
@@ -533,125 +534,120 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <!-- Página inicial será renderizada via script -->
 </section>
 <script>
-/* ============================================
-   CONFIGURAÇÕES
-===============================================*/
-const HOVER_TIME = 2000; // 2 segundos
-let gazeActive = false;
+const HOVER_TIME = 2000; // 2s
 let currentCard = null;
 let hoverStart = null;
+let gazeActive = false;
 
-/* ============================================
-   ELEMENTO VISUAL DO GAZE
-===============================================*/
+/* =============================
+   PONTO VERMELHO DO GAZE
+=============================*/
 const gazeDot = document.createElement("div");
-gazeDot.style.position = "fixed";
-gazeDot.style.width = "18px";
-gazeDot.style.height = "18px";
-gazeDot.style.border = "3px solid red";
-gazeDot.style.borderRadius = "50%";
-gazeDot.style.pointerEvents = "none";
-gazeDot.style.zIndex = "9999";
-gazeDot.style.display = "none";
+Object.assign(gazeDot.style, {
+    position: "fixed",
+    width: "18px",
+    height: "18px",
+    border: "3px solid red",
+    borderRadius: "50%",
+    pointerEvents: "none",
+    zIndex: 99999,
+    display: "none"
+});
 document.body.appendChild(gazeDot);
 
-/* ============================================
-   INICIAR O WEBGAZER
-===============================================*/
-async function iniciarRastreio() {
+/* =============================
+   ATIVAR RASTREIO OCULAR
+=============================*/
+function ativarRastreio() {
+    if (gazeActive) return;
     gazeActive = true;
+
     gazeDot.style.display = "block";
 
     webgazer.setGazeListener((data) => {
-        if (!data || !gazeActive) return;
+        if (!data) return;
 
         const x = data.x;
         const y = data.y;
 
-        // Atualiza ponto visual
-        gazeDot.style.left = x - 9 + "px";
-        gazeDot.style.top = y - 9 + "px";
+        // Atualiza mira
+        gazeDot.style.left = (x - 9) + "px";
+        gazeDot.style.top = (y - 9) + "px";
 
-        verificarHover(x, y);
-    }).begin();
+        detectarCard(x, y);
+    })
+    .showVideo(false)
+    .showFaceOverlay(false)
+    .showFaceFeedback(false)
+    .begin();
 
-    iniciarPiscar();
+    iniciarDeteccaoPiscar();
 }
 
-/* ============================================
-   VERIFICAR SE O GAZE ESTÁ SOBRE UM CARD
-===============================================*/
-function verificarHover(x, y) {
-    const elem = document.elementFromPoint(x, y);
+/* =============================
+   DETECTAR CARD EMBAIXO DO GAZE
+=============================*/
+function detectarCard(x, y) {
+    const elemento = document.elementFromPoint(x, y);
 
-    const card = elem?.closest(".card"); // <-- Ajuste o seletor dos seus cards
+    if (!elemento) return;
 
+    const card = elemento.closest(".card"); // Seu seletor
+
+    // Gaze mudou de card
     if (card !== currentCard) {
-        // reseta
+        removerSelecoes();
         currentCard = card;
         hoverStart = performance.now();
+        return;
     }
 
-    if (card) {
-        const elapsed = performance.now() - hoverStart;
+    // Nenhum card sob o olhar
+    if (!card) return;
 
-        if (elapsed >= HOVER_TIME) {
-            card.classList.add("selecionado");
-        }
+    const passou = performance.now() - hoverStart;
+
+    if (passou >= HOVER_TIME) {
+        card.classList.add("selecionado");
     }
 }
 
-/* ============================================
-   DETECÇÃO DE PISCAR (Eye Aspect Ratio – EAR)
-===============================================*/
-let blinkCallback = null;
+function removerSelecoes() {
+    document.querySelectorAll(".card.selecionado")
+        .forEach(c => c.classList.remove("selecionado"));
+}
 
-function iniciarPiscar() {
-    const video = document.querySelector("video");
-
-    if (!video) return;
-
-    blinkCallback = setInterval(() => {
+/* =============================
+   DETECÇÃO DE PISCAR (EAR)
+=============================*/
+function iniciarDeteccaoPiscar() {
+    setInterval(() => {
         const pred = webgazer.getCurrentPrediction();
         if (!pred || !pred.eyeFeatures) return;
 
-        const left = pred.eyeFeatures.left;
-        const right = pred.eyeFeatures.right;
+        const L = pred.eyeFeatures.left;
+        const R = pred.eyeFeatures.right;
 
-        const earL = calcEAR(left);
-        const earR = calcEAR(right);
+        const ear = (calcEAR(L) + calcEAR(R)) / 2;
 
-        const EAR = (earL + earR) / 2;
-
-        if (EAR < 0.22) {  
-            if (currentCard && currentCard.classList.contains("selecionado")) {
-                currentCard.click();  
-            }
+        if (ear < 0.22) {
+            const selecionado = document.querySelector(".card.selecionado");
+            if (selecionado) selecionado.click();
         }
-
     }, 80);
 }
 
 function calcEAR(eye) {
     if (!eye) return 1;
-
     const v1 = dist(eye[1], eye[5]);
     const v2 = dist(eye[2], eye[4]);
     const h = dist(eye[0], eye[3]);
-    return (v1 + v2) / (2.0 * h);
+    return (v1 + v2) / (2 * h);
 }
 
 function dist(a, b) {
     return Math.hypot(a.x - b.x, a.y - b.y);
 }
-
-/* ============================================
-   BOTÃO DE ATIVAR
-===============================================*/
-function ativarRastreio() {
-    if (!gazeActive) iniciarRastreio();
-}
-
 </script>
 <script>
 
