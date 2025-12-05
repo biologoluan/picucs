@@ -693,8 +693,10 @@ function stopGaze() {
 // Alternância do botão existente
 function toggleGaze() {
     if (!gazeEnabled) {
+        alert("Rastreio ocular ativado.");
         startGaze();
     } else {
+        alert("Rastreio ocular desativado.");
         stopGaze();
     }
 }
