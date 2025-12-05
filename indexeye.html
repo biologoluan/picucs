@@ -529,14 +529,14 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 </section>
 <script>
 /* ====================================
-   RASTREIO OCULAR – PRECISÃO MÁXIMA
+   RASTREIO OCULAR – ANEL DE PROGRESSO
    ==================================== */
 
 let gazeEnabled = false;
 let gazeDot = null;
 let gazeTimer = null;
 let gazeStart = 0;
-const HOLD_TIME = 3000; // 5 segundos olhando fixa
+const HOLD_TIME = 2500; // 2.5 segundos
 
 // ---------------------------
 // Filtro Kalman + Média Móvel
@@ -553,11 +553,9 @@ let kalman = {
             this.py = dataY;
             this.initialized = true;
         }
-        // Kalman simples
-        const K = 0.3; // ganho
+        const K = 0.3;
         this.px = this.px + K * (dataX - this.px);
         this.py = this.py + K * (dataY - this.py);
-
         return { x: this.px, y: this.py };
     }
 };
@@ -576,10 +574,10 @@ function movingAverage(x, y) {
 }
 
 // ---------------------------
-// Criar mira vermelha + círculo de progresso
+// Criar mira vermelha + anel de progresso
 // ---------------------------
 function createGazeDot() {
-    // mira
+    // ponto vermelho
     gazeDot = document.createElement("div");
     gazeDot.id = "gaze-dot";
     gazeDot.style.position = "fixed";
@@ -594,33 +592,34 @@ function createGazeDot() {
     gazeDot.style.top = "-100px";
     document.body.appendChild(gazeDot);
 
-    // círculo de progresso
-    const progressCircle = document.createElement("div");
-    progressCircle.id = "gaze-progress";
-    progressCircle.style.position = "fixed";
-    progressCircle.style.width = "36px";
-    progressCircle.style.height = "36px";
-    progressCircle.style.borderRadius = "50%";
-    progressCircle.style.border = "3px solid rgba(0,200,0,0.7)";
-    progressCircle.style.boxSizing = "border-box";
-    progressCircle.style.zIndex = "99998";
-    progressCircle.style.pointerEvents = "none";
-    progressCircle.style.left = "-100px";
-    progressCircle.style.top = "-100px";
-    progressCircle.style.clipPath = "circle(0% at 50% 50%)"; // inicialmente vazio
-    document.body.appendChild(progressCircle);
+    // anel de progresso
+    const progressRing = document.createElement("div");
+    progressRing.id = "gaze-progress";
+    progressRing.style.position = "fixed";
+    progressRing.style.width = "36px";
+    progressRing.style.height = "36px";
+    progressRing.style.borderRadius = "50%";
+    progressRing.style.border = "3px solid rgba(0,200,0,0.7)";
+    progressRing.style.boxSizing = "border-box";
+    progressRing.style.zIndex = "99998";
+    progressRing.style.pointerEvents = "none";
+    progressRing.style.left = "-100px";
+    progressRing.style.top = "-100px";
+    progressRing.style.transform = "rotate(-90deg)";
+    progressRing.style.background = "conic-gradient(rgba(0,200,0,0.7) 0%, transparent 0%)";
+    document.body.appendChild(progressRing);
 }
 
-// remover mira + progresso
+// remover mira + anel
 function removeGazeDot() {
     if (gazeDot) gazeDot.remove();
     gazeDot = null;
-    const progressCircle = document.getElementById("gaze-progress");
-    if (progressCircle) progressCircle.remove();
+    const progressRing = document.getElementById("gaze-progress");
+    if (progressRing) progressRing.remove();
 }
 
 // ---------------------------
-// Checar gaze e atualizar progresso
+// Checar gaze e atualizar anel de progresso
 // ---------------------------
 function checkGaze(x, y) {
     const cards = document.querySelectorAll(".card");
@@ -633,7 +632,7 @@ function checkGaze(x, y) {
         }
     });
 
-    const progressCircle = document.getElementById("gaze-progress");
+    const progressRing = document.getElementById("gaze-progress");
 
     if (hoveredCard) {
         if (!gazeTimer) {
@@ -641,28 +640,27 @@ function checkGaze(x, y) {
             gazeTimer = setInterval(() => {
                 const elapsed = Date.now() - gazeStart;
                 const percent = Math.min(elapsed / HOLD_TIME, 1);
-                if (progressCircle) {
-                    progressCircle.style.clipPath = `circle(${percent * 50}% at 50% 50%)`;
+                if (progressRing) {
+                    progressRing.style.background = `conic-gradient(rgba(0,200,0,0.7) ${percent * 360}deg, transparent 0deg)`;
                 }
-
                 if (elapsed >= HOLD_TIME) {
                     hoveredCard.click();
                     clearInterval(gazeTimer);
                     gazeTimer = null;
-                    if (progressCircle) progressCircle.style.clipPath = "circle(0% at 50% 50%)";
+                    if (progressRing) progressRing.style.background = `conic-gradient(rgba(0,200,0,0.7) 0deg, transparent 0deg)`;
                 }
-            }, 50);
+            }, 20);
         }
     } else {
         clearInterval(gazeTimer);
         gazeTimer = null;
-        if (progressCircle) progressCircle.style.clipPath = "circle(0% at 50% 50%)";
+        if (progressRing) progressRing.style.background = `conic-gradient(rgba(0,200,0,0.7) 0deg, transparent 0deg)`;
     }
 
     // mover círculo de progresso
-    if (progressCircle) {
-        progressCircle.style.left = (x - 18) + "px";
-        progressCircle.style.top = (y - 18) + "px";
+    if (progressRing) {
+        progressRing.style.left = (x - 18) + "px";
+        progressRing.style.top = (y - 18) + "px";
     }
 }
 
