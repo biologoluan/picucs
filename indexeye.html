@@ -536,7 +536,7 @@ let gazeEnabled = false;
 let gazeDot = null;
 let gazeTimer = null;
 let gazeStart = 0;
-const HOLD_TIME = 5000; // 5 segundos olhando fixa
+const HOLD_TIME = 3000; // 5 segundos olhando fixa
 
 // Criar mira vermelha
 function createGazeDot() {
@@ -595,7 +595,7 @@ function startGaze() {
 
     gazeEnabled = true;
     createGazeDot();
-    .showPredictionPoints(false)  // remove segundo ponto
+
     webgazer.setGazeListener((data) => {
         if (!data || !gazeEnabled) return;
 
@@ -1239,10 +1239,10 @@ renderCurrent();
 </body>
 <footer style="color: #000000; text-align: center; font-size: 0.8em;">
     <p>
-        Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.
+        Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>. A biblioteca de rastreio ocular Webgaze.js foi utilizada sob a licença GPLv3.
     </p>
     <p>
-        <strong>Versão 1.0 - Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados</strong>
+        <strong>Versão 1.1h - Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados</strong>
     </p>
 </footer>
 </html>
