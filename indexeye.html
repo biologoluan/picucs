@@ -528,17 +528,42 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <!-- Página inicial será renderizada via script -->
 </section>
 <script>
-/* ==========================
-   RASTREIO OCULAR – WEBGAZER
-   ========================== */
+/* ====================================
+   RASTREIO OCULAR – COM SUAVIZAÇÃO
+   ==================================== */
 
 let gazeEnabled = false;
 let gazeDot = null;
+
 let gazeTimer = null;
 let gazeStart = 0;
-const HOLD_TIME = 5000; // 5 segundos olhando fixa
+const HOLD_TIME = 5000; // 5 segundos
 
-// Criar mira vermelha (único círculo)
+/* -------------------------------
+   SUAVIZAÇÃO – MÉDIA MÓVEL (buffer)
+-------------------------------- */
+const smoothBuffer = [];
+const BUFFER_SIZE = 10; // quanto maior, mais suave
+
+function smooth(x, y) {
+    smoothBuffer.push({ x, y });
+    if (smoothBuffer.length > BUFFER_SIZE) smoothBuffer.shift();
+
+    const avg = smoothBuffer.reduce((a, b) => {
+        a.x += b.x;
+        a.y += b.y;
+        return a;
+    }, { x: 0, y: 0 });
+
+    return {
+        x: avg.x / smoothBuffer.length,
+        y: avg.y / smoothBuffer.length
+    };
+}
+
+/* -------------------------------
+   CRIAÇÃO DA MIRA
+-------------------------------- */
 function createGazeDot() {
     gazeDot = document.createElement("div");
     gazeDot.id = "gaze-dot";
@@ -555,13 +580,14 @@ function createGazeDot() {
     document.body.appendChild(gazeDot);
 }
 
-// Remover mira
 function removeGazeDot() {
     if (gazeDot) gazeDot.remove();
     gazeDot = null;
 }
 
-// Verificar cards
+/* -------------------------------
+   CHECAR SE ESTÁ OLHANDO O CARD
+-------------------------------- */
 function checkGaze(x, y) {
     const cards = document.querySelectorAll(".card");
     let hoveredCard = null;
@@ -577,12 +603,13 @@ function checkGaze(x, y) {
         if (!gazeTimer) {
             gazeStart = Date.now();
             gazeTimer = setInterval(() => {
-                if (Date.now() - gazeStart >= HOLD_TIME) {
-                    hoveredCard.click();
+                const elapsed = Date.now() - gazeStart;
+                if (elapsed >= HOLD_TIME) {
+                    hoveredCard.click();        // 🔥 AGORA FUNCIONA
                     clearInterval(gazeTimer);
                     gazeTimer = null;
                 }
-            }, 200);
+            }, 150);
         }
     } else {
         clearInterval(gazeTimer);
@@ -590,46 +617,54 @@ function checkGaze(x, y) {
     }
 }
 
-// Iniciar rastreio
+/* -------------------------------
+   INICIAR RASTREIO
+-------------------------------- */
 function startGaze() {
     if (gazeEnabled) return;
 
     gazeEnabled = true;
     createGazeDot();
 
-    // 🔥 Remove overlays AUTOMÁTICOS do WebGazer
-    webgazer.showVideoPreview(false)      // remove vídeo
-            .showPredictionPoints(false)  // remove segundo ponto
-            .showFaceOverlay(false)       // remove caixa grande
-            .showFaceFeedbackBox(false);  // remove quadro facial
+    webgazer
+        .showVideoPreview(false)
+        .showPredictionPoints(false)
+        .showFaceOverlay(false)
+        .showFaceFeedbackBox(false);
 
     webgazer.setGazeListener((data) => {
         if (!data || !gazeEnabled) return;
 
-        const x = data.x;
-        const y = data.y;
+        /* 🔥  SUAVIZAÇÃO */
+        const smoothed = smooth(data.x, data.y);
 
-        // Suavização para melhorar precisão
+        /* Mover mira */
         if (gazeDot) {
-            gazeDot.style.left = (x - 11) + "px";
-            gazeDot.style.top  = (y - 11) + "px";
+            gazeDot.style.left = (smoothed.x - 11) + "px";
+            gazeDot.style.top  = (smoothed.y - 11) + "px";
         }
 
-        checkGaze(x, y);
+        /* 🔥  CLIQUE USANDO COORDENADA SUAVIZADA */
+        checkGaze(smoothed.x, smoothed.y);
+
     }).begin();
 }
 
-// Parar rastreio
+/* -------------------------------
+   PARAR RASTREIO
+-------------------------------- */
 function stopGaze() {
     gazeEnabled = false;
     removeGazeDot();
+
     clearInterval(gazeTimer);
     gazeTimer = null;
+
+    smoothBuffer.length = 0;
 
     try { webgazer.end(); } catch(e){}
 }
 
-// Alternância do botão
 function toggleGaze() {
     if (!gazeEnabled) {
         alert("Rastreio ocular ativado.");
@@ -640,6 +675,7 @@ function toggleGaze() {
     }
 }
 </script>
+
 
 <script>
 
