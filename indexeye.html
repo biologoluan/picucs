@@ -538,15 +538,16 @@ let gazeTimer = null;
 let gazeStart = 0;
 const HOLD_TIME = 5000; // 5 segundos olhando fixa
 
-// Criar mira vermelha
+// Criar mira vermelha (único círculo)
 function createGazeDot() {
     gazeDot = document.createElement("div");
     gazeDot.id = "gaze-dot";
     gazeDot.style.position = "fixed";
-    gazeDot.style.width = "28px";
-    gazeDot.style.height = "28px";
+    gazeDot.style.width = "22px";
+    gazeDot.style.height = "22px";
     gazeDot.style.borderRadius = "50%";
-    gazeDot.style.background = "rgba(255,0,0,0.7)";
+    gazeDot.style.background = "rgba(255,0,0,0.85)";
+    gazeDot.style.boxShadow = "0 0 10px rgba(255,0,0,0.8)";
     gazeDot.style.zIndex = "99999";
     gazeDot.style.pointerEvents = "none";
     gazeDot.style.left = "-100px";
@@ -560,7 +561,7 @@ function removeGazeDot() {
     gazeDot = null;
 }
 
-// Checar cards
+// Verificar cards
 function checkGaze(x, y) {
     const cards = document.querySelectorAll(".card");
     let hoveredCard = null;
@@ -576,12 +577,13 @@ function checkGaze(x, y) {
         if (!gazeTimer) {
             gazeStart = Date.now();
             gazeTimer = setInterval(() => {
-                if (Date.now() - gazeStart >= HOLD_TIME) {
-                    hoveredCard.click();
+                const elapsed = Date.now() - gazeStart;
+                if (elapsed >= HOLD_TIME) {
+                    hoveredCard.click();        // 🔥 AGORA FUNCIONA
                     clearInterval(gazeTimer);
                     gazeTimer = null;
                 }
-            }, 250);
+            }, 150);
         }
     } else {
         clearInterval(gazeTimer);
@@ -596,16 +598,22 @@ function startGaze() {
     gazeEnabled = true;
     createGazeDot();
 
+    // 🔥 Remove overlays AUTOMÁTICOS do WebGazer
+    webgazer.showVideoPreview(false)      // remove vídeo
+            .showPredictionPoints(false)  // remove segundo ponto
+            .showFaceOverlay(false)       // remove caixa grande
+            .showFaceFeedbackBox(false);  // remove quadro facial
+
     webgazer.setGazeListener((data) => {
         if (!data || !gazeEnabled) return;
 
         const x = data.x;
         const y = data.y;
 
-        // Move mira
+        // Suavização para melhorar precisão
         if (gazeDot) {
-            gazeDot.style.left = (x - 14) + "px";
-            gazeDot.style.top = (y - 14) + "px";
+            gazeDot.style.left = (x - 11) + "px";
+            gazeDot.style.top  = (y - 11) + "px";
         }
 
         checkGaze(x, y);
@@ -622,7 +630,7 @@ function stopGaze() {
     try { webgazer.end(); } catch(e){}
 }
 
-// Alternância do botão existente
+// Alternância do botão
 function toggleGaze() {
     if (!gazeEnabled) {
         alert("Rastreio ocular ativado.");
