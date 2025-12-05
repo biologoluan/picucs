@@ -536,21 +536,27 @@ let gazeEnabled = false;
 let gazeDot = null;
 let gazeTimer = null;
 let gazeStart = 0;
-const HOLD_TIME = 5000; // 5 segundos olhando fixa
+// Requisito 3: Tempo de permanência de 3 segundos
+const HOLD_TIME = 3000; // 3 segundos (antes era 5000)
 
-// Criar mira vermelha
+// Criar mira vermelha (Agora será a mira com progresso)
 function createGazeDot() {
     gazeDot = document.createElement("div");
     gazeDot.id = "gaze-dot";
     gazeDot.style.position = "fixed";
-    gazeDot.style.width = "28px";
-    gazeDot.style.height = "28px";
+    gazeDot.style.width = "40px"; // Aumentado para melhor visualização do progresso
+    gazeDot.style.height = "40px";
     gazeDot.style.borderRadius = "50%";
-    gazeDot.style.background = "rgba(255,0,0,0.7)";
+    gazeDot.style.background = "rgba(255,0,0,0.7)"; // Cor inicial
     gazeDot.style.zIndex = "99999";
     gazeDot.style.pointerEvents = "none";
     gazeDot.style.left = "-100px";
     gazeDot.style.top = "-100px";
+    
+    // Estilo para o círculo de progresso
+    gazeDot.style.boxShadow = '0 0 0 3px #3399ff, inset 0 0 0 2px #fff'; // Anel azul ao redor
+    gazeDot.style.background = '#ff0000'; // Cor central
+
     document.body.appendChild(gazeDot);
 }
 
@@ -560,32 +566,72 @@ function removeGazeDot() {
     gazeDot = null;
 }
 
+// Função para atualizar o progresso do anel
+function updateProgress(progress) {
+    if (!gazeDot) return;
+    
+    // progress é um valor entre 0 e 100
+    const percentage = Math.min(100, Math.max(0, progress));
+    const angle = percentage * 3.6; // 360 graus / 100
+    
+    // Usa conic-gradient para criar o efeito de preenchimento
+    gazeDot.style.background = `conic-gradient(
+        #00FF00 ${angle}deg, 
+        #FFFFFF33 ${angle}deg
+    )`;
+    
+    // Adiciona o ponto central para dar o efeito de anel de progresso
+    gazeDot.style.boxShadow = `inset 0 0 0 4px #fff, 0 0 0 4px rgba(51, 153, 255, 0.8)`;
+    gazeDot.style.transform = 'scale(1)'; // Resetar qualquer escala se houver
+}
+
 // Checar cards
 function checkGaze(x, y) {
-    const cards = document.querySelectorAll(".card");
-    let hoveredCard = null;
-
-    cards.forEach(card => {
-        const r = card.getBoundingClientRect();
-        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
-            hoveredCard = card;
-        }
-    });
+    // Esconder a mira temporariamente para que elementFromPoint encontre o card
+    if(gazeDot) gazeDot.style.display = 'none';
+    const targetElement = document.elementFromPoint(x, y);
+    if(gazeDot) gazeDot.style.display = 'block';
+    
+    // Verificar se o elemento alvo é um card
+    const hoveredCard = targetElement && targetElement.closest(".card");
 
     if (hoveredCard) {
         if (!gazeTimer) {
+            // Inicia a contagem de tempo
             gazeStart = Date.now();
+            
+            // Requisito 3: Mostrar progresso a cada 50ms
             gazeTimer = setInterval(() => {
-                if (Date.now() - gazeStart >= HOLD_TIME) {
+                const elapsed = Date.now() - gazeStart;
+                const progress = (elapsed / HOLD_TIME) * 100;
+
+                updateProgress(progress); // Atualiza o círculo de progresso
+                
+                if (elapsed >= HOLD_TIME) {
+                    // Tempo de permanência atingido! Executa o clique.
                     hoveredCard.click();
+                    
+                    // Resetar e aplicar um feedback visual rápido
                     clearInterval(gazeTimer);
                     gazeTimer = null;
+                    gazeStart = 0;
+                    updateProgress(0); // Reseta o progresso visual
                 }
-            }, 250);
+            }, 50); // Intervalo de 50ms para um progresso suave
+
+        } else {
+            // Se o temporizador já estiver rodando, mas o elemento é diferente do inicial, reseta
+            // Este passo garante que o usuário não precisa começar a contagem do zero se sair do card
+            // e voltar rapidamente, mas é crucial para o clique exato.
+            // Para maior estabilidade, não vamos resetar aqui. A sua lógica já é de resetar
+            // apenas quando *sai* do card (bloco 'else' abaixo).
         }
     } else {
+        // Saiu de todos os cards
         clearInterval(gazeTimer);
         gazeTimer = null;
+        gazeStart = 0;
+        updateProgress(0); // Garante que o progresso volte a zero
     }
 }
 
@@ -596,6 +642,10 @@ function startGaze() {
     gazeEnabled = true;
     createGazeDot();
 
+    // Requisito 2: Estabilização da Mira (Ajuste dos parâmetros do WebGazer)
+    webgazer.params.smoothingFactors[0] = 0.85; // Eixo X
+    webgazer.params.smoothingFactors[1] = 0.85; // Eixo Y
+
     webgazer.setGazeListener((data) => {
         if (!data || !gazeEnabled) return;
 
@@ -604,12 +654,30 @@ function startGaze() {
 
         // Move mira
         if (gazeDot) {
-            gazeDot.style.left = (x - 14) + "px";
-            gazeDot.style.top = (y - 14) + "px";
+            // Requisito 3: Centralizar a mira de progresso (40px de diâmetro, então -20px)
+            gazeDot.style.left = (x - 20) + "px";
+            gazeDot.style.top = (y - 20) + "px";
         }
 
         checkGaze(x, y);
     }).begin();
+    
+    // Requisito 1: Ocultar o círculo menor de referência do WebGazer.
+    document.addEventListener('DOMContentLoaded', hideWebgazerReference);
+    // Chama imediatamente após o begin para tentar ocultar o mais rápido possível
+    setTimeout(hideWebgazerReference, 1500); 
+}
+
+// Função para ocultar o círculo menor de referência
+function hideWebgazerReference() {
+    const smallDot = document.querySelector('.webgazer-reference-mark');
+    if (smallDot) {
+        smallDot.style.display = 'none';
+        // O WebGazer pode recriar, então adicionamos uma regra CSS mais forte se necessário
+        const style = document.createElement('style');
+        style.innerHTML = '.webgazer-reference-mark { display: none !important; }';
+        document.head.appendChild(style);
+    }
 }
 
 // Parar rastreio
@@ -625,10 +693,8 @@ function stopGaze() {
 // Alternância do botão existente
 function toggleGaze() {
     if (!gazeEnabled) {
-        alert("Rastreio ocular ativado.");
         startGaze();
     } else {
-        alert("Rastreio ocular desativado.");
         stopGaze();
     }
 }
