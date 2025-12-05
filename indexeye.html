@@ -502,7 +502,12 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
     <img src="https://cepunimedcostadosol.com.br/wp-content/uploads/2023/10/logo-unimed-costa-do-sol-2048x732.png" class="logo">
     <h1>Prancha Interativa de Cuidado - Hospitalar</h1>
   </div>
-  
+  <style>
+.card.selecionado {
+    outline: 4px solid red;
+    transition: outline 0.2s;
+}
+</style>
 </header>
 <p id="data-hora-container">
     🔃 Aguarde, carregando...
@@ -519,7 +524,7 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <button onclick="exportLogs()">💾 Exportar log</button>
 <button id="listenButton" style="background-color: #b1d34b; color: #000;">
         <span id="listenIcon">🎤</span> Responder
-<button id="eyeControlBtn" onclick="toggleGaze()" style="background-color: #a4d8de; color: #000;">
+<button id="eyeControlBtn" onclick="ativarRastreio()" style="background-color: #a4d8de; color: #000;">
         <span id="listenIcon">👁️</span> Rastreio      
     </button>
 </div>
@@ -528,113 +533,125 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <!-- Página inicial será renderizada via script -->
 </section>
 <script>
-/* ==========================
-   RASTREIO OCULAR – WEBGAZER
-   ========================== */
+/* ============================================
+   CONFIGURAÇÕES
+===============================================*/
+const HOVER_TIME = 2000; // 2 segundos
+let gazeActive = false;
+let currentCard = null;
+let hoverStart = null;
 
-let gazeEnabled = false;
-let gazeDot = null;
-let gazeTimer = null;
-let gazeStart = 0;
-const HOLD_TIME = 3000; // 5 segundos olhando fixa
+/* ============================================
+   ELEMENTO VISUAL DO GAZE
+===============================================*/
+const gazeDot = document.createElement("div");
+gazeDot.style.position = "fixed";
+gazeDot.style.width = "18px";
+gazeDot.style.height = "18px";
+gazeDot.style.border = "3px solid red";
+gazeDot.style.borderRadius = "50%";
+gazeDot.style.pointerEvents = "none";
+gazeDot.style.zIndex = "9999";
+gazeDot.style.display = "none";
+document.body.appendChild(gazeDot);
 
-// Criar mira vermelha
-function createGazeDot() {
-    gazeDot = document.createElement("div");
-    gazeDot.id = "gaze-dot";
-    gazeDot.style.position = "fixed";
-    gazeDot.style.width = "28px";
-    gazeDot.style.height = "28px";
-    gazeDot.style.borderRadius = "50%";
-    gazeDot.style.background = "rgba(255,0,0,0.7)";
-    gazeDot.style.zIndex = "99999";
-    gazeDot.style.pointerEvents = "none";
-    gazeDot.style.left = "-100px";
-    gazeDot.style.top = "-100px";
-    document.body.appendChild(gazeDot);
-}
-
-// Remover mira
-function removeGazeDot() {
-    if (gazeDot) gazeDot.remove();
-    gazeDot = null;
-}
-
-// Checar cards
-function checkGaze(x, y) {
-    const cards = document.querySelectorAll(".card");
-    let hoveredCard = null;
-
-    cards.forEach(card => {
-        const r = card.getBoundingClientRect();
-        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
-            hoveredCard = card;
-        }
-    });
-
-    if (hoveredCard) {
-        if (!gazeTimer) {
-            gazeStart = Date.now();
-            gazeTimer = setInterval(() => {
-                if (Date.now() - gazeStart >= HOLD_TIME) {
-                    hoveredCard.click();
-                    clearInterval(gazeTimer);
-                    gazeTimer = null;
-                }
-            }, 250);
-        }
-    } else {
-        clearInterval(gazeTimer);
-        gazeTimer = null;
-    }
-}
-
-// Iniciar rastreio
-function startGaze() {
-    if (gazeEnabled) return;
-
-    gazeEnabled = true;
-    createGazeDot();
-
-    // Desativa a mira padrão do WebGazer
-    webgazer.showVideo(false).showFaceOverlay(false).showPredictionPoints(false);
+/* ============================================
+   INICIAR O WEBGAZER
+===============================================*/
+async function iniciarRastreio() {
+    gazeActive = true;
+    gazeDot.style.display = "block";
 
     webgazer.setGazeListener((data) => {
-        if (!data || !gazeEnabled) return;
+        if (!data || !gazeActive) return;
 
         const x = data.x;
         const y = data.y;
 
-        // Move mira personalizada
-        if (gazeDot) {
-            gazeDot.style.left = (x - 10) + "px";
-            gazeDot.style.top = (y - 14) + "px";
-        }
+        // Atualiza ponto visual
+        gazeDot.style.left = x - 9 + "px";
+        gazeDot.style.top = y - 9 + "px";
 
-        checkGaze(x, y);
+        verificarHover(x, y);
     }).begin();
+
+    iniciarPiscar();
 }
 
-// Parar rastreio
-function stopGaze() {
-    gazeEnabled = false;
-    removeGazeDot();
-    clearInterval(gazeTimer);
-    gazeTimer = null;
+/* ============================================
+   VERIFICAR SE O GAZE ESTÁ SOBRE UM CARD
+===============================================*/
+function verificarHover(x, y) {
+    const elem = document.elementFromPoint(x, y);
 
-    try { webgazer.end(); } catch(e){}
-}
+    const card = elem?.closest(".card"); // <-- Ajuste o seletor dos seus cards
 
-// Alternância do botão existente
-function toggleGaze() {
-    if (!gazeEnabled) {
-        alert("Rastreio ocular ativado.");
-        startGaze();
-    } else {
-        alert("Rastreio ocular desativado.");
-        stopGaze();
+    if (card !== currentCard) {
+        // reseta
+        currentCard = card;
+        hoverStart = performance.now();
+    }
+
+    if (card) {
+        const elapsed = performance.now() - hoverStart;
+
+        if (elapsed >= HOVER_TIME) {
+            card.classList.add("selecionado");
+        }
     }
 }
+
+/* ============================================
+   DETECÇÃO DE PISCAR (Eye Aspect Ratio – EAR)
+===============================================*/
+let blinkCallback = null;
+
+function iniciarPiscar() {
+    const video = document.querySelector("video");
+
+    if (!video) return;
+
+    blinkCallback = setInterval(() => {
+        const pred = webgazer.getCurrentPrediction();
+        if (!pred || !pred.eyeFeatures) return;
+
+        const left = pred.eyeFeatures.left;
+        const right = pred.eyeFeatures.right;
+
+        const earL = calcEAR(left);
+        const earR = calcEAR(right);
+
+        const EAR = (earL + earR) / 2;
+
+        if (EAR < 0.22) {  
+            if (currentCard && currentCard.classList.contains("selecionado")) {
+                currentCard.click();  
+            }
+        }
+
+    }, 80);
+}
+
+function calcEAR(eye) {
+    if (!eye) return 1;
+
+    const v1 = dist(eye[1], eye[5]);
+    const v2 = dist(eye[2], eye[4]);
+    const h = dist(eye[0], eye[3]);
+    return (v1 + v2) / (2.0 * h);
+}
+
+function dist(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+/* ============================================
+   BOTÃO DE ATIVAR
+===============================================*/
+function ativarRastreio() {
+    if (!gazeActive) iniciarRastreio();
+}
+
 </script>
 <script>
 
