@@ -528,460 +528,359 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 <!-- Página inicial será renderizada via script -->
 </section>
 <!-- ======= INÍCIO: RASTREIO OCULAR COM CALIBRAÇÃO 4 PONTOS, KALMAN, PROGRESS CIRCLE ======= -->
+<!-- =======================================
+     RASTREIO OCULAR — VERSÃO LIMPA FINAL
+     ======================================= -->
 <script>
-// CONFIG
+/* =====================
+   CONFIGURAÇÕES GERAIS
+===================== */
 let gazeEnabled = false;
 let gazeDot = null;
 let progressCircle = null;
 let gazeTimer = null;
 let gazeStart = 0;
-const HOLD_TIME = 3000; // ms
+const HOLD_TIME = 3000; // 3 segundos
+const BUFFER_SIZE = 6;  // suavização moderada
 
-// SUAVIZAÇÃO BUFFER
+/* =====================
+   SUAVIZAÇÃO — MÉDIA MÓVEL
+===================== */
 const smoothBuffer = [];
-const BUFFER_SIZE = 30; // média móvel curta
-function movingAverage(x,y){
-  smoothBuffer.push({x,y});
-  if(smoothBuffer.length>BUFFER_SIZE) smoothBuffer.shift();
-  const s = smoothBuffer.reduce((a,b)=>({x:a.x+b.x,y:a.y+b.y}), {x:0,y:0});
-  return { x: s.x/smoothBuffer.length, y: s.y/smoothBuffer.length };
+function movingAverage(x, y) {
+    smoothBuffer.push({ x, y });
+    if (smoothBuffer.length > BUFFER_SIZE) smoothBuffer.shift();
+    const s = smoothBuffer.reduce((a, b) => ({ x: a.x + b.x, y: a.y + b.y }), { x: 0, y: 0 });
+    return { x: s.x / smoothBuffer.length, y: s.y / smoothBuffer.length };
 }
 
-// KALMAN (1D por eixo - leve)
-function createKalman(R = 0.01, Q = 0.1) {
-  let x = 0, p = 1, k = 0;
-  return {
-    filter(z) {
-      // predict
-      p = p + Q;
-      // update
-      k = p / (p + R);
-      x = x + k * (z - x);
-      p = (1 - k) * p;
-      return x;
-    },
-    reset(v=0){ x=v; p=1; }
-  }
+/* =====================
+   SUAVIZAÇÃO — KALMAN FILTER
+===================== */
+function createKalman(R = 0.002, Q = 0.02) {
+    let x = 0, p = 1, k = 0;
+    return {
+        filter(z) {
+            p = p + Q;
+            k = p / (p + R);
+            x = x + k * (z - x);
+            p = (1 - k) * p;
+            return x;
+        },
+        reset() { x = 0; p = 1; }
+    };
 }
-const kx = createKalman(0.0008, 0.008);  // ruído menor, suavização maior
-const ky = createKalman(0.0008, 0.008);
+const kx = createKalman();
+const ky = createKalman();
 
-// CALIBRAÇÃO 4 PONTOS (coleta e ajuste affine)
+/* =====================
+   CALIBRAÇÃO 4 PONTOS
+===================== */
 let calib = {
-  enabled: false,
-  samplesPerPoint: 30,
-  points: [],   // [{screen:{x,y}, samples:[{x,y},...]}]
-  transform: null // {a,b,c,d,e,f} affine map: x' = a*x+b*y+c ; y' = d*x+e*y+f
+    enabled: false,
+    samplesPerPoint: 30,
+    points: [],
+    transform: null
 };
 
 function showCalibrationUI() {
-  // remove se já houver
-  const old = document.getElementById('calib-overlay');
-  if(old) old.remove();
+    const overlayId = document.getElementById("calib-overlay");
+    if (overlayId) overlayId.remove();
 
-  const overlay = document.createElement('div');
-  overlay.id = 'calib-overlay';
-  overlay.style.position = 'fixed';
-  overlay.style.left = 0;
-  overlay.style.top = 0;
-  overlay.style.width = '100%';
-  overlay.style.height = '100%';
-  overlay.style.zIndex = 999999;
-  overlay.style.background = 'rgba(0,0,0,0.25)';
-  overlay.style.display = 'flex';
-  overlay.style.alignItems = 'center';
-  overlay.style.justifyContent = 'center';
-  document.body.appendChild(overlay);
+    const overlay = document.createElement("div");
+    overlay.id = "calib-overlay";
+    overlay.style = `
+        position: fixed; inset: 0; background: rgba(0,0,0,0.25);
+        z-index: 999999; display: flex; align-items: center; justify-content: center;
+    `;
+    document.body.appendChild(overlay);
 
-  // pontos: 4 cantos levemente inset (20%)
-  const w = window.innerWidth, h = window.innerHeight;
-  const marginX = Math.round(w * 0.15), marginY = Math.round(h * 0.15);
-  const coords = [
-    {x: marginX, y: marginY},
-    {x: w - marginX, y: marginY},
-    {x: w - marginX, y: h - marginY},
-    {x: marginX, y: h - marginY}
-  ];
+    const w = window.innerWidth, h = window.innerHeight;
+    const mx = w * 0.15, my = h * 0.15;
 
-  calib.points = coords.map(c => ({ screen: c, samples: [] }));
+    const coords = [
+        { x: mx, y: my },
+        { x: w - mx, y: my },
+        { x: w - mx, y: h - my },
+        { x: mx, y: h - my }
+    ];
 
-  let idx = 0;
-  const instr = document.createElement('div');
-  instr.style.position='absolute';
-  instr.style.top='10%';
-  instr.style.width='100%';
-  instr.style.textAlign='center';
-  instr.style.color='#fff';
-  instr.style.fontSize='20px';
-  instr.style.fontWeight='700';
-  instr.innerText = 'Calibração: siga com os olhos o ponto vermelho até a contagem completar.';
-  overlay.appendChild(instr);
+    calib.points = coords.map(c => ({ screen: c, samples: [] }));
+    let idx = 0;
 
-  const btnSkip = document.createElement('button');
-  btnSkip.innerText = 'Pular calibração';
-  btnSkip.style.position='absolute';
-  btnSkip.style.bottom='8%';
-  btnSkip.style.left='50%';
-  btnSkip.style.transform='translateX(-50%)';
-  btnSkip.style.padding='10px 16px';
-  btnSkip.style.fontSize='16px';
-  overlay.appendChild(btnSkip);
-  btnSkip.onclick = ()=>{
-    overlay.remove();
-    calib.transform = null;
-    calib.enabled = false;
-    alert('Calibração pulada. Usando valores não calibrados.');
-  };
+    const instr = document.createElement("div");
+    instr.style = `
+        position: absolute; top: 10%; width: 100%; text-align: center;
+        color: white; font-size: 20px; font-weight: bold;
+    `;
+    instr.innerText = "Calibração iniciada...";
+    overlay.appendChild(instr);
 
-  // marcador animado
-  const mark = document.createElement('div');
-  mark.id = 'calib-mark';
-  mark.style.position = 'absolute';
-  mark.style.width = '28px';
-  mark.style.height = '28px';
-  mark.style.borderRadius='50%';
-  mark.style.background = 'rgba(255,0,0,0.95)';
-  mark.style.boxShadow = '0 0 12px rgba(255,0,0,0.9)';
-  mark.style.zIndex = 1000000;
-  overlay.appendChild(mark);
+    const mark = document.createElement("div");
+    mark.style = `
+        position: absolute; width: 28px; height: 28px; border-radius: 50%;
+        background: red; box-shadow: 0 0 12px red;
+    `;
+    overlay.appendChild(mark);
 
-  function collectForCurrentPoint() {
-    const target = calib.points[idx];
-    // move marca
-    mark.style.left = (target.screen.x - 14) + 'px';
-    mark.style.top  = (target.screen.y - 14) + 'px';
+    function collectPoint() {
+        const p = calib.points[idx];
 
-    // reset samples for this point
-    target.samples = [];
-    let collected = 0;
-    const collectInterval = setInterval(()=>{
-      // pega amostra atual do webgazer (raw)
-      const pred = webgazer.getCurrentPrediction();
-      if(pred && pred.x && pred.y) {
-        target.samples.push({x: pred.x, y: pred.y});
-        collected++;
-      }
-      // show progress text
-      instr.innerText = `Calibração ${idx+1}/4 — amostras: ${collected}/${calib.samplesPerPoint}`;
-      if(collected >= calib.samplesPerPoint) {
-        clearInterval(collectInterval);
-        idx++;
-        if(idx < calib.points.length) {
-          setTimeout(collectForCurrentPoint, 300); // próximo ponto
-        } else {
-          // terminou
-          overlay.remove();
-          computeAffineTransform();
-          calib.enabled = true;
-          alert('Calibração concluída.');
-        }
-      }
-    }, 60);
-  }
+        mark.style.left = (p.screen.x - 14) + "px";
+        mark.style.top = (p.screen.y - 14) + "px";
+        p.samples = [];
 
-  collectForCurrentPoint();
+        let collected = 0;
+
+        const iv = setInterval(() => {
+            const pred = webgazer.getCurrentPrediction();
+
+            if (pred && Number.isFinite(pred.x) && Number.isFinite(pred.y)) {
+                p.samples.push({ x: pred.x, y: pred.y });
+                collected++;
+            }
+
+            instr.innerText = `Ponto ${idx + 1}/4 — ${collected}/${calib.samplesPerPoint}`;
+
+            if (collected >= calib.samplesPerPoint) {
+                clearInterval(iv);
+                idx++;
+                if (idx < calib.points.length) {
+                    setTimeout(collectPoint, 300);
+                } else {
+                    overlay.remove();
+                    computeAffineTransform();
+                    calib.enabled = true;
+                    alert("Calibração concluída!");
+                }
+            }
+        }, 35);
+    }
+
+    collectPoint();
 }
 
-// calcula transform affine via least squares
 function computeAffineTransform() {
-  // montar sistema linear para resolver a,b,c,d,e,f
-  // para cada amostra (x_raw, y_raw) -> (x_screen, y_screen)
-  const A = []; const Bx = []; const By = [];
-  calib.points.forEach(p=>{
-    // calc média das samples do ponto
-    const avg = p.samples.reduce((a,b)=>({x:a.x+b.x,y:a.y+b.y}),{x:0,y:0});
-    const n = p.samples.length||1;
-    const rx = avg.x / n, ry = avg.y / n;
-    const sx = p.screen.x, sy = p.screen.y;
-    // Equações: a*rx + b*ry + c = sx
-    //            d*rx + e*ry + f = sy
-    A.push([rx, ry, 1, 0, 0, 0]); Bx.push(sx); By.push(sy);
-    A.push([0, 0, 0, rx, ry, 1]); Bx.push(sx); By.push(sy); // duplicate form (we'll solve together)
-    // but easier: build combined and solve for 6 unknowns using normal equations
-  });
+    const rows = [];
+    const bx = [];
+    const by = [];
 
-  // Build matrices (normal eqn): solve (ATA)X = ATb
-  // We'll build ATA (6x6) and ATb (6)
-  const ATA = Array.from({length:6},()=>Array(6).fill(0));
-  const ATbx = Array(6).fill(0);
-  const ATby = Array(6).fill(0);
+    calib.points.forEach(p => {
+        const avg = p.samples.reduce((a, b) => ({ x: a.x + b.x, y: a.y + b.y }), { x: 0, y: 0 });
+        const n = p.samples.length;
+        const rx = avg.x / n, ry = avg.y / n;
+        const sx = p.screen.x, sy = p.screen.y;
 
-  // For each point we used one averaged sample; create row for x and y
-  calib.points.forEach(p=>{
-    const avg = p.samples.reduce((a,b)=>({x:a.x+b.x,y:a.y+b.y}),{x:0,y:0});
-    const n = p.samples.length||1;
-    const rx = avg.x / n, ry = avg.y / n;
-    const sx = p.screen.x, sy = p.screen.y;
-    const rowX = [rx, ry, 1, 0, 0, 0];
-    const rowY = [0, 0, 0, rx, ry, 1];
-    // accumulate ATA += row^T * row ; ATb += row^T * s
-    for(let i=0;i<6;i++){
-      for(let j=0;j<6;j++){
-        ATA[i][j] += rowX[i]*rowX[j] + rowY[i]*rowY[j];
-      }
-      ATbx[i] += rowX[i]*sx + rowY[i]*sy;
-      ATby[i] += rowX[i]*sx + rowY[i]*sy; // same because we duplicated; we'll average later
-    }
-  });
+        rows.push([rx, ry, 1, 0, 0, 0]);
+        bx.push(sx);
+        by.push(sy);
 
-  // Solve linear system ATA * X = ATb for X (6) using Gaussian elimination (simple)
-  function solveLinear(mat, vec) {
-    const n = mat.length;
-    // build augmented
-    const M = mat.map((r,i)=> r.concat([vec[i]]));
-    // gaussian elimination
-    for(let k=0;k<n;k++){
-      // find pivot
-      let i_max = k;
-      let maxv = Math.abs(M[k][k]);
-      for(let i=k+1;i<n;i++) if(Math.abs(M[i][k])>maxv){ i_max=i; maxv=Math.abs(M[i][k]); }
-      if(i_max !== k) { const tmp = M[k]; M[k]=M[i_max]; M[i_max]=tmp; }
-      // normalize
-      const pivot = M[k][k];
-      if(Math.abs(pivot) < 1e-12) { continue; }
-      for(let j=k;j<=n;j++) M[k][j] /= pivot;
-      for(let i=0;i<n;i++){
-        if(i===k) continue;
-        const factor = M[i][k];
-        for(let j=k;j<=n;j++) M[i][j] -= factor * M[k][j];
-      }
-    }
-    return M.map(r=>r[n]);
-  }
+        rows.push([0, 0, 0, rx, ry, 1]);
+        bx.push(sx);
+        by.push(sy);
+    });
 
-  // If solving ATA directly is unstable with only 4 points, fallback to simple affine from two pairs
-  // Build design matrix directly from each sample (not ideal but simpler)
-  const rows = [];
-  const rhsX = [];
-  const rhsY = [];
-  calib.points.forEach(p=>{
-    const avg = p.samples.reduce((a,b)=>({x:a.x+b.x,y:a.y+b.y}),{x:0,y:0});
-    const n = p.samples.length||1;
-    const rx = avg.x / n, ry = avg.y / n;
-    const sx = p.screen.x, sy = p.screen.y;
-    rows.push([rx, ry, 1, 0, 0, 0]); rhsX.push(sx); rhsY.push(sy);
-    rows.push([0, 0, 0, rx, ry, 1]); rhsX.push(sx); rhsY.push(sy);
-  });
+    function solve(A, B) {
+        const n = A.length;
+        const M = A.map((row, i) => [...row, B[i]]);
 
-  // build normal equations for rows
-  const AT = Array.from({length:6},()=>Array(rows.length).fill(0)); // not needed directly
-  // compute ATA2 and ATb2
-  const ATA2 = Array.from({length:6},()=>Array(6).fill(0));
-  const ATb2x = Array(6).fill(0);
-  const ATb2y = Array(6).fill(0);
-  for(let r=0;r<rows.length;r++){
-    const row = rows[r];
-    for(let i=0;i<6;i++){
-      for(let j=0;j<6;j++){
-        ATA2[i][j] += row[i]*row[j];
-      }
-      ATb2x[i] += row[i]*rhsX[r];
-      ATb2y[i] += row[i]*rhsY[r];
-    }
-  }
-  // solve
-  let solutionX = solveLinear(ATA2, ATb2x);
-  let solutionY = solveLinear(ATA2, ATb2y);
-  if(!solutionX || !solutionY){
-    calib.transform = null;
-    return;
-  }
-  // combined transform vector: [a,b,c,d,e,f] where first 3 are for x', last 3 for y'
-  calib.transform = {
-    a: solutionX[0] || 1,
-    b: solutionX[1] || 0,
-    c: solutionX[2] || 0,
-    d: solutionY[3] || 0, // careful positions — since we solved for combined structure, reorganize:
-    e: solutionY[4] || 1,
-    f: solutionY[5] || 0
-  };
-  // NOTE: We solved for 6 unknowns; due to how arrays are arranged above we should map properly.
-  // For simplicity, re-solve directly with combined unknown vector Xall (length 6) that maps rows->x and rows->y simultaneously:
-  // But the above works as a practical fallback. If you notice issues, we can replace with SVD-based solver.
-}
+        for (let i = 0; i < n; i++) {
+            let max = i;
+            for (let j = i + 1; j < n; j++)
+                if (Math.abs(M[j][i]) > Math.abs(M[max][i])) max = j;
 
-// aplica calibração (se disponível)
-function applyCalibration(x,y){
-  if(!calib.transform) return {x,y};
-  const t = calib.transform;
-  // x' = a*x + b*y + c
-  // y' = d*x + e*y + f
-  const x2 = (t.a||1)*x + (t.b||0)*y + (t.c||0);
-  const y2 = (t.d||0)*x + (t.e||1)*y + (t.f||0);
-  return { x: x2, y: y2 };
-}
+            [M[i], M[max]] = [M[max], M[i]];
 
-// CRIA MIRA E CÍRCULO DE PROGRESSO
-function createGazeDot(){
-  removeGazeDot();
-  gazeDot = document.createElement('div');
-  gazeDot.id='gaze-dot';
-  gazeDot.style.position='fixed';
-  gazeDot.style.width='18px';
-  gazeDot.style.height='18px';
-  gazeDot.style.borderRadius='50%';
-  gazeDot.style.background='rgba(255,0,0,0.95)';
-  gazeDot.style.boxShadow='0 0 12px rgba(255,0,0,0.9)';
-  gazeDot.style.zIndex=99999;
-  gazeDot.style.pointerEvents='none';
-  gazeDot.style.left='-100px';
-  gazeDot.style.top='-100px';
-  gazeDot.style.transition='left 0.04s linear, top 0.04s linear'; // suaviza visualmente
-  document.body.appendChild(gazeDot);
+            const div = M[i][i] || 1;
+            for (let k = i; k <= n; k++) M[i][k] /= div;
 
-  // progress circle (SVG)
-  progressCircle = document.createElementNS("http://www.w3.org/2000/svg","svg");
-  progressCircle.setAttribute('width','46'); progressCircle.setAttribute('height','46');
-  progressCircle.style.position='fixed';
-  progressCircle.style.left='-200px';
-  progressCircle.style.top='-200px';
-  progressCircle.style.zIndex = 99998;
-  progressCircle.style.pointerEvents='none';
-  const circleBg = document.createElementNS("http://www.w3.org/2000/svg","circle");
-  circleBg.setAttribute('cx',23); circleBg.setAttribute('cy',23); circleBg.setAttribute('r',20);
-  circleBg.setAttribute('fill','none'); circleBg.setAttribute('stroke','rgba(0,0,0,0.08)'); circleBg.setAttribute('stroke-width',4);
-  const circleProg = document.createElementNS("http://www.w3.org/2000/svg","circle");
-  circleProg.setAttribute('cx',23); circleProg.setAttribute('cy',23); circleProg.setAttribute('r',20);
-  circleProg.setAttribute('fill','none'); circleProg.setAttribute('stroke','rgba(255,0,0,0.9)'); circleProg.setAttribute('stroke-width',4);
-  circleProg.setAttribute('stroke-dasharray', Math.PI*2*20);
-  circleProg.setAttribute('stroke-dashoffset', Math.PI*2*20);
-  circleProg.id = 'gaze-progress';
-  progressCircle.appendChild(circleBg);
-  progressCircle.appendChild(circleProg);
-  document.body.appendChild(progressCircle);
-}
-
-function removeGazeDot(){
-  if(gazeDot) gazeDot.remove();
-  if(progressCircle) progressCircle.remove();
-  gazeDot = null; progressCircle = null;
-}
-
-// CHECK GAZE usando coordenada calibrada+suavizada+filtered
-function checkGaze(x,y) {
-  const cards = document.querySelectorAll(".card");
-  let hoveredCard = null;
-  for(const card of cards){
-    const r = card.getBoundingClientRect();
-    if(x >= r.left && x <= r.right && y >= r.top && y <= r.bottom){
-      hoveredCard = card; break;
-    }
-  }
-
-  if(hoveredCard){
-    if(!gazeTimer){
-      gazeStart = Date.now();
-      gazeTimer = setInterval(()=>{
-        const elapsed = Date.now() - gazeStart;
-        // atualizar círculo de progresso visual
-        const circle = document.getElementById('gaze-progress');
-        if(circle && progressCircle){
-          const full = Math.PI*2*20;
-          const prog = Math.max(0, 1 - elapsed / HOLD_TIME);
-          circle.setAttribute('stroke-dashoffset', full * prog);
+            for (let j = 0; j < n; j++) {
+                if (j !== i) {
+                    const factor = M[j][i];
+                    for (let k = i; k <= n; k++) M[j][k] -= factor * M[i][k];
+                }
+            }
         }
-        if(elapsed >= HOLD_TIME){
-          // efeito visual ao clicar
-          hoveredCard.classList.add('gaze-clicked');
-          setTimeout(()=>hoveredCard.classList.remove('gaze-clicked'), 300);
-          hoveredCard.click();
-          clearInterval(gazeTimer);
-          gazeTimer = null;
-          // reset progress circle
-          if(circle) circle.setAttribute('stroke-dashoffset', Math.PI*2*20);
-        }
-      }, 80);
+        return M.map(r => r[n]);
     }
-  } else {
-    if(gazeTimer){ clearInterval(gazeTimer); gazeTimer = null; }
-    // reset progress circle
-    const circle = document.getElementById('gaze-progress');
-    if(circle) circle.setAttribute('stroke-dashoffset', Math.PI*2*20);
-  }
+
+    calib.transform = {
+        a: solve(rows, bx)[0] || 1,
+        b: solve(rows, bx)[1] || 0,
+        c: solve(rows, bx)[2] || 0,
+        d: solve(rows, by)[3] || 0,
+        e: solve(rows, by)[4] || 1,
+        f: solve(rows, by)[5] || 0
+    };
 }
 
-// START / STOP
+function applyCalibration(x, y) {
+    if (!calib.transform) return { x, y };
+    const t = calib.transform;
+    return {
+        x: t.a * x + t.b * y + t.c,
+        y: t.d * x + t.e * y + t.f
+    };
+}
+
+/* =====================
+   MIRA E CÍRCULO DE PROGRESSO
+===================== */
+function createGazeDot() {
+    removeGazeDot();
+
+    gazeDot = document.createElement("div");
+    gazeDot.style = `
+        position: fixed; width: 16px; height: 16px; border-radius: 50%;
+        background: red; box-shadow: 0 0 10px red;
+        z-index: 99999; pointer-events: none; left: -100px; top: -100px;
+    `;
+    document.body.appendChild(gazeDot);
+
+    progressCircle = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    progressCircle.setAttribute("width", "40");
+    progressCircle.setAttribute("height", "40");
+    progressCircle.style = `
+        position: fixed; left: -200px; top: -200px;
+        z-index: 99998; pointer-events: none;
+    `;
+
+    const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("id", "gaze-progress");
+    c.setAttribute("cx", "20");
+    c.setAttribute("cy", "20");
+    c.setAttribute("r", "16");
+    c.setAttribute("fill", "none");
+    c.setAttribute("stroke", "rgba(255,0,0,0.9)");
+    c.setAttribute("stroke-width", "4");
+    c.setAttribute("stroke-dasharray", Math.PI * 2 * 16);
+    c.setAttribute("stroke-dashoffset", Math.PI * 2 * 16);
+
+    progressCircle.appendChild(c);
+    document.body.appendChild(progressCircle);
+}
+
+function removeGazeDot() {
+    if (gazeDot) gazeDot.remove();
+    if (progressCircle) progressCircle.remove();
+    gazeDot = null;
+    progressCircle = null;
+}
+
+/* =====================
+   HOVER E CLIQUE NOS CARDS
+===================== */
+function checkGaze(x, y) {
+    const cards = document.querySelectorAll(".card");
+    let hovered = null;
+
+    for (const card of cards) {
+        const r = card.getBoundingClientRect();
+        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+            hovered = card;
+            break;
+        }
+    }
+
+    if (hovered) {
+        if (!gazeTimer) {
+            gazeStart = Date.now();
+            const pc = document.getElementById("gaze-progress");
+            gazeTimer = setInterval(() => {
+                const elapsed = Date.now() - gazeStart;
+                const p = Math.max(0, 1 - elapsed / HOLD_TIME);
+                if (pc) pc.setAttribute("stroke-dashoffset", Math.PI * 2 * 16 * p);
+
+                if (elapsed >= HOLD_TIME) {
+                    hovered.click();
+                    clearInterval(gazeTimer);
+                    gazeTimer = null;
+                    if (pc) pc.setAttribute("stroke-dashoffset", Math.PI * 2 * 16);
+                }
+            }, 80);
+        }
+    } else {
+        if (gazeTimer) {
+            clearInterval(gazeTimer);
+            gazeTimer = null;
+        }
+        const pc = document.getElementById("gaze-progress");
+        if (pc) pc.setAttribute("stroke-dashoffset", Math.PI * 2 * 16);
+    }
+}
+
+/* =====================
+   INICIAR / PARAR
+===================== */
 function startGaze() {
-  if(gazeEnabled) return;
-  gazeEnabled = true;
-  createGazeDot();
+    if (gazeEnabled) return;
+    gazeEnabled = true;
+    createGazeDot();
 
-  // remova overlays automáticos do webgazer
-  try{
-    webgazer.showVideoPreview(false).showPredictionPoints(false).showFaceOverlay(false).showFaceFeedbackBox(false);
-  }catch(e){ console.warn('webgazer opts fail', e); }
+    webgazer.showVideoPreview(false)
+            .showFaceOverlay(false)
+            .showFaceFeedbackBox(false)
+            .showPredictionPoints(false);
 
-  webgazer.setGazeListener((data, clock) => {
-    if(!data || !gazeEnabled) return;
-    // raw
-    let rx = data.x, ry = data.y;
+    webgazer.setGazeListener((data) => {
+        if (!data || !gazeEnabled) return;
 
-    // APPLY CALIBRATION -> calibrated coords
-    const calibrated = applyCalibration(rx, ry);
-    rx = calibrated.x; ry = calibrated.y;
+        let { x, y } = data;
+        ({ x, y } = applyCalibration(x, y));
 
-    // SMOOTH: moving average then Kalman
-    const avg = movingAverage(rx, ry);
-    const kxf = kx.filter(avg.x);
-    const kyf = ky.filter(avg.y);
+        const avg = movingAverage(x, y);
+        const kxf = kx.filter(avg.x);
+        const kyf = ky.filter(avg.y);
 
-    // Move mira (centro ajustado)
-    if(gazeDot){
-// Amortecimento visual: suaviza mais um pouco
-const dampX = (parseFloat(gazeDot.style.left) || kxf) * 0.7 + kxf * 0.3;
-const dampY = (parseFloat(gazeDot.style.top)  || kyf) * 0.7 + kyf * 0.3;
+        const oldX = parseFloat(gazeDot.style.left) || kxf;
+        const oldY = parseFloat(gazeDot.style.top) || kyf;
 
-gazeDot.style.left = (dampX - 9) + 'px';
-gazeDot.style.top  = (dampY - 9) + 'px';
-    }
-    if(progressCircle){
-      progressCircle.style.left = (kxf - 23) + 'px';
-      progressCircle.style.top  = (kyf - 23) + 'px';
-    }
+        const dampX = oldX * 0.85 + kxf * 0.15;
+        const dampY = oldY * 0.85 + kyf * 0.15;
 
-    // checar cards com coordenadas finais
-    checkGaze(kxf, kyf);
-  }).begin();
+        gazeDot.style.left = dampX + "px";
+        gazeDot.style.top = dampY + "px";
+
+        progressCircle.style.left = (dampX - 12) + "px";
+        progressCircle.style.top = (dampY - 12) + "px";
+
+        checkGaze(dampX, dampY);
+    }).begin();
 }
 
 function stopGaze() {
-  gazeEnabled = false;
-  removeGazeDot();
-  if(gazeTimer){ clearInterval(gazeTimer); gazeTimer = null; }
-  smoothBuffer.length = 0;
-  kx.reset(); ky.reset();
-  try{ webgazer.end(); }catch(e){}
+    gazeEnabled = false;
+    removeGazeDot();
+    smoothBuffer.length = 0;
+    kx.reset();
+    ky.reset();
+    if (gazeTimer) clearInterval(gazeTimer);
+    try { webgazer.end(); } catch (e) {}
 }
 
 function toggleGaze() {
-  if(!gazeEnabled){
-    // opcional: iniciar calibração antes de ligar
-    if(confirm('Executar calibração rápida de 4 pontos agora? (recomendado)')){
-      // garante que webgazer iniciou para coletar amostras
-      webgazer.begin().then(()=>{
-        showCalibrationUI();
-        // after calibration, start tracking
-        // small delay to ensure calib transform computed
-        const startAfter = setInterval(()=>{
-          if(calib.enabled || calib.transform === null){
-            clearInterval(startAfter);
+    if (!gazeEnabled) {
+        if (confirm("Deseja calibrar antes? (Recomendado)")) {
+            webgazer.begin().then(() => {
+                showCalibrationUI();
+                const wait = setInterval(() => {
+                    if (calib.enabled || calib.transform === null) {
+                        clearInterval(wait);
+                        startGaze();
+                    }
+                }, 300);
+            });
+        } else {
             startGaze();
-          }
-        }, 300);
-      }).catch(()=>{ showCalibrationUI(); startGaze(); });
+        }
+        alert("Rastreio ocular ativado.");
     } else {
-      startGaze();
+        stopGaze();
+        alert("Rastreio ocular desativado.");
     }
-  } else {
-    stopGaze();
-  }
 }
-
-// small CSS hook for clicked card visual
-const s = document.createElement('style');
-s.innerHTML = `.gaze-clicked{ transform: scale(0.98) !important; box-shadow:0 1px 4px rgba(0,0,0,0.2) !important; }`;
-document.head.appendChild(s);
 </script>
+
 <!-- ======= FIM: RASTREIO OCULAR ======= -->
 
 
