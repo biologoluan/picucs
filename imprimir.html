@@ -1,491 +1,608 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <script>
-localStorage.setItem("idiomaAtual", "pt-BR");
-</script>
-<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
-<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAADWFJREFUeF7tnXuATdUex797SAmpUaSkx9QUM3Mmiujh1igyI68eGL0wClMJRQxjqFHjkjseQ0XySB5dMe6Mrsskt+SRmDNDmTIKESIMkTi7+zvj1Gmcs/fa++yzzzq33/7n/HHWXr/f+v0+67ceez0U6D1tYqNQCQ64EA8VzaCgOaBcpPca/x8KC6hHoeIzKFiLCBTiDJxYVrxdSxPF75/keCUiE1A7h6IoLNMqCyjzobrS/IHgG4AkRxpUNR1AFavU4HxCaoFTUJRRyHNmVtTiXAAS44oAxIZUXRYeLAsUI78ozjvzPwOQGLcSQEKwpHO+UligAPlFLT2a/AFAkqMdVHWJFCqyEsG1gKK0R54zl4SUA9DKURuV1W8BVA2uZM5dEgucwGnlGix37i8HIDH2LUBJkUQ5VsMWC6jTkF/cS0FifDTg2maLTBYimQUiblSQ6OgKqHMl04zVscUCSrKCJMdYqOpAW+SxELksoCjjFLSJ+wgK7pZLM9bGFguoWKUgMe4ogBq2CGQhslmgjABQZdOK9bHPAgyAfbaWUhIDIKVb7FOKAbDP1lJKYgCkdIt9SjEA9tlaSkkMgJRusU8pBsA+W0spiQGQ0i32KcUA2GdrKSUxAFK6xT6lGAD7bC2lJAZASrfYpxQDYJ+tpZTEAEjpFvuUYgDss7WUkhiAELklqUkLRNao+bv0M64z2Fy6DVt3au7ltFxbBsByk56bYZtb70Ty3Ym49YYY1KtVB9UuqApF8b0t8/SZMzhYdhiFpduweG0B5hTkoezE8aBpaQqAEcl90On233cXmVbOpbqwY9/32FCyBSs2r8WGkmLTeWm9KKLv2m1OPD1xlGXya1Sthn7tuyGldSfUv6yuX4frCTxy/BiWrl+FIe9kY/eP+/SSG/7fFADT+mWgZ6tOhoVpvaCqKg4fL3NDMDV/IT74jLYpWvOI6Lty8zrcm9bLEoFkmyGP9MR1l9cz7fiKihAIM1YsRv83x1iioycTaQDwLhXBsHVnKcYvno3pyxcFXGC7AKh3aR28+ewI3NeoOSpXqhSw3hUzILusLt6IvjmZlvUVpATAU3BqD1cVbUC/N7ICKrAdADSsH4W5g16D45poy2q9P4K+3FWKvpMz3bYJ9JEaAE/hvtmzEy9MH4claz8yVd5gA0DOf29QFhzXRpvSz8xLzh0l6DpmcEAVg+SGBQCk6P7DhzBkZjbeXv6BYXsFEwDq7C0aNh4t428Les2v2EyuLFyHTq/0D2iUEDYAUOGpF/zUxJFY9vknhiAIJgCT+gxF78RHUCkiQkgnascPHPnJPfrZvncXaPxPT93Iy3BTvWtx+SWXCvcfzrhcmLliCXpmjxCS7StRWAFABTAT+oIFQMfmLTH1meGofXGkrgNOnf7V3YHLnPeWZttNzUla51544La/gaKL3nOo7AhSczIxb/WHekl9/h80AKj3npKdoakUzYa1bdoCNFEiOlY2Q32wAMhNn+jW39+kjqfwew4dQPrsyYZGNK0b347Xe72IBlddp5t/IEPYkALgTQeNnTO69QENpfQe6g/0nvSy8FxBMAAgaGf0fxl1Lq6lqa7ZZosyFe1cHjvxMwbPGI+cvPl6pjvnf2kA8BSYjNrkhhhN6qkdpZCXPGawUIGDAcDYngPRr/2jmu31iVO/YNTcqXht4XQhPX0lItBobkGvYuRtWI22Gc8YliMVAB4IFrw0FjFXR2kW5rv9e9AlaxDWfuXULXQwAPh07Czc3uBmTdmfbt2ENul9A+qlk4CXHu6J9OTeqFrlfL/yvj+4H4+PG4qCwvW69vBOIB0ApNxz7bph9BPPuT+a+HtOUu167w28umCaboGtBqBJdCwI0mvqXOFXNnX6sha+jfQ5k3X100tAncFlo3JwR8NGlsuTEgAq8MdZM9Ao6iZN28xf/aE7Cug9VgNAX/Zy+g5DzWrV/YqmfkrKhBFYuu5jPfWE/h/ySArSuz6NCzSiQO66VWg/6jmh/DyJpASAlBNpY4u+/RqO1Ad1C2w1AIMe6o6Mbn01Q/JXu3eg6fPJAYd/T+Gir7waeRmTcf0V9f2W14xMaQHo0aojsp8ajOpVL/RbYOphU0fwv1u+0ITAagBGPZqKwQ/3QJXK5/mVu+bLzbjjhcd14TSSYEn6BLS7zf9pPmaijrQAJMQ3xayBo3Flrdp+bbT30AE88fow/GfTZ9IBEMjY3F9hXnn8Wbz44JN+wTt+8gReeucfmLT0PWGuwhoAWimTmjMaswuW/iUAeCzhAUzuO9TnDCF9Of3hpx8xesFbmJK3gAHwtkAomoBgRABPVKTvBYePH0Xp3t3YVPoVln+xBv/8dIWw070TcgQ4aw0jDhPpAxjJT9RzNDpqdpPDPfdh1TpBBiCMABAFxUg6BoABMH5OoEibKvI1UItUkVHAX60TaKRmi6blCMARgCMAMWCk0xaqTqBorTaSLqwjgOjMl0iTxQAYwEbEoIH2AbQmPTyqin4CFdGXAZAMAJGPQbSRMqZPR13NGQD/JpK2CVg95h3cFdNY07k0A9Z6eG8GQNcCYQZAr/sfxJgeA3BxNf/XGNDcd/aSOe4NI3oPR4AwAoCmOwtenebeSq317Dt8EN3HDxfaI8AAhAkA5HxaFNqheYLuRgtaA9Bi0JN6ld/9PwMQBgDQR46s7v3d7b7eOnujy6AZAIkBoAWWqW27oEOzBM01dp4i0JJwWgAi0vnzvMMAhACAXQd+wE/H6D4q3w8tbqwbeSmqX3Chbo33zoHyfXL8MEPLnxmAEAAg1DgbTEQniNBRKVPzxVe8cB9A28hBmwcw6Fvd5LTLZtyimRg+e5Ju2ooJOAKEeQSg83ForduY92cYdj5HgDCOANTh+2bvLrwYwOkgDECYAkC1flZBLtJmTgx4/Rs3AWHSBFCNpxm+f61fjZFzp1h2Lh4DICEA5OyffzmJYyd/xrf79uDzr7dg0ZoVhoZ3oh0CBiAEAAS6HkDUuSLpGAAGQPdkU14QIlKVzqYRqVEcAaw7etaAawwnDdpEEAPAAOieEmYYV5MviEQsbgIMGFfEoBwBOAJwBLDo+HkDddNwUu4DnDVZODQBtF1u6jPp7tVStCJ6zZeFWLfNGdDcCQMQRgA8fGcr99G03ncNkfq//HrKff7wlp3bMSVvvqFT1RmAMAJA73Aq+mSe8W6Ooa+mDECQAPjIuR4JQ1IMt8laL0zvNxLd7+vgdwUVHRxNR+gu/GS5sFwGwAQA6V17Y2jnFJx/XhW/hhbdtSTsKQAbJ8xH46gGfl+hizWSMlJR8v13wtkyACYAENm3KHqEnain6HBKupvgkuoX+X3FSEfWkwkDYAIAWro+d1CW5gHOZo5s04KB5HVpcb/mfYOiO6W85TAAJgCgV/TCMaUxe4J3RRBELqYw0/6THAbAJAB6HTLKNtDbPCgP2i21eHg2aA5A6zGyU4ojgA9LGm0/RdpkEmPmihtv9WYOyES3e5I0t8oZOTm9YtE5ApiMAPSayBZ2Wvn0ydZN7uGZkYuhqebnpKahS4s2updI0aHZD40eYKj3z53AClXBaASg10W2sXvE0L1Br38wy723Qe+hNj89+WnEX3uj7q4pqv1Z77+NjHen6GXr83+OAAFEAHpV9OIoSkvR4GDZEdBJ4qucG1C4Y5t7Hp/uBmoaHYs7YxrhrphbEFX3Kt3d0Z78Ar07kAEIEADRi51MVU+dlwK5kIqbAAuaAE8Wohc7WQmB2X2S3An04wUzfQDvrB69py2yevTHFZGXWelnn3mR80fMycGE3HcDlsVNQIBNgLcH7o5r4p6ubVhf/7JHs54L5A5lXzIZAAsBoKzofr+/9xyIDs3u0bzgySgA1IFcX1KM59/MEroqTzR/BsBiADyGp6tf6aav5g3iNe8W0nMUOb70h92Ykr9AaAipl58lfQCjQv7K6WmUMKDjY7j35ma4slYd3Ukdz/CO2vkNJcWYuTIXc1flB82EpiJA0LT5P8+YZvdaNW7uHutH1rjIfWV87ZqRcKku93XytCOapo5p5pCcb8fDANhhZYllMAASO8cO1RgAO6wssQwGQGLn2KEaA2CHlSWWwQBI7Bw7VGMA7LCyxDIYAImdY4dqDIAdVpZYBgMgsXPsUI0BsMPKEstgACR2jh2qMQB2WFliGQyAxM6xQzUFibFHAMX/llM7tGAZIbKAelRBm9gPoSitQ6QBiw2lBVT13xQBMgBlRCj1YNmhsoA6UkHb2I5wKYtCpQLLDaEFItRO1AREQVG+CaEaLDpUFlDV6xW37ETHPEDtHCo9WG4oLKDMR76zSzkA5VFgKwD/px6FQkeWGSwLnIKqNsSy4u3lANCT5EiDqr4SLImcr0QWUJRhyHNmkkZ/AOBuCuKKAMRKpCqrYr0FipFfFOfJ9s8AlEOw8n+HXyRYL5dzlMACBcgvaumtx7kAlDcH7aCq8wBUlUBpViFwC5yAonRBnjO3Yla+AaBUrRy1UdmVCSjWnncaeGE4B0MWUKfhdEQaljv3+3rNPwCe1Inx0YB6CxTcAtfZX6CGIR04sV0WKIOKjYhQNrp/oWxEfmGJlvDfAPLuz/usN+GUAAAAAElFTkSuQmCC">
-<link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,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">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prancha Interativa de Cuidado - UCS v1.1 Viver Bem</title>
-<meta http-equiv="refresh" content="3600">
-<style>
-:root{
-  --bg:#FFFFFF;
-  --card:#DAEFDC;
-  --accent:#004a2d;
-  --accent-dark:#004E4C;
-  --muted:#000000;
-  font-family:Arial,sans-serif;
-}
-body{margin:0;background:var(--bg);color:#0f1724}
-header{background:var(--accent);color:#fff;padding:2px 16px 2px 16px;text-align:center}
-header h1{margin:0;font-size:22px}
-.board{padding:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:12px}
-.card{background:var(--card);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:transform .12s,box-shadow .12s;box-shadow:0 4px 10px rgba(0,0,0,0.1);border:1px solid var(--accent)}
-.card:hover{transform:scale(1.05);border-color:var(--accent-dark)}
-.label{font-size:15px;font-weight:600;color:var(--accent-dark)}
-footer{padding:0px;text-align:center;color:var(--accent-dark)}
-.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:24px 0 12px 0}
-button{padding:8px 12px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer}
-input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-width:150px}
-.phrase-bar{padding:2px;text-align:center;font-size:22px;min-height:36px;border:1px solid var(--accent);border-radius:15px;margin-bottom:5px}
+    <head>
+        <script>
+            localStorage.setItem("idiomaAtual", "pt-BR");
+        </script>
+        <link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+        <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,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">
+        <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,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">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Prancha Interativa de Cuidado - UCS v1.1 Viver Bem</title>
+        <meta http-equiv="refresh" content="3600">
+        <style>
 
-.header-content{
-  display: flex;
-  align-items: center;
-  gap: 60px;
-  justify-content: center; 
-}
+            @media print {
+              @page {
+                  size: landscape;
+                  margin: 5mm !important;
+              }
 
-.logo{
-  height: 45px;
-  width: auto;
-  border-radius: 10px;
-  
-}
-#data-hora-container {
-            text-align: center; 
-            font-size: 0.9em;
-            font-weight: bold;
-            color: #333; 
-        }
-        #fullscreen-toggle {
-    position: fixed;
-    top: 20px; 
-    right: 15px;    
-    z-index: 1000;  
-    
-    width: 20px; 
-    height: 20px;
-    background-color: transparent;
-    color: white;
-    border: none;
-    border-radius: 0px; 
-    cursor: pointer;
-    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-    
+              * {
+                  -webkit-print-color-adjust: exact !important;
+                  print-color-adjust: exact !important;
+              }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-        }
-     #alarme-toggle {
-
-    position: fixed;
-    top: 20px; 
-    right: 15px;    
-    z-index: 1000;  
-    
-    width: 20px; 
-    height: 20px;
-    background-color: transparent;
-    color: white;
-    border: none;
-    border-radius: 0px;
-    cursor: pointer;
-    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-}
-#icon-indicator {
-    font-size: 24px;
-    line-height: 5; 
-
-}#tradutions {
-    position: absolute; 
-    
-    top: 3%; 
-    transform: translateY(-50%);
-    
-    left: 40px; 
-    
-    z-index: 1000;
-    
-    display: flex;
-    align-items: center; 
-    gap: 8px; /* Espaçamento entre as bandeiras */
-
- #tradutions img {
-    width: 28px; 
-    height: 28px; 
-    border-radius: 50%; 
-    cursor: pointer;
-}
-}#alarme-toggle {
-    position: absolute;
-    top: 3%; 
-    transform: translateY(-30%);
-    
-    /* Posição Horizontal */
-    right: 20px; 
-    
-    z-index: 1000;
-    display: flex;
-    align-items: center; 
-        /* Estilo do Botão */
-    width: 45px;   
-    height: 20px;
-    background-color: transparent;
-    color: white;
-    border: none;
-    border-radius: 0px;
-    cursor: pointer;
-    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-</style>
-<style>
-    /* CSS do Botão Fullscreen */
-    #alarme-toggle {
-            position: absolute;
-        top: 23px;
-        right: 50px;
-        z-index: 1000;
-    }
-    [vw-access-button] {
-        position: fixed !important; 
-        
-        top: 20px !important;    
-        
-        left: 15px !important;   
-        
-        right: auto !important; 
-        bottom: auto !important; 
-        
-        z-index: 1000 !important; 
-    }
-    .skiptranslate {
-            display: none !important;
-        }
-        body {
-            top: 0px !important;
-        }
-        #google_translate_element {
-            display: none;
-        }
-</style>
-<style>
-    /* CSS do Botão Fullscreen */
-    #fullscreen-toggle {
-            position: absolute;
-        top: 20px;       /* Distância do topo */
-        right: 15px;   
-        z-index: 1000;
-    }
-
-    [vw-access-button] {
-        position: fixed !important; 
-        
-        top: 20px !important;    
-        
-        left: 15px !important;   
-        
-        right: auto !important; 
-        bottom: auto !important; 
-        
-        z-index: 1000 !important; 
-    }
-    .skiptranslate {
-            display: none !important;
-        }
-
-        body {
-            top: 0px !important;
-        }
-
-        #google_translate_element {
-            display: none;
-        }
-</style>
-</head>
-
-<div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper>
-        
-        <div class="vw-plugin-top-wrapper"></div>
-    </div>
-</div>
-<script>
-// Seletores que devem ser traduzidos
-const SELECTORES = [
-    "h1","h2","h3","h4","h5","h6",
-    "p","span","button",".label","a","li"
-];
-
-// Cache em memória
-let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
-
-// Salvar texto original quando aparece na tela
-function registrarTextosOriginais() {
-    document.querySelectorAll(SELECTORES.join(",")).forEach(el => {
-        if (!el.getAttribute("data-original")) {
-            el.setAttribute("data-original", el.innerText.trim());
-        }
-    });
-}
-
-// Traduz a página com Google API (e salva cache)
-async function traduzirPagina(lang) {
-    registrarTextosOriginais();
-
-    const elementos = document.querySelectorAll(SELECTORES.join(","));
-
-    for (const el of elementos) {
-        const original = el.getAttribute("data-original");
-        if (!original) continue;
-
-        // Se já está no cache, usa
-        if (translationCache[lang] && translationCache[lang][original]) {
-            el.innerText = translationCache[lang][original];
-            continue;
-        }
-
-        // Chamada ao Google
-        const url =
-            "https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt-BR&dt=t" +
-            "&tl=" + lang +
-            "&q=" + encodeURIComponent(original);
-
-        try {
-            const res = await fetch(url);
-            const data = await res.json();
-
-            const translated = data?.[0]?.[0]?.[0];
-            if (!translated) continue;
-
-            // Aplica a tradução
-            el.innerText = translated;
-
-            // Salva no cache
-            if (!translationCache[lang]) translationCache[lang] = {};
-            translationCache[lang][original] = translated;
-
-            // salva no localStorage
-            localStorage.setItem("translationCache", JSON.stringify(translationCache));
-
-        } catch (e) {
-            console.log("Erro ao traduzir:", e);
-        }
-    }
-
-    // salva idioma atual
-    localStorage.setItem("idiomaAtual", lang);
-}
-
-// Reaplica tradução sempre que labels forem recriados
-function reaplicarTraducao() {
-    const lang = localStorage.getItem("idiomaAtual");
-    if (!lang) return;
-
-    registrarTextosOriginais();
-
-    const elementos = document.querySelectorAll(SELECTORES.join(","));
-
-    for (const el of elementos) {
-        const original = el.getAttribute("data-original");
-        if (!original) continue;
-
-        if (translationCache[lang] && translationCache[lang][original]) {
-            el.innerText = translationCache[lang][original];
-        }
-    }
-}
-</script>
-<body>
-<script>
-    function formatarDataEHora() {
-        const agora = new Date();
-
-        // Obtém idioma que o usuário escolheu para a página
-        let lang = localStorage.getItem("idiomaAtual");
-
-        // Converte para códigos de locale
-        let locale = "pt-BR";
-        if (lang === "en") locale = "en-US";
-        if (lang === "es") locale = "es-ES";
-
-        const opcoesData = { 
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        };
-
-        const opcoesHora = {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        };
-
-        // Agora formata na língua escolhida
-        const dataFormatada = agora.toLocaleDateString(locale, opcoesData);
-        const horaFormatada = agora.toLocaleTimeString(locale, opcoesHora);
-
-        const dataPorExtensoEHora = `📆 ${dataFormatada} - ${horaFormatada}`;
-
-        const container = document.getElementById('data-hora-container');
-        if (container) {
-            container.textContent = dataPorExtensoEHora;
-        }
-    }
-
-    formatarDataEHora();
-    setInterval(formatarDataEHora, 1000);
-</script>
-<script>
-    function toggleFullscreen() {
-        const doc = document.documentElement;
-        const iconIndicator = document.getElementById('icon-indicator');
-
-        // verifica o estado atual de Fullscreen em vários navegadores
-        const isFullscreen = document.fullscreenElement ||
-                             document.mozFullScreenElement ||
-                             document.webkitFullscreenElement ||
-                             document.msFullscreenElement;
-
-        if (isFullscreen) {
-            // SAI DO MODO TELA CHEIA
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
+              body {
+                margin: 0;
+                background: var(--bg);
+                color: #0f1724;
+                height: 90vh;
             }
-            // Ícone para "Entrar Tela Cheia"
-            iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">';
 
-        } else {
-            // ENTRA NO MODO TELA CHEIA
-            if (doc.requestFullscreen) {
-                doc.requestFullscreen();
-            } else if (doc.mozRequestFullScreen) {
-                doc.mozRequestFullScreen();
-            } else if (doc.webkitRequestFullscreen) {
-                doc.webkitRequestFullscreen();
-            } else if (doc.msRequestFullscreen) {
-                doc.msRequestFullscreen();
+            .board {
+                height: 220mm !important; 
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                align-content: flex-start;
+                gap: 20px;
+            }
+
+            card {
+               break-inside: avoid;
+               page-break-inside: avoid;
+
+               transform: scale(2); 
+               box-shadow: none;
+    
+            }
+
+          }
+
+            :root {
+                --bg: #FFFFFF;
+                --card: #DAEFDC;
+                --accent: #004a2d;
+                --accent-dark: #004E4C;
+                --muted: #000000;
+                font-family: Arial,sans-serif;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: #0f1724;
+                height: 100vh;
+            }
+
+            header {
+                background: var(--accent);
+                color: #fff;
+                padding: 2px 16px 2px 16px;
+                text-align: center
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px
+            }
+
+            .board {
+                display: flex;
+                align-items:center;
+                flex-direction: column;
+                align-content: center;
+                flex-wrap: wrap;
+                  
+                max-height:calc(100% - 120px);
+                gap:15px;
+                padding: 12px;
+            }
+
+            .card {
+                background: var(--card);
+                border-radius: 12px;
+                padding: 12px;
+                text-align: center;
+                cursor: pointer;
+                transition: transform .12s,box-shadow .12s;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                border: 1px solid var(--accent);
+                width: 70px;
+                height:100px;
+            }
+
+            .card:hover {
+                transform: scale(1.05);
+                border-color: var(--accent-dark)
+            }
+
+            .label {
+                font-size: 15px;
+                font-weight: 600;
+                color: var(--accent-dark)
+            }
+
+            footer {
+                padding: 0px;
+                text-align: center;
+                color: var(--accent-dark);
+            }
+
+            .controls {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: 24px 0 12px 0
+            }
+
+            button {
+                padding: 8px 12px;
+                border: none;
+                border-radius: 8px;
+                background: var(--accent);
+                color: #fff;
+                cursor: pointer
+            }
+
+            input {
+                padding: 8px;
+                border-radius: 8px;
+                border: 1px solid var(--accent-dark);
+                min-width: 150px
+            }
+
+            .phrase-bar {
+                padding: 2px;
+                text-align: center;
+                font-size: 22px;
+                min-height: 36px;
+                border: 1px solid var(--accent);
+                border-radius: 15px;
+                margin-bottom: 5px
+            }
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 60px;
+                justify-content: center;
+            }
+
+            .logo {
+                height: 45px;
+                width: auto;
+                border-radius: 10px;
+            }
+
+            #data-hora-container {
+                text-align: center;
+                font-size: 0.9em;
+                font-weight: bold;
+                color: #333;
+            }
+
+            #fullscreen-toggle {
+                position: fixed;
+                top: 20px;
+                right: 15px;
+                z-index: 1000;
+                width: 20px;
+                height: 20px;
+                background-color: transparent;
+                color: white;
+                border: none;
+                border-radius: 0px;
+                cursor: pointer;
+                box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #alarme-toggle {
+                position: fixed;
+                top: 20px;
+                right: 15px;
+                z-index: 1000;
+                width: 20px;
+                height: 20px;
+                background-color: transparent;
+                color: white;
+                border: none;
+                border-radius: 0px;
+                cursor: pointer;
+                box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #icon-indicator {
+                font-size: 24px;
+                line-height: 5;
+            }
+
+            #tradutions {
+                position: absolute;
+                top: 3%;
+                transform: translateY(-50%);
+                left: 40px;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                /* Espaçamento entre as bandeiras */
+                #tradutions img {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+            }
+
+            #alarme-toggle {
+                position: absolute;
+                top: 3%;
+                transform: translateY(-30%);
+                /* Posição Horizontal */
+                right: 20px;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                /* Estilo do Botão */
+                width: 45px;
+                height: 20px;
+                background-color: transparent;
+                color: white;
+                border: none;
+                border-radius: 0px;
+                cursor: pointer;
+                box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+        <style>
+            /* CSS do Botão Fullscreen */
+            #alarme-toggle {
+                position: absolute;
+                top: 23px;
+                right: 50px;
+                z-index: 1000;
+            }
+
+            [vw-access-button] {
+                position: fixed !important;
+                top: 20px !important;
+                left: 15px !important;
+                right: auto !important;
+                bottom: auto !important;
+                z-index: 1000 !important;
+            }
+
+            .skiptranslate {
+                display: none !important;
+            }
+
+            body {
+                top: 0px !important;
+            }
+
+            #google_translate_element {
+                display: none;
+            }
+        </style>
+        <style>
+            /* CSS do Botão Fullscreen */
+            #fullscreen-toggle {
+                position: absolute;
+                top: 20px;
+                /* Distância do topo */
+                right: 15px;
+                z-index: 1000;
+            }
+
+            [vw-access-button] {
+                position: fixed !important;
+                top: 20px !important;
+                left: 15px !important;
+                right: auto !important;
+                bottom: auto !important;
+                z-index: 1000 !important;
+            }
+
+            .skiptranslate {
+                display: none !important;
+            }
+
+            body {
+                top: 0px !important;
+            }
+
+            #google_translate_element {
+                display: none;
             }
 
             
-            // Ícone para "Sair Tela Cheia"
-            iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/1828/1828851.png" style="width:25px;height:25px;">';
-        }
-        // Listener para atualizar o ícone caso o modo seja alterado externamente
-document.addEventListener('fullscreenchange', function() {
-    const iconIndicator = document.getElementById('icon-indicator');
-    if (document.fullscreenElement) {
-        // Entrou em full screen, mostra o ícone de saída
-        iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/1828/1828851.png" style="width:25px;height:25px;">';
-    } else {
-        // Saiu de full screen, mostra o ícone de entrada
-        iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">';
-    }
-});
-    }
-    
-function initializeSpeechRecognition() {
+        </style>
+    </head>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script>
+        // Seletores que devem ser traduzidos
+        const SELECTORES = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span", "button", ".label", "a", "li"];
 
-    const listenButton = document.getElementById("listenButton");
-    const phraseBar    = document.getElementById("phraseBar");
-    const statusDiv    = document.getElementById("status");
+        // Cache em memória
+        let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
 
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SR) {
-        if (statusDiv) statusDiv.textContent = "Reconhecimento de fala não suportado neste dispositivo.";
-        listenButton.disabled = true;
-        return;
-    }
-
-    let recognition = null;
-    let isListening = false;
-
-    listenButton.addEventListener("click", () => {
-        if (!recognition) {
-            recognition = new SR();
-            recognition.lang = "pt-BR";
-            recognition.continuous = false;
-            recognition.interimResults = false;
-
-            recognition.onresult = (event) => {
-                const text = event.results[0][0].transcript;
-                phraseBar.textContent += " " + text;
-                speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-            };
-
-            recognition.onerror = (event) => {
-                isListening = false;
-                listenButton.innerHTML = '<span id="listenIcon">🎤</span> Responder';
-                if (statusDiv) statusDiv.textContent = "Erro: " + event.error;
-            };
-
-            recognition.onend = () => {
-                isListening = false;
-                listenButton.innerHTML = '<span id="listenIcon">🎤</span> Responder';
-            };
-        }
-
-        // Alternância
-        if (!isListening) {
-            try {
-                recognition.start();
-                isListening = true;
-                listenButton.innerHTML = '<span id="listenIcon">🛑</span> Parar';
-                if (statusDiv) statusDiv.textContent = "Ouvindo...";
-            } catch (err) {
-                if (statusDiv) statusDiv.textContent = "Erro ao iniciar microfone.";
+        // Salvar texto original quando aparece na tela
+        function registrarTextosOriginais() {
+            document.querySelectorAll(SELECTORES.join(",")).forEach(el => {
+                if (!el.getAttribute("data-original")) {
+                    el.setAttribute("data-original", el.innerText.trim());
+                }
             }
-        } else {
-            recognition.stop();
-            isListening = false;
+            );
         }
 
-    });
-}
+        // Traduz a página com Google API (e salva cache)
+        async function traduzirPagina(lang) {
+            registrarTextosOriginais();
 
-document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
+            const elementos = document.querySelectorAll(SELECTORES.join(","));
 
-</script>
-<script>function tocarAlarmePorDezSegundos() {
-  const alarme = document.getElementById('alarme');
-  const duracao = 20000; // 20 segundos em milissegundos
+            for (const el of elementos) {
+                const original = el.getAttribute("data-original");
+                if (!original)
+                    continue;
 
-  alarme.play();
-  setTimeout(() => {
-    alarme.pause();
-    alarme.currentTime = 0; // Volta o áudio para o início
-  }, duracao);
-}
+                // Se já está no cache, usa
+                if (translationCache[lang] && translationCache[lang][original]) {
+                    el.innerText = translationCache[lang][original];
+                    continue;
+                }
 
-</script>
-<body oncontextmenu="return false">  
-<header>
-  <div class="header-content">
-    <img src="https://cepunimedcostadosol.com.br/wp-content/uploads/2023/10/logo-unimed-costa-do-sol-2048x732.png" class="logo">
-    <h1>Prancha Interativa de Cuidado - Viver Bem</h1>
-  </div>
-  
-</header>
+                // Chamada ao Google
+                const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt-BR&dt=t" + "&tl=" + lang + "&q=" + encodeURIComponent(original);
 
-<section class="board" id="board">
-<!-- Página inicial será renderizada via script -->
-</section>
-<script>
+                try {
+                    const res = await fetch(url);
+                    const data = await res.json();
+
+                    const translated = data?.[0]?.[0]?.[0];
+                    if (!translated)
+                        continue;
+
+                    // Aplica a tradução
+                    el.innerText = translated;
+
+                    // Salva no cache
+                    if (!translationCache[lang])
+                        translationCache[lang] = {};
+                    translationCache[lang][original] = translated;
+
+                    // salva no localStorage
+                    localStorage.setItem("translationCache", JSON.stringify(translationCache));
+
+                } catch (e) {
+                    console.log("Erro ao traduzir:", e);
+                }
+            }
+
+            // salva idioma atual
+            localStorage.setItem("idiomaAtual", lang);
+        }
+
+        // Reaplica tradução sempre que labels forem recriados
+        function reaplicarTraducao() {
+            const lang = localStorage.getItem("idiomaAtual");
+            if (!lang)
+                return;
+
+            registrarTextosOriginais();
+
+            const elementos = document.querySelectorAll(SELECTORES.join(","));
+
+            for (const el of elementos) {
+                const original = el.getAttribute("data-original");
+                if (!original)
+                    continue;
+
+                if (translationCache[lang] && translationCache[lang][original]) {
+                    el.innerText = translationCache[lang][original];
+                }
+            }
+        }
+    </script>
+    <body>
+        <script>
+            function formatarDataEHora() {
+                const agora = new Date();
+
+                // Obtém idioma que o usuário escolheu para a página
+                let lang = localStorage.getItem("idiomaAtual");
+
+                // Converte para códigos de locale
+                let locale = "pt-BR";
+                if (lang === "en")
+                    locale = "en-US";
+                if (lang === "es")
+                    locale = "es-ES";
+
+                const opcoesData = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                };
+
+                const opcoesHora = {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                };
+
+                // Agora formata na língua escolhida
+                const dataFormatada = agora.toLocaleDateString(locale, opcoesData);
+                const horaFormatada = agora.toLocaleTimeString(locale, opcoesHora);
+
+                const dataPorExtensoEHora = `📆 ${dataFormatada} - ${horaFormatada}`;
+
+                const container = document.getElementById('data-hora-container');
+                if (container) {
+                    container.textContent = dataPorExtensoEHora;
+                }
+            }
+
+            formatarDataEHora();
+            setInterval(formatarDataEHora, 1000);
+        </script>
+        <script>
+            function toggleFullscreen() {
+                const doc = document.documentElement;
+                const iconIndicator = document.getElementById('icon-indicator');
+
+                // verifica o estado atual de Fullscreen em vários navegadores
+                const isFullscreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+
+                if (isFullscreen) {
+                    // SAI DO MODO TELA CHEIA
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                    // Ícone para "Entrar Tela Cheia"
+                    iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">';
+
+                } else {
+                    // ENTRA NO MODO TELA CHEIA
+                    if (doc.requestFullscreen) {
+                        doc.requestFullscreen();
+                    } else if (doc.mozRequestFullScreen) {
+                        doc.mozRequestFullScreen();
+                    } else if (doc.webkitRequestFullscreen) {
+                        doc.webkitRequestFullscreen();
+                    } else if (doc.msRequestFullscreen) {
+                        doc.msRequestFullscreen();
+                    }
+
+                    // Ícone para "Sair Tela Cheia"
+                    iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/1828/1828851.png" style="width:25px;height:25px;">';
+                }
+                // Listener para atualizar o ícone caso o modo seja alterado externamente
+                document.addEventListener('fullscreenchange', function() {
+                    const iconIndicator = document.getElementById('icon-indicator');
+                    if (document.fullscreenElement) {
+                        // Entrou em full screen, mostra o ícone de saída
+                        iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/1828/1828851.png" style="width:25px;height:25px;">';
+                    } else {
+                        // Saiu de full screen, mostra o ícone de entrada
+                        iconIndicator.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">';
+                    }
+                });
+            }
+
+            function initializeSpeechRecognition() {
+
+                const listenButton = document.getElementById("listenButton");
+                const phraseBar = document.getElementById("phraseBar");
+                const statusDiv = document.getElementById("status");
+
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+                if (!SR) {
+                    if (statusDiv)
+                        statusDiv.textContent = "Reconhecimento de fala não suportado neste dispositivo.";
+                    listenButton.disabled = true;
+                    return;
+                }
+
+                let recognition = null;
+                let isListening = false;
+
+                listenButton.addEventListener("click", () => {
+                    if (!recognition) {
+                        recognition = new SR();
+                        recognition.lang = "pt-BR";
+                        recognition.continuous = false;
+                        recognition.interimResults = false;
+
+                        recognition.onresult = (event) => {
+                            const text = event.results[0][0].transcript;
+                            phraseBar.textContent += " " + text;
+                            speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+                        }
+                        ;
+
+                        recognition.onerror = (event) => {
+                            isListening = false;
+                            listenButton.innerHTML = '<span id="listenIcon">🎤</span> Responder';
+                            if (statusDiv)
+                                statusDiv.textContent = "Erro: " + event.error;
+                        }
+                        ;
+
+                        recognition.onend = () => {
+                            isListening = false;
+                            listenButton.innerHTML = '<span id="listenIcon">🎤</span> Responder';
+                        }
+                        ;
+                    }
+
+                    // Alternância
+                    if (!isListening) {
+                        try {
+                            recognition.start();
+                            isListening = true;
+                            listenButton.innerHTML = '<span id="listenIcon">🛑</span> Parar';
+                            if (statusDiv)
+                                statusDiv.textContent = "Ouvindo...";
+                        } catch (err) {
+                            if (statusDiv)
+                                statusDiv.textContent = "Erro ao iniciar microfone.";
+                        }
+                    } else {
+                        recognition.stop();
+                        isListening = false;
+                    }
+
+                }
+                );
+            }
+
+            document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
+        </script>
+        <script>
+            function tocarAlarmePorDezSegundos() {
+                const alarme = document.getElementById('alarme');
+                const duracao = 20000;
+                // 20 segundos em milissegundos
+
+                alarme.play();
+                setTimeout( () => {
+                    alarme.pause();
+                    alarme.currentTime = 0;
+                    // Volta o áudio para o início
+                }
+                , duracao);
+            }
+        </script>
+        <body oncontextmenu="return false">
+            <header>
+                <div class="header-content">
+                    <img src="https://cepunimedcostadosol.com.br/wp-content/uploads/2023/10/logo-unimed-costa-do-sol-2048x732.png" class="logo">
+                    <h1>Prancha Interativa de Cuidado - Viver Bem</h1>
+                </div>
+            </header>
+            <section class="board" id="board">
+            <!-- Página inicial será renderizada via script -->
+            </section>
+            <script>
 
                 const data = {
                     home: [{
@@ -800,8 +917,7 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
                         label: 'depois',
                         emoji: '<img src="https://static.arasaac.org/pictograms/13080/13080_300.png" alt="depois" style="width:65px;height:65px;">',
                         customColor: '#ffffff'
-                    },
-                    ],
+                    }, ],
 
                     alfabeto: {
                         // Linha numérica
@@ -1058,166 +1174,197 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
                         // Corrigido a chave de " para ! (Exclamação)
                     },
                 };
-const board = document.getElementById('board');
-const phraseBar = document.getElementById('phraseBar');
-let phrase=[];
-let history=[];
+                const board = document.getElementById('board');
+                const phraseBar = document.getElementById('phraseBar');
+                let phrase = [];
+                let history = [];
 
-function createCardElement(item) {
-    const div = document.createElement('div');
-    div.className = 'card';
-    if (item.customColor) {
-        div.style.backgroundColor = item.customColor;
-        if (item.customColor.toUpperCase() === '#FFD700' || item.customColor.toUpperCase() === '#FFEB99') {
-            div.style.color = 'black';
-        } else {
-            div.style.color = 'white'; 
-        }
-    }
+                function createCardElement(item) {
+                    const div = document.createElement('div');
+                    div.className = 'card';
+                    if (item.customColor) {
+                        div.style.backgroundColor = item.customColor;
+                        if (item.customColor.toUpperCase() === '#FFD700' || item.customColor.toUpperCase() === '#FFEB99') {
+                            div.style.color = 'black';
+                        } else {
+                            div.style.color = 'white';
+                        }
+                    }
+
+                    div.innerHTML = `<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
+
+                    return div;
+                }
+                function render(items) {
+                    board.innerHTML = '';
+
+                    if (history.length > 0) {
+                        const backBtn = document.createElement('div');
+                        backBtn.className = 'card';
+                        backBtn.style.backgroundColor = '#E0E0E0';
+                        backBtn.innerHTML = '<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
+                        backBtn.onclick = () => {
+                            history.pop();
+                            renderCurrent();
+                        }
+                        ;
+                        board.appendChild(backBtn);
+                    }
+                    Object.keys(items).forEach(group => {
+                        const groupData = items[group];
+                        if (Array.isArray(groupData)) {
+                            groupData.forEach(item => {
+                                const div = createCardElement(item);
+                                div.onclick = () => {
+                                    addToPhrase(item.label);
+                                }
+                                ;
+                                board.appendChild(div);
+                            }
+                            );
+                        } else {
+                            const div = document.createElement('div');
+                            div.className = 'card';
+                            div.innerHTML = `<div style="font-size:50px">${groupData[0]?.emoji || '📂'}</div><div class='label'>${group}</div>`;
+                            div.onclick = () => {
+                                history.push(items);
+                                render(groupData);
+                            }
+                            ;
+                            board.appendChild(div);
+                        }
+                    }
+                    );
+                    traduzirPagina(localStorage.getItem("idiomaAtual"));
+                }
+                function renderCurrent() {
+                    const current = history.length > 0 ? history[history.length - 1] : data.home;
+
+                    if (Array.isArray(current)) {
+                        board.innerHTML = '';
+                        current.forEach(item => {
+                            const div = createCardElement(item);
+
+                            if (item.children) {
+                                div.onclick = () => {
+                                    history.push(data[item.children]);
+                                    render(data[item.children]);
+                                }
+                                ;
+                            } else {
+                                div.onclick = () => {
+                                    addToPhrase(item.label);
+                                }
+                                ;
+                            }
+
+                            board.appendChild(div);
+                        }
+                        );
+                        traduzirPagina(localStorage.getItem("idiomaAtual"));
+
+                    } else {
+                        render(current);
+                    }
+                }
+                function addToPhrase(label) {
+                    phrase.push(label);
+                    phraseBar.textContent = phrase.join(' ');
+                    speak(label);
+                    addLog(label);
+                }
+
+                function speak(text) {
+                    const u = new SpeechSynthesisUtterance(text);
+                    u.lang = 'pt-BR';
+                    window.speechSynthesis.speak(u);
+                }
+
+                function speakSequence() {
+                    if (phrase.length === 0)
+                        return;
+
+                    let finalSpeechText = '';
+                    let currentWord = '';
+
+                    for (const token of phrase) {
+                        if (token.length === 1 && token.trim() !== '') {
+                            currentWord += token;
+                        } else {
+                            if (currentWord.length > 0) {
+                                finalSpeechText += currentWord + ' ';
+                                currentWord = '';
+                            }
+                            finalSpeechText += token + ' ';
+                        }
+                    }
+                    if (currentWord.length > 0) {
+                        finalSpeechText += currentWord;
+                    }
+                    const textToSpeak = finalSpeechText.replace(/\s+/g, ' ').trim();
+                    speak(textToSpeak);
+
+                }
+
+                function clearPhrase() {
+                    phrase = [];
+                    phraseBar.textContent = '';
+                }
+
+                function deleteLastToken() {
+                    if (phrase.length > 0) {
+                        phrase.pop();
+                        const phraseBar = document.getElementById('phraseBar');
+                        phraseBar.textContent = phrase.join(' ');
+                    }
+                }
+
+                const LOG_KEY = 'caa_ucs_logs';
+                function loadLogs() {
+                    return JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
+                }
+                function saveLogs(arr) {
+                    localStorage.setItem(LOG_KEY, JSON.stringify(arr));
+                }
+                function addLog(label) {
+                    const arr = loadLogs();
+                    arr.push({
+                        label,
+                        patient: document.getElementById('patientName').value || '',
+                        t: new Date().toISOString()
+                    });
+                    saveLogs(arr);
+                }
+                function clearLogs() {
+                    {
+                        localStorage.removeItem(LOG_KEY);
+                    }
+                }
+                function exportLogs() {
+                    const arr = loadLogs();
+                    const blob = new Blob([JSON.stringify(arr, null, 2)],{
+                        type: 'application/json'
+                    });
+                    const a = document.createElement('a');
+                    const patientNameValue = document.getElementById('patientName').value;
+                    const safePatientName = patientNameValue ? patientNameValue.trim().replace(/[^a-z0-9\s]/gi, '_').replace(/\s+/g, '_') : 'SemNome';
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `Conversa CAA UCS - ${safePatientName}_${new Date().toISOString()}.json`;
+                    a.click();
+                    //
+                }
+                renderCurrent();
+            </script>
+        </body>
+        <footer style="color: #000000; text-align: center; font-size: 0.8em;">
+            <p>
+                Desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>
+                , sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>
+                .
     
-    div.innerHTML = `<div style="font-size:50px">${item.emoji}</div><div class='label'>${item.label}</div>`;
-    
-    return div;
-}
-function render(items){
-  board.innerHTML='';
-  
-  if(history.length>0){
-    const backBtn=document.createElement('div');
-    backBtn.className='card';
-    backBtn.style.backgroundColor = '#E0E0E0';
-    backBtn.innerHTML='<div style="font-size:50px"><img src="https://cdn-icons-png.flaticon.com/128/14024/14024918.png" style="width:65px;height:65px;"><div class="label">Voltar</div>';
-    backBtn.onclick=()=>{ history.pop(); renderCurrent(); };
-    board.appendChild(backBtn);
-  }
-  Object.keys(items).forEach(group=>{
-    const groupData = items[group];
-    if(Array.isArray(groupData)){
-      groupData.forEach(item=>{
-        const div = createCardElement(item); 
-        div.onclick=()=>{ addToPhrase(item.label); };
-        board.appendChild(div);
-      });
-    } else {
-      const div=document.createElement('div');
-      div.className='card';
-      div.innerHTML=`<div style="font-size:50px">${groupData[0]?.emoji||'📂'}</div><div class='label'>${group}</div>`;
-      div.onclick=()=>{ history.push(items); render(groupData); };
-      board.appendChild(div);
-    }
-  });
-traduzirPagina(localStorage.getItem("idiomaAtual"));
-}
-function renderCurrent() {
-  const current = history.length > 0 ? history[history.length - 1] : data.home;
-
-  if (Array.isArray(current)) {
-    board.innerHTML = '';
-    current.forEach(item => {
-      const div = createCardElement(item); 
-
-      if (item.children) {
-        div.onclick = () => {
-          history.push(data[item.children]);
-          render(data[item.children]);
-        };
-      } else {
-        div.onclick = () => { addToPhrase(item.label); };
-      }
-
-      board.appendChild(div);
-    });
-traduzirPagina(localStorage.getItem("idiomaAtual"));
-
-  } else {
-    render(current);
-  }
-}
-function addToPhrase(label){
-  phrase.push(label);
-  phraseBar.textContent=phrase.join(' ');
-  speak(label);
-  addLog(label);
-}
-
-function speak(text){
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='pt-BR';
-  window.speechSynthesis.speak(u);
-}
-
-function speakSequence(){ 
-    if(phrase.length===0) return; 
-    
-    let finalSpeechText = '';
-    let currentWord = '';
-    
-    for (const token of phrase) {
-        if (token.length === 1 && token.trim() !== '') {
-            currentWord += token;
-        } else {
-            if (currentWord.length > 0) {
-                finalSpeechText += currentWord + ' ';
-                currentWord = '';
-            }
-            finalSpeechText += token + ' ';
-        }
-    }
-    if (currentWord.length > 0) {
-        finalSpeechText += currentWord;
-    }
-    const textToSpeak = finalSpeechText.replace(/\s+/g, ' ').trim();
-    speak(textToSpeak);
-
-}
-
-function clearPhrase(){
-  phrase=[];
-  phraseBar.textContent='';
-}
-
-function deleteLastToken() {
-    if (phrase.length > 0) {
-        phrase.pop();
-        const phraseBar = document.getElementById('phraseBar');
-        phraseBar.textContent = phrase.join(' ');
-    }
-}
-
-const LOG_KEY='caa_ucs_logs';
-function loadLogs(){ return JSON.parse(localStorage.getItem(LOG_KEY)||'[]'); }
-function saveLogs(arr){ localStorage.setItem(LOG_KEY,JSON.stringify(arr)); }
-function addLog(label){
-  const arr=loadLogs();
-  arr.push({label,patient:document.getElementById('patientName').value||'',t:new Date().toISOString()});
-  saveLogs(arr);
-}
-function clearLogs(){
-{
-    localStorage.removeItem(LOG_KEY);
-  }
-}
-function exportLogs(){
-    const arr = loadLogs();
-    const blob = new Blob([JSON.stringify(arr, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    const patientNameValue = document.getElementById('patientName').value;
-    const safePatientName = patientNameValue 
-        ? patientNameValue.trim().replace(/[^a-z0-9\s]/gi, '_').replace(/\s+/g, '_')
-        : 'SemNome';
-    a.href = URL.createObjectURL(blob);
-    a.download = `Conversa CAA UCS - ${safePatientName}_${new Date().toISOString()}.json`;
-    a.click(); //
-}
-renderCurrent();
-</script>
-</body>
-<footer style="color: #000000; text-align: center; font-size: 0.8em;">
-    <p>
-        Desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.
-    </p>
-    <p>
-        <strong>Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados</strong>
-    </p>
-</footer>
+            </p>
+            <p>
+                <strong>Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados</strong>
+            </p>
+        </footer>
 </html>
