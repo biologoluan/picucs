@@ -72,7 +72,7 @@ margin-left: auto;
     /* CORREÇÃO AQUI */
     width: 100%;
     text-align: center;
-    word-wrap: break-word; 
+    word-wrap: normal; 
     line-height: 1.2;
 }
 footer{padding:0px;text-align:center;color:var(--accent-dark)}
@@ -287,9 +287,9 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 <style>
 
     #alarme-toggle {
-            position: absolute;
-        top: 703px;
-        right: 770px;
+        position: absolute;
+        top: 22px;
+        right: 100px;
         z-index: 1000;
     }
         #creditos-toggle {
@@ -323,7 +323,7 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 <style>
 
     #fullscreen-toggle {
-            position: absolute;
+        position: absolute;
         top: 20px;    
         right: 50px;   
         z-index: 1000;
@@ -367,7 +367,12 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
         <img src="https://cdn-icons-png.flaticon.com/128/6947/6947551.png" style="width:25px;height:25px;">
     </span>
 </button>
-
+<button id="alarme-toggle" onclick="tocarAlarmePorDezSegundos()">
+    
+    <span id="alarme-indicator">
+        <img src="https://cdn-icons-png.flaticon.com/128/3837/3837866.png" style="width:35px;height:35px;">
+    </span>
+</button>
 
     </span>    
 
@@ -724,7 +729,7 @@ home:[
     {label:'obrigado',emoji:'<img src="https://static.arasaac.org/pictograms/36093/36093_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
     {label:'desculpa',emoji:'<img src="https://static.arasaac.org/pictograms/38361/38361_300.png" style="width:65px;height:65px;">', customColor:'#E0E0E0'},
     {label:'mais comandos',emoji:'<img src="https://static.arasaac.org/pictograms/38218/38218_300.png" style="width:65px;height:65px;">',children:'outros',customColor:'#E0E0E0'},
-    {label:'CHAMAR SOCORRO',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/2991/2991174.png" style="width:65px;height:65px;">', customColor:'#b00000', labelColor:'#FFFFFF'},
+    //{label:'CHAMAR SOCORRO',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/2991/2991174.png" style="width:65px;height:65px;">', action: 'tocarAlarmePorDezSegundos()', customColor:'#b00000', labelColor:'#FFFFFF'},
 ],
 
 alimentacao:{
@@ -1044,7 +1049,7 @@ vontades:{
 'ligar':[{label:'ligar',emoji:'<img src="https://static.arasaac.org/pictograms/21818/21818_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}], 
 'desligar':[{label:'desligar',emoji:'<img src="https://static.arasaac.org/pictograms/21365/21365_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'ligar a luz':[{label:'ligar a luz',emoji:'<img src="https://static.arasaac.org/pictograms/8103/8103_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],  
- 'desligar a luz':[{label:'desligar a luz',emoji:'<img src="https://static.arasaac.org/pictograms/8027/8027_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+'desligar a luz':[{label:'desligar a luz',emoji:'<img src="https://static.arasaac.org/pictograms/8027/8027_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'aumentar ar':[{label:'aumentar ar',emoji:'<img src="https://static.arasaac.org/pictograms/6218/6218_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],    
 'diminuir ar':[{label:'diminuir ar',emoji:'<img src="https://static.arasaac.org/pictograms/5916/5916_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'escrever':[{label:'escrever',emoji:'<img src="https://static.arasaac.org/pictograms/10312/10312_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
@@ -1060,15 +1065,14 @@ vontades:{
 'jogo':[{label:'jogo',emoji:'<img src="https://static.arasaac.org/pictograms/6170/6170_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
 'novela':[{label:'novela',emoji:'<img src="https://static.arasaac.org/pictograms/29125/29125_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
 'casa':[{label:'casa',emoji:'<img src="https://static.arasaac.org/pictograms/6964/6964_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
-'carro':[{label:'carro',emoji:'<img src="https://static.arasaac.org/pictograms/2339/2339_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
 'igreja':[{label:'igreja',emoji:'<img src="https://static.arasaac.org/pictograms/6530/6530_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
 'centro':[{label:'centro',emoji:'<img src="https://static.arasaac.org/pictograms/2460/2460_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}], 
 'missa':[{label:'missa',emoji:'<img src="https://static.arasaac.org/pictograms/24189/24189_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],  
 'culto':[{label:'culto',emoji:'<img src="https://static.arasaac.org/pictograms/30903/30903_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],     
 'tablet':[{label:'tablet',emoji:'<img src="https://static.arasaac.org/pictograms/28099/28099_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
 'jogar':[{label:'jogar',emoji:'<img src="https://static.arasaac.org/pictograms/29151/29151_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'comemorar':[{label:'celebrar',emoji:'<img src="https://static.arasaac.org/pictograms/16475/16475_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
-'aniversário':[{label:'niver',emoji:'<img src="https://static.arasaac.org/pictograms/28491/28491_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],    
+'comemorar':[{label:'comemorar',emoji:'<img src="https://static.arasaac.org/pictograms/16475/16475_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
+'aniversário':[{label:'aniversário',emoji:'<img src="https://static.arasaac.org/pictograms/28491/28491_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],    
 'viajar':[{label:'viajar',emoji:'<img src="https://static.arasaac.org/pictograms/36974/36974_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
 'praia':[{label:'praia',emoji:'<img src="https://static.arasaac.org/pictograms/4746/4746_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
 'futebol':[{label:'futebol',emoji:'<img src="https://static.arasaac.org/pictograms/7137/7137_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
@@ -1153,6 +1157,7 @@ function createCardElement(item) {
         <div style="font-size:50px">${item.emoji}</div>
         <div class='label' ${item.label === 'CHAMAR SOCORRO' ? "style='color:#FFFFFF'" : ""}>
             ${item.label}
+            
         </div>
     `;
 
@@ -1174,8 +1179,16 @@ function render(items){
     if(Array.isArray(groupData)){
       groupData.forEach(item=>{
         const div = createCardElement(item); 
-        div.onclick=()=>{ addToPhrase(item.label); };
+        
+div.onclick = () => {
+    if (item.label === "CHAMAR SOCORRO") {
+       tocarAlarmePorDezSegundos()
+    } else {
+        addToPhrase(item.label);
+    }
+};
         board.appendChild(div);
+        
       });
     } else {
       const div=document.createElement('div');
