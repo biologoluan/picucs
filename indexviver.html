@@ -11,35 +11,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Prancha Interativa de Cuidado - UCS v1.1 Viver Bem</title>
         <meta http-equiv="refresh" content="3600">
-        <style>
-            :root {
-                --bg: #FFFFFF;
-                --card: #DAEFDC;
-                --accent: #004a2d;
-                --accent-dark: #004E4C;
-                --muted: #000000;
-                font-family: Arial,sans-serif;
-            }
-
-            body, html {
-                margin: 0;
-                background: var(--bg);
-                color: #0f1724;
-                height: 100%;
-            }
-
-            header {
-                background: var(--accent);
-                color: #fff;
-                padding: 2px 16px 2px 16px;
-                text-align: center
-            }
-
-            header h1 {
-                margin: 0;
-                font-size: 22px
-            }
-
+<style>
+:root{
+  --bg:#FFFFFF;
+  --card:#DAEFDC;
+  --accent:#004a2d;
+  --accent-dark:#004E4C;
+  --muted:#000000;
+  font-family:Arial,sans-serif;
+}
+body{margin:0;background:var(--bg);color:#0f1724}
+header{background:var(--accent);color:#fff;padding:2px 16px 2px 16px;text-align:center}
+header h1{margin:0;font-size:22px}
             .board {
                 padding: 12px;
                 gap: 12px;
@@ -48,252 +31,352 @@
                 flex-direction: column;
                 flex-wrap: wrap; 
 
-                max-height: 63vh; 
+                max-height: 77vh; 
+                align-content: start;
 
-                width: fit-content; 
+margin-left: auto;
+    margin-right: auto;
                 overflow-x: auto; 
                 overflow-y: hidden;
             }
+.card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--accent);
+    
+    width: 80px; /* Largura Fixo */
+    height: 105px; /* Altura Fixo */
+    display: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden; 
+    
+}
 
+.card:hover {
+    transform: scale(1.05);
+    border-color: var(--accent-dark);
+}
 
-            .card {
-                background: var(--card);
-                border-radius: 12px;
-                padding: 12px;
-                text-align: center;
-                cursor: pointer;
-                transition: transform .12s,box-shadow .12s;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-                border: 1px solid var(--accent);
-                width:80px;
-                height:110px;
-            }
+.label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    
+    /* CORREÇÃO AQUI */
+    width: 100%;
+    text-align: center;
+    word-wrap: normal; 
+    line-height: 1.2;
+}
+footer{padding:0px;text-align:center;color:var(--accent-dark)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:24px 0 12px 0}
+button{padding:8px 12px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer}
+input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-width:150px}
+.phrase-bar {
+    padding: 2px;
+    text-align: center;
+    font-size: 22px;
+    min-height: 30px;
+    border: 2px solid var(--accent);
+    border-radius: 15px;
+    width: 98%; 
+    margin: 20px auto 5px auto; 
+}
+.header-content{
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  justify-content: center; 
+}
 
-            .card:hover {
-                transform: scale(1.05);
-                border-color: var(--accent-dark)
-            }
+.logo{
+  height: 45px;
+  width: auto;
+  border-radius: 10px;
+  
+}
+#data-hora-container {
+            text-align: center; 
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #333; 
+        }
+        #fullscreen-toggle {
+    position: fixed;
+    top: 20px; 
+    right: 15px;    
+    z-index: 1000;  
+    
+    width: 20px; 
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px; 
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
 
-            .label {
-                font-size: 15px;
-                font-weight: 600;
-                color: var(--accent-dark)
-            }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+        }
+     #alarme-toggle {
 
-            footer {
-                padding: 0px;
-                text-align: center;
-                color: var(--accent-dark)
-            }
+    position: fixed;
+    top: 20px; 
+    right: 15px;    
+    z-index: 1000;  
+    
+    width: 20px; 
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+     #creditos-toggle {
 
-            .controls {
-                display: flex;
-                gap: 8px;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin: 24px 0 12px 0
-            }
+    position: fixed;
+    top: 20px; 
+    right: 20px;    
+    z-index: 1000;  
+    
+    width: 20px; 
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+#icon-indicator {
+    font-size: 24px;
+    line-height: 5; 
 
-            button {
-                padding: 8px 12px;
-                border: none;
-                border-radius: 8px;
-                background: var(--accent);
-                color: #fff;
-                cursor: pointer
-            }
+}#tradutions {
+    position: absolute; 
+    
+    top: 3%; 
+    transform: translateY(-50%);
+    
+    left: 40px; 
+    
+    z-index: 1000;
+    
+    display: flex;
+    align-items: center; 
+    gap: 8px; 
 
-            input {
-                padding: 8px;
-                border-radius: 8px;
-                border: 1px solid var(--accent-dark);
-                min-width: 150px
-            }
+ #tradutions img {
+    width: 28px; 
+    height: 28px; 
+    border-radius: 50%; 
+    cursor: pointer;
+}
+}#alarme-toggle {
+    position: absolute;
+    top: 3%; 
+    transform: translateY(-30%);
+    
+    right: 20px; 
+    
+    z-index: 1000;
+    display: flex;
+    align-items: center; 
+    width: 45px;   
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+}#creditos-toggle {
+    position: absolute;
+    top: 3%; 
+    transform: translateY(-30%);
+    
+    right: 20px; 
+    
+    z-index: 1000;
+    display: flex;
+    align-items: center; 
+    width: 45px;   
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+<style>
+/* 1. O Modal em si (tela inteira e escurecida) */
+.modal {
+    display: none; /* Inicia escondido */
+    position: fixed; /* Fica fixo, independente da rolagem */
+    z-index: 1000; /* Garante que fique acima de tudo */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; /* Habilita rolagem se o conteúdo for grande */
+    background-color: rgba(0,0,0,0.4); /* Fundo semi-transparente (efeito escurecido) */
+}
 
-            .phrase-bar {
-                padding: 2px;
-                text-align: center;
-                font-size: 22px;
-                min-height: 36px;
-                border: 1px solid var(--accent);
-                border-radius: 15px;
-                margin-bottom: 5px
-            }
+/* 2. O Conteúdo do Modal (a caixa branca) */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% do topo e centralizado horizontalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Pode ajustar a largura */
+    max-width: 500px; /* Limite de largura para não ficar muito grande */
+    border-radius: 8px; /* Cantos arredondados */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
 
-            .header-content {
-                display: flex;
-                align-items: center;
-                gap: 60px;
-                justify-content: center;
-            }
+/* 3. Botão de Fechar */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-            .logo {
-                height: 45px;
-                width: auto;
-                border-radius: 10px;
-            }
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+<style>
 
-            #data-hora-container {
-                text-align: center;
-                font-size: 0.9em;
-                font-weight: bold;
-                color: #333;
-            }
+    #alarme-toggle {
+        position: absolute;
+        top: 22px;
+        right: 100px;
+        z-index: 1000;
+    }
+        #creditos-toggle {
+            position: absolute;
+        top: 17px;
+        right: 10px;
+        z-index: 1000;
+    }
+    [vw-access-button] {
+        position: fixed !important; 
+        
+        top: 20px !important;    
+        
+        left: 15px !important;   
+        
+        right: auto !important; 
+        bottom: auto !important; 
+        
+        z-index: 1000 !important; 
+    }
+    .skiptranslate {
+            display: none !important;
+        }
+        body {
+            top: 0px !important;
+        }
+        #google_translate_element {
+            display: none;
+        }
+</style>
+<style>
 
-            #fullscreen-toggle {
-                position: fixed;
-                top: 20px;
-                right: 15px;
-                z-index: 1000;
-                width: 20px;
-                height: 20px;
-                background-color: transparent;
-                color: white;
-                border: none;
-                border-radius: 0px;
-                cursor: pointer;
-                box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+    #fullscreen-toggle {
+        position: absolute;
+        top: 20px;    
+        right: 50px;   
+        z-index: 1000;
+    }
 
-            #alarme-toggle {
-                position: fixed;
-                top: 20px;
-                right: 15px;
-                z-index: 1000;
-                width: 20px;
-                height: 20px;
-                background-color: transparent;
-                color: white;
-                border: none;
-                border-radius: 0px;
-                cursor: pointer;
-                box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+    [vw-access-button] {
+        position: fixed !important; 
+        
+        top: 20px !important;    
+        
+        left: 15px !important;   
+        
+        right: auto !important; 
+        bottom: auto !important; 
+        
+        z-index: 1000 !important; 
+    }
+    .skiptranslate {
+            display: none !important;
+        }
 
-            #icon-indicator {
-                font-size: 24px;
-                line-height: 5;
-            }
+        body {
+            top: 0px !important;
+        }
 
-            #tradutions {
-                position: absolute;
-                top: 3%;
-                transform: translateY(-50%);
-                left: 40px;
-                z-index: 1000;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                /* Espaçamento entre as bandeiras */
-                #tradutions img {
-                    width: 28px;
-                    height: 28px;
-                    border-radius: 50%;
-                    cursor: pointer;
-                }
-            }
+        #google_translate_element {
+            display: none;
+        }
+</style>
+</head>
+<button id="fullscreen-toggle" onclick="toggleFullscreen()">
+    
+    <span id="icon-indicator">
+        <img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">
+    </span>
+    
+</button>
+<button id="creditos-toggle" onclick="creditos-toggle()">
+    
+    <span id="creditos-indicator">
+        <img src="https://cdn-icons-png.flaticon.com/128/6947/6947551.png" style="width:25px;height:25px;">
+    </span>
+</button>
+<button id="alarme-toggle" onclick="tocarAlarmePorDezSegundos()">
+    
+    <span id="alarme-indicator">
+        <img src="https://cdn-icons-png.flaticon.com/128/3837/3837866.png" style="width:35px;height:35px;">
+    </span>
+</button>
 
-            #alarme-toggle {
-                position: absolute;
-                top: 3%;
-                transform: translateY(-30%);
-                /* Posição Horizontal */
-                right: 20px;
-                z-index: 1000;
-                display: flex;
-                align-items: center;
-                /* Estilo do Botão */
-                width: 45px;
-                height: 20px;
-                background-color: transparent;
-                color: white;
-                border: none;
-                border-radius: 0px;
-                cursor: pointer;
-                box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        </style>
-        <style>
-            /* CSS do Botão Fullscreen */
-            #alarme-toggle {
-                position: absolute;
-                top: 23px;
-                right: 50px;
-                z-index: 1000;
-            }
+    </span>    
 
-            [vw-access-button] {
-                position: fixed !important;
-                top: 20px !important;
-                left: 15px !important;
-                right: auto !important;
-                bottom: auto !important;
-                z-index: 1000 !important;
-            }
-
-            .skiptranslate {
-                display: none !important;
-            }
-
-            body {
-                top: 0px !important;
-            }
-
-            #google_translate_element {
-                display: none;
-            }
-        </style>
-        <style>
-            /* CSS do Botão Fullscreen */
-            #fullscreen-toggle {
-                position: absolute;
-                top: 20px;
-                /* Distância do topo */
-                right: 15px;
-                z-index: 1000;
-            }
-
-            [vw-access-button] {
-                position: fixed !important;
-                top: 20px !important;
-                left: 15px !important;
-                right: auto !important;
-                bottom: auto !important;
-                z-index: 1000 !important;
-            }
-
-            .skiptranslate {
-                display: none !important;
-            }
-
-            body {
-                top: 0px !important;
-            }
-
-            #google_translate_element {
-                display: none;
-            }
-        </style>
-    </head>
-    <button id="fullscreen-toggle" onclick="toggleFullscreen()">
-        <span id="icon-indicator">
-            <img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">
-        </span>
-    </button>
-    <button id="alarme-toggle" onclick="tocarAlarmePorDezSegundos()">
-        <span id="alarme-indicator">
-            <img src="https://cdn-icons-png.flaticon.com/128/3837/3837866.png" style="width:25px;height:25px;">
-        </span>
-    </button>
+</button>
     <script src="https://cdn.jsdelivr.net/gh/spbgovbr-vlibras/vlibras-portal@dev/app/vlibras-plugin.js"></script>
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
@@ -301,6 +384,28 @@
             <div class="vw-plugin-top-wrapper"></div>
         </div>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('modalCreditos');
+        const btnAbrir = document.getElementById('creditos-toggle'); 
+        const btnFechar = modal.querySelector('.close-button');
+
+        btnAbrir.onclick = function(e) {
+            e.preventDefault(); 
+            modal.style.display = "block";
+        }
+
+        btnFechar.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+</script>
     <script>
         // Seletores que devem ser traduzidos
         const SELECTORES = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span", "button", ".label", "a", "li"];
@@ -924,260 +1029,51 @@
                     },
                     ],
 
-                    alfabeto: {
-                        // Linha numérica
-                        '1': [{
-                            label: '1',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2627/2627_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '2': [{
-                            label: '2',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2628/2628_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '3': [{
-                            label: '3',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2629/2629_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '4': [{
-                            label: '4',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2630/2630_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '5': [{
-                            label: '5',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2631/2631_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '6': [{
-                            label: '6',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2632/2632_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '7': [{
-                            label: '7',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2633/2633_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '8': [{
-                            label: '8',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2634/2634_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '9': [{
-                            label: '9',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2635/2635_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '11': [{
-                            label: '0',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/2626/2626_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-
-                        // Linha 1 (QWERTY)
-                        'Q': [{
-                            label: 'q',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3039/3039_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'W': [{
-                            label: 'w',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3045/3045_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'E': [{
-                            label: 'e',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3026/3026_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'É': [{
-                            label: 'é',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/36783/36783_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Acento na linha do E
-                        'R': [{
-                            label: 'r',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3040/3040_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'T': [{
-                            label: 't',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3042/3042_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'Y': [{
-                            label: 'y',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3047/3047_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'U': [{
-                            label: 'u',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3043/3043_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'Ú': [{
-                            label: 'ú',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/36769/36769_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Adicionado U com acento
-                        'I': [{
-                            label: 'i',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3030/3030_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'Í': [{
-                            label: 'í',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/36779/36779_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Acento na linha do I
-                        'O': [{
-                            label: 'o',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3037/3037_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'Ó': [{
-                            label: 'ó',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/36776/36776_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Acento na linha do O
-                        'P': [{
-                            label: 'p',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3038/3038_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-
-                        // Linha 2 (ASDFG)
-                        'A': [{
-                            label: 'a',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3021/3021_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'Á': [{
-                            label: 'á',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/36785/36785_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Acento na linha do A
-                        'S': [{
-                            label: 's',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3041/3041_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'D': [{
-                            label: 'd',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3025/3025_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'F': [{
-                            label: 'f',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3027/3027_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'G': [{
-                            label: 'g',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3028/3028_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'H': [{
-                            label: 'h',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3029/3029_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'J': [{
-                            label: 'j',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3031/3031_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'K': [{
-                            label: 'k',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3032/3032_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'L': [{
-                            label: 'l',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3033/3033_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'Ç': [{
-                            label: 'ç',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/29080/29080_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Adicionado Ç
-
-                        // Linha 3 (ZXCVB)
-                        'Z': [{
-                            label: 'z',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3048/3048_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'X': [{
-                            label: 'x',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3046/3046_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Mantido o pictograma original
-                        'C': [{
-                            label: 'c',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3024/3024_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'V': [{
-                            label: 'v',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3044/3044_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Mantido o pictograma original
-                        'B': [{
-                            label: 'b',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3023/3023_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'N': [{
-                            label: 'n',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3036/3036_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        'M': [{
-                            label: 'm',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3035/3035_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-
-                        'Espaço': [{
-                            label: '‍',
-                            emoji: '<img src="https://cdn-icons-png.flaticon.com/128/11480/11480323.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '.': [{
-                            label: '.',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3218/3218_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        ',': [{
-                            label: ',',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3189/3189_300.png" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '?': [{
-                            label: '?',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3418/3418_300.png" alt="?" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        '!': [{
-                            label: '!',
-                            emoji: '<img src="https://static.arasaac.org/pictograms/3417/3417_300.png" alt="!" style="width:65px;height:65px;">',
-                            customColor: '#E0E0E0'
-                        }],
-                        // Corrigido a chave de " para ! (Exclamação)
-                    },
+alfabeto:{
+'1':[ {label:'!',emoji:'<img src="https://static.arasaac.org/pictograms/3417/3417_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'2':[ {label:'/',emoji:'<img src="https://static.arasaac.org/pictograms/3424/3424_300.png" alt="/" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'3':[ {label:'‍',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/11480/11480323.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'4':[{label:'1',emoji:'<img src="https://static.arasaac.org/pictograms/2627/2627_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'5':[ {label:'q',emoji:'<img src="https://static.arasaac.org/pictograms/3039/3039_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'6':[{label:'a',emoji:'<img src="https://static.arasaac.org/pictograms/3021/3021_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'7':[{label:'z',emoji:'<img src="https://static.arasaac.org/pictograms/3048/3048_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'8':[{label:'2',emoji:'<img src="https://static.arasaac.org/pictograms/2628/2628_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'9':[{label:'w',emoji:'<img src="https://static.arasaac.org/pictograms/3045/3045_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'10':[{label:'s',emoji:'<img src="https://static.arasaac.org/pictograms/3041/3041_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'11':[ {label:'x',emoji:'<img src="https://static.arasaac.org/pictograms/3046/3046_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'12':[ {label:'3',emoji:'<img src="https://static.arasaac.org/pictograms/2629/2629_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'13':[ {label:'e',emoji:'<img src="https://static.arasaac.org/pictograms/3026/3026_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'14':[ {label:'d',emoji:'<img src="https://static.arasaac.org/pictograms/3025/3025_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'15':[ {label:'c',emoji:'<img src="https://static.arasaac.org/pictograms/3024/3024_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'16':[ {label:'4',emoji:'<img src="https://static.arasaac.org/pictograms/2630/2630_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'17':[ {label:'r',emoji:'<img src="https://static.arasaac.org/pictograms/3040/3040_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'18':[ {label:'f',emoji:'<img src="https://static.arasaac.org/pictograms/3027/3027_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'19':[ {label:'v',emoji:'<img src="https://static.arasaac.org/pictograms/3044/3044_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'20':[ {label:'5',emoji:'<img src="https://static.arasaac.org/pictograms/2631/2631_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'21':[ {label:'t',emoji:'<img src="https://static.arasaac.org/pictograms/3042/3042_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'22':[ {label:'g',emoji:'<img src="https://static.arasaac.org/pictograms/3028/3028_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'23':[ {label:'b',emoji:'<img src="https://static.arasaac.org/pictograms/3023/3023_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'24':[ {label:'6',emoji:'<img src="https://static.arasaac.org/pictograms/2632/2632_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'25':[ {label:'y',emoji:'<img src="https://static.arasaac.org/pictograms/3047/3047_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'26':[ {label:'h',emoji:'<img src="https://static.arasaac.org/pictograms/3029/3029_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'27':[ {label:'n',emoji:'<img src="https://static.arasaac.org/pictograms/3036/3036_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'28':[ {label:'7',emoji:'<img src="https://static.arasaac.org/pictograms/2633/2633_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'29':[ {label:'u',emoji:'<img src="https://static.arasaac.org/pictograms/3043/3043_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'30':[ {label:'j',emoji:'<img src="https://static.arasaac.org/pictograms/3031/3031_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'31':[ {label:'m',emoji:'<img src="https://static.arasaac.org/pictograms/3035/3035_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'32':[ {label:'8',emoji:'<img src="https://static.arasaac.org/pictograms/2634/2634_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'33':[ {label:'i',emoji:'<img src="https://static.arasaac.org/pictograms/3030/3030_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'34':[ {label:'k',emoji:'<img src="https://static.arasaac.org/pictograms/3032/3032_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'35':[ {label:',',emoji:'<img src="https://static.arasaac.org/pictograms/3189/3189_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'36':[ {label:'9',emoji:'<img src="https://static.arasaac.org/pictograms/2635/2635_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'37':[ {label:'o',emoji:'<img src="https://static.arasaac.org/pictograms/3037/3037_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'38':[ {label:'l',emoji:'<img src="https://static.arasaac.org/pictograms/3033/3033_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'39':[ {label:'.',emoji:'<img src="https://static.arasaac.org/pictograms/3218/3218_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'40':[ {label:'0',emoji:'<img src="https://static.arasaac.org/pictograms/2626/2626_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'41':[ {label:'p',emoji:'<img src="https://static.arasaac.org/pictograms/3038/3038_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'42':[ {label:'ç',emoji:'<img src="https://static.arasaac.org/pictograms/29080/29080_300.png" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+'43':[ {label:'?',emoji:'<img src="https://static.arasaac.org/pictograms/3418/3418_300.png" alt="?" style="width:65px;height:65px;">',customColor:'#E0E0E0'}],
+},
                 };
                 const board = document.getElementById('board');
                 const phraseBar = document.getElementById('phraseBar');
@@ -1360,20 +1256,22 @@
                 }
                 renderCurrent();
             </script>
-        </body>
-        <footer style="color: #000000; text-align: center; font-size: 0.8em;">
-            <p>
-                Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>
-                , sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>
-                .
+    <div id="modalCreditos" class="modal">
     
-            </p>
-            <p>
-                <strong>Versão 1.1v - Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados</strong>
-            </p>
-        </footer>
+    <div class="modal-content">
+        
+        <span class="close-button">&times;</span>
+        
+        <h3>Créditos e Licenciamento</h3>
+        
+<footer style="color: #000000; text-align: justify; font-size: 0.9em;">
+    <p>Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.</p>
+    <p><strong>Versão 1.1h - Copyright 2025 Unimed Costa do Sol</p></strong>
+    <p><strong>Todos os direitos reservados.</p></strong>
+</footer>
+    </div>
+</div>
+</body>
 </html>
-
-
 
 
