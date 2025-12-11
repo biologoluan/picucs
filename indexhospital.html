@@ -241,6 +241,48 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
 }
 </style>
 <style>
+/* 1. O Modal em si (tela inteira e escurecida) */
+.modal {
+    display: none; /* Inicia escondido */
+    position: fixed; /* Fica fixo, independente da rolagem */
+    z-index: 1000; /* Garante que fique acima de tudo */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; /* Habilita rolagem se o conteúdo for grande */
+    background-color: rgba(0,0,0,0.4); /* Fundo semi-transparente (efeito escurecido) */
+}
+
+/* 2. O Conteúdo do Modal (a caixa branca) */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% do topo e centralizado horizontalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Pode ajustar a largura */
+    max-width: 500px; /* Limite de largura para não ficar muito grande */
+    border-radius: 8px; /* Cantos arredondados */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+/* 3. Botão de Fechar */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+<style>
 
     #alarme-toggle {
             position: absolute;
@@ -337,6 +379,28 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
         <div class="vw-plugin-top-wrapper"></div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('modalCreditos');
+        const btnAbrir = document.getElementById('creditos-toggle'); 
+        const btnFechar = modal.querySelector('.close-button');
+
+        btnAbrir.onclick = function(e) {
+            e.preventDefault(); 
+            modal.style.display = "block";
+        }
+
+        btnFechar.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+</script>
 <script>
 
 const SELECTORES = [
@@ -1215,20 +1279,20 @@ function exportLogs(){
 }
 renderCurrent();
 </script>
-<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const btn = document.getElementById('creditos-toggle');
-            const mensagemCreditos = `
-Créditos: Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para ARASAAC (http://www.arasaac.org), sob propriedade do Governo de Aragão, que são distribuídos conforme a Licença Creative Commons BY-NC-SA.
-
-Versão 1.1h - Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados.
-            `.trim();
-
-            btn.addEventListener('click', function(event) {
-                event.preventDefault(); 
-                alert(mensagemCreditos);
-            });
-        });
-    </script>
+    <div id="modalCreditos" class="modal">
+    
+    <div class="modal-content">
+        
+        <span class="close-button">&times;</span>
+        
+        <h3>Créditos e Licenciamento</h3>
+        
+<footer style="color: #000000; text-align: justify; font-size: 0.9em;">
+    <p>Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.</p>
+    <p><strong>Versão 1.1h - Copyright 2025 Unimed Costa do Sol</p></strong>
+    <p><strong>Todos os direitos reservados.</p></strong>
+</footer>
+    </div>
+</div>
 </body>
 </html>
