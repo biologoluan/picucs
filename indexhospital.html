@@ -31,7 +31,7 @@ header h1{margin:0;font-size:22px}
                 flex-direction: column;
                 flex-wrap: wrap; 
 
-                max-height: 80vh; 
+                max-height: 77vh; 
 
 margin-left: auto;
     margin-right: auto;
@@ -148,6 +148,27 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     justify-content: center;
     
 }
+     #creditos-toggle {
+
+    position: fixed;
+    top: 20px; 
+    right: 20px;    
+    z-index: 1000;  
+    
+    width: 20px; 
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
 #icon-indicator {
     font-size: 24px;
     line-height: 5; 
@@ -195,13 +216,42 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     align-items: center;
     justify-content: center;
 }
+}#creditos-toggle {
+    position: absolute;
+    top: 3%; 
+    transform: translateY(-30%);
+    
+    right: 20px; 
+    
+    z-index: 1000;
+    display: flex;
+    align-items: center; 
+    width: 45px;   
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 </style>
 <style>
 
     #alarme-toggle {
             position: absolute;
         top: 23px;
-        right: 50px;
+        right: 100px;
+        z-index: 1000;
+    }
+        #creditos-toggle {
+            position: absolute;
+        top: 17px;
+        right: 10px;
         z-index: 1000;
     }
     [vw-access-button] {
@@ -231,7 +281,7 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     #fullscreen-toggle {
             position: absolute;
         top: 20px;    
-        right: 15px;   
+        right: 50px;   
         z-index: 1000;
     }
 
@@ -264,6 +314,13 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     
     <span id="icon-indicator">
         <img src="https://cdn-icons-png.flaticon.com/128/4436/4436579.png" style="width:25px;height:25px;">
+    </span>
+    
+</button>
+<button id="creditos-toggle" onclick="creditos-toggle()">
+    
+    <span id="creditos-indicator">
+        <img src="https://cdn-icons-png.flaticon.com/128/6947/6947551.png" style="width:25px;height:25px;">
     </span>
 </button>
 <button id="alarme-toggle" onclick="tocarAlarmePorDezSegundos()">
@@ -1158,13 +1215,20 @@ function exportLogs(){
 }
 renderCurrent();
 </script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('creditos-toggle');
+            const mensagemCreditos = `
+Créditos: Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para ARASAAC (http://www.arasaac.org), sob propriedade do Governo de Aragão, que são distribuídos conforme a Licença Creative Commons BY-NC-SA.
+
+Versão 1.1h - Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados.
+            `.trim();
+
+            btn.addEventListener('click', function(event) {
+                event.preventDefault(); 
+                alert(mensagemCreditos);
+            });
+        });
+    </script>
 </body>
-<footer style="color: #000000; text-align: center; font-size: 0.8em;">
-    <p>
-        Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.
-    </p>
-    <p>
-        <strong>Versão 1.1h - Copyright 2025 Unimed Costa do Sol - Todos os direitos reservados</strong>
-    </p>
-</footer>
 </html>
