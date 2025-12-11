@@ -367,9 +367,7 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
         <img src="https://cdn-icons-png.flaticon.com/128/6947/6947551.png" style="width:25px;height:25px;">
     </span>
 </button>
-<button id="alarme-toggle" onclick="tocarAlarmePorDezSegundos()">
-    <span id="alarme-indicator">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAACWCAYAAAAouC1GAAAAUUlEQVR4nO3BgQAAAADDoPlTH+ECVQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwDer2AAFgEZtuAAAAAElFTkSuQmCC" style="width:110px;height:132px;">
+
 
     </span>    
 
@@ -645,7 +643,7 @@ document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 </script>
 <script>function tocarAlarmePorDezSegundos() {
   const alarme = document.getElementById('alarme');
-  const duracao = 20000; // 20 segundos em milissegundos
+  const duracao = 10000; // 10 segundos em milissegundos
 
   alarme.play();
   setTimeout(() => {
@@ -728,6 +726,7 @@ home:[
     {label:'mais comandos',emoji:'<img src="https://static.arasaac.org/pictograms/38218/38218_300.png" style="width:65px;height:65px;">',children:'outros',customColor:'#E0E0E0'},
     {label:'CHAMAR SOCORRO',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/2991/2991174.png" style="width:65px;height:65px;">', customColor:'#b00000', labelColor:'#FFFFFF'},
 ],
+
 alimentacao:{
     'sal':[ {label:'sal',emoji:'<img src="https://static.arasaac.org/pictograms/25576/25576_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
     'açúcar':[ {label:'açúcar',emoji:'<img src="https://static.arasaac.org/pictograms/25560/25560_300.png" style="width:65px;height:65px;">',customColor:'#f9dd8a'}],
