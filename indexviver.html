@@ -241,6 +241,46 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     align-items: center;
     justify-content: center;
 }
+/* 3. Botão de Fechar */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* Botões - centralização */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Espaçamento entre os botões */
+  margin-top: 20px;
+}
+
+/* Botão "Sim"
+#btnSim {
+  background-color: #28a745; /* verde */
+}
+
+#btnSim:hover {
+  background-color: #218838; /* tom mais escuro */
+}
+
+/* Botão "Não"
+#btnNao {
+  background-color: #f44336; /* vermelho claro */
+}
+
+#btnNao:hover {
+  background-color: #d32f2f; /* tom mais escuro */
+}
 </style>
 <style>
 /* 1. O Modal em si (tela inteira e escurecida) */
@@ -1256,6 +1296,57 @@ alfabeto:{
                 }
                 renderCurrent();
             </script>
+            <script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  const modal = document.getElementById('modalAlarme');
+  const btnAbrir = document.getElementById('alarme-toggle');
+  const btnFechar = modal.querySelector('.close-button');
+  const btnSim = document.getElementById('btnSim');
+  const btnNao = document.getElementById('btnNao');
+
+  btnAbrir.onclick = function(e) {
+    e.preventDefault();
+    modal.style.display = "block";
+  };
+
+  btnFechar.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  btnNao.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  btnSim.onclick = function() {
+    modal.style.display = "none";
+    tocarAlarmePorDezSegundos();
+  };
+
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+
+});
+</script>
+            <div id="modalAlarme" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h3>Alarme de emergência</h3>
+
+    <p>
+      Você acionou o alarme para chamar a equipe.
+      Tem certeza?
+    </p>
+
+    <div class="modal-actions">
+      <button id="btnSim">Sim</button>
+      <button id="btnNao">Não</button>
+    </div>
+  </div>
+</div>
     <div id="modalCreditos" class="modal">
     
     <div class="modal-content">
@@ -1267,12 +1358,13 @@ alfabeto:{
 <footer style="color: #000000; text-align: justify; font-size: 0.9em;">
     <p>Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.</p>
     <p><strong>Versão 1.1v - Copyright 2025 Unimed Costa do Sol</p></strong>
-    <p><strong>Todos os direitos reservados.</p></strong>
+    <p><strong>Todos os direitos reservados</p></strong>
 </footer>
     </div>
 </div>
 </body>
 </html>
+
 
 
 
