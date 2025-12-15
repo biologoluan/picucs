@@ -241,6 +241,29 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     align-items: center;
     justify-content: center;
 }
+}#alarme-toggle {
+    position: absolute;
+    top: 3%; 
+    transform: translateY(-30%);
+    
+    right: 20px; 
+    
+    z-index: 1000;
+    display: flex;
+    align-items: center; 
+    width: 45px;   
+    height: 20px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 </style>
 <style>
 /* 1. O Modal em si (tela inteira e escurecida) */
@@ -282,6 +305,31 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+/* Botões - centralização */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Espaçamento entre os botões */
+  margin-top: 20px;
+}
+
+/* Botão "Sim"
+#btnSim {
+  background-color: #28a745; /* verde */
+}
+
+#btnSim:hover {
+  background-color: #218838; /* tom mais escuro */
+}
+
+/* Botão "Não"
+#btnNao {
+  background-color: #f44336; /* vermelho claro */
+}
+
+#btnNao:hover {
+  background-color: #d32f2f; /* tom mais escuro */
 }
 </style>
 <style>
@@ -367,7 +415,7 @@ input{padding:8px;border-radius:8px;border:1px solid var(--accent-dark);min-widt
         <img src="https://cdn-icons-png.flaticon.com/128/6947/6947551.png" style="width:25px;height:25px;">
     </span>
 </button>
-<button id="alarme-toggle" onclick="tocarAlarmePorDezSegundos()">
+<button id="alarme-toggle" onclick="alarme-toggle()">
     
     <span id="alarme-indicator">
         <img src="https://cdn-icons-png.flaticon.com/128/3837/3837866.png" style="width:35px;height:35px;">
@@ -646,17 +694,44 @@ function initializeSpeechRecognition() {
 document.addEventListener("DOMContentLoaded", initializeSpeechRecognition);
 
 </script>
-<script>function tocarAlarmePorDezSegundos() {
-  const alarme = document.getElementById('alarme');
-  const duracao = 10000; // 10 segundos em milissegundos
+<script>
+  function tocarAlarmePorDezSegundos() {
+    const alarme = document.getElementById('alarme');
+    const duracao = 10000;
 
-  alarme.play();
-  setTimeout(() => {
-    alarme.pause();
-    alarme.currentTime = 0;
-  }, duracao);
-}
+    alarme.play();
+    setTimeout(() => {
+      alarme.pause();
+      alarme.currentTime = 0;
+    }, duracao);
+  }
 
+  const modal = document.getElementById('modalAlarme');
+  const closeBtn = document.querySelector('.close-button');
+  const btnSim = document.getElementById('btnSim');
+  const btnNao = document.getElementById('btnNao');
+
+  function abrirmodalAlarme() {
+    modal.style.display = 'flex';
+  }
+
+  function fecharmodalAlarme() {
+    modal.style.display = 'none';
+  }
+
+  closeBtn.onclick = fecharmodalAlarme;
+  btnNao.onclick = fecharmodalAlarme;
+
+  btnSim.onclick = () => {
+    fecharmodalAlarme();
+    tocarAlarmePorDezSegundos();
+  };
+
+  window.onclick = (event) => {
+    if (event.target === modal) {
+      fecharmodalAlarme();
+    }
+  };
 </script>
 <body oncontextmenu="return false">  
 <header>
@@ -975,7 +1050,7 @@ alfabeto:{
   simounao:{
     'Sim':[ {label:'sim',emoji:'<img src="https://static.arasaac.org/pictograms/5584/5584_300.png" style="width:65px;height:65px;">'}],
     'Não':[ {label:'não',emoji:'<img src="https://static.arasaac.org/pictograms/5526/5526_300.png" style="width:65px;height:65px;">',customColor: '#fde6e5'}],
-    'talvez':[ {label:'talvez',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/8637/8637508.png" style="width:65px;height:65px;">',customColor: '#FFF9B8'}],
+    'Talvez':[ {label:'Talvez',emoji:'<img src="https://cdn-icons-png.flaticon.com/128/8637/8637508.png" style="width:65px;height:65px;">',customColor: '#FFF9B8'}],
   },
 Procedimentos:{
 'chamar enfermaria':[ {label:'chamar enfermaria',emoji:'<img src="https://static.arasaac.org/pictograms/35307/35307_300.png" style="width:65px;height:65px;">',customColor:'#fde6e5'}],
@@ -1303,6 +1378,57 @@ function exportLogs(){
 }
 renderCurrent();
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  const modal = document.getElementById('modalAlarme');
+  const btnAbrir = document.getElementById('alarme-toggle');
+  const btnFechar = modal.querySelector('.close-button');
+  const btnSim = document.getElementById('btnSim');
+  const btnNao = document.getElementById('btnNao');
+
+  btnAbrir.onclick = function(e) {
+    e.preventDefault();
+    modal.style.display = "block";
+  };
+
+  btnFechar.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  btnNao.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  btnSim.onclick = function() {
+    modal.style.display = "none";
+    tocarAlarmePorDezSegundos();
+  };
+
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+
+});
+</script>
+<div id="modalAlarme" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h3>Alarme de emergência</h3>
+
+    <p>
+      Você quer ativar o alarme para chamar a equipe.
+      Tem certeza?
+    </p>
+
+    <div class="modal-actions">
+      <button id="btnSim">SIM</button>
+      <button id="btnNao">NÃO</button>
+    </div>
+  </div>
+</div>
     <div id="modalCreditos" class="modal">
     
     <div class="modal-content">
@@ -1314,7 +1440,7 @@ renderCurrent();
 <footer style="color: #000000; text-align: justify; font-size: 0.9em;">
     <p>Ferramenta desenvolvida pela Inovação/TI utilizando ícones da Flaticon e símbolos pictográficos criados por Sérgio Palao para <a href="http://www.arasaac.org" target="_blank" style="color: #000000; text-decoration: none;">ARASAAC</a>, sob propriedade do Governo de Aragão, que são distribuídos conforme a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" style="color: #000000; text-decoration: none;">Licença Creative Commons BY-NC-SA</a>.</p>
     <p><strong>Versão 1.1h - Copyright 2025 Unimed Costa do Sol</p></strong>
-    <p><strong>Todos os direitos reservados.</p></strong>
+    <p><strong>Todos os direitos reservados</p></strong>
 </footer>
     </div>
 </div>
